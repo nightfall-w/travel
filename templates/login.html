@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<!-- saved from url=(0085)http://www.17sucai.com/preview/185909/2014-08-27/bootstrap-css3-login-form/index.html -->
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <title>Login</title>
+
+    <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+    <link rel="stylesheet prefetch" href="{% static 'bootstrap/css/bootstrap.min.css/' %}">
+
+    <link rel="stylesheet" href="{% static 'css/login_style.css' %}" media="screen" type="text/css">
+    <link rel="shortcut icon" href="{% static 'images/ico/favicon.png' %}">
+</head>
+
+<body class="login-page">
+
+<div class="login-form">
+
+    <div class="login-content">
+
+        <div class="form-login-error">
+            <h3>登录失败</h3>
+            <p><strong>用户名密码错误</strong></p>
+        </div>
+
+        <form role="form" id="form_login">
+
+            <div class="form-group">
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <!--<i class="fa fa-user"></i>-->
+                        <img src="/static/images/username.png">
+                    </div>
+
+                    <input type="text" class="form-control" name="username" id="username" placeholder="用户名或手机号"
+                           autocomplete="off">
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <img src="/static/images/password.png">
+                    </div>
+
+                    <input type="password" class="form-control" name="password" id="password" placeholder="密码"
+                           autocomplete="off">
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-primary btn-block btn-login" onclick="page_login()">
+                    <!--<i class="fa fa-sign-in"></i>-->
+                    <span style="text-align: center;display:block;">登录</span>
+                </button>
+            </div>
+
+            <!-- Implemented in v1.1.4 -->
+            <div class="form-group">
+                <em>- or -</em>
+            </div>
+
+            <div class="form-group">
+
+            </div>
+
+
+        </form>
+
+
+    </div>
+
+</div>
+</body>
+<script type="text/javascript" src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/login.js' %}"></script>
+</html>
