@@ -80,7 +80,7 @@
 				<div class="container">
 
 					<ol class="breadcrumb-list">
-						<li><a href="index.html">Homepage</a></li>
+						<li><a href="{% url 'index' %}">Homepage</a></li>
 						<li><a href="#">Desinations</a></li>
 						<li><a href="#">City</a></li>
 						<li><span>Croatia Sailing &amp; Cruising</span></li>
@@ -106,7 +106,10 @@
 											<h4>Highlights</h4>
 										</div>
 
-										<img src="{% static 'images/map-route.jpg' %}" alt="Map" class="map-route" />
+										<!--<img src="{% static 'images/map-route.jpg' %}" alt="Map" class="map-route" />-->
+										<div id="container" style="width: 500px;height: 300px;" class="map-route" alt="Map">
+
+										</div>
 
 										<p>His exquisite sincerity education shameless ten earnestly breakfast add. So we me unknown as improve hastily sitting forming. Especially favourable compliment but thoroughly unreserved saw she themselves. Sufficient impossible him may ten insensible put continuing. Oppose exeter income simple few joy cousin but twenty. Scale began quiet up short wrong in in. Sportsmen shy forfeited engrossed may can.</p>
 
@@ -414,53 +417,6 @@
 												<i class="fa fa-times-circle text-light"></i>
 												<h6 class="heading mt-0">Insurance</h6>
 												<p>Had repulsive dashwoods suspicion sincerity but advantage now him. Remark easily garret nor nay <a href="#">line to some where</a>. Civil those mrs enjoy shy fat merry. You greatest jointure saw horrible.</p>
-											</li>
-
-										</ul>
-
-										<h5 class="heading">Optional Excursions</h5>
-										<p>Why painful the sixteen how minuter looking nor. Subject but why ten earnest husband imagine sixteen brandon. Are unpleasing occasional celebrated motionless unaffected conviction out.</p>
-
-										<ul class="list-with-icon col-3 clearfix">
-
-											<li>
-												<i class="fa fa-check-circle text-primary"></i>
-												<p>Marianne property cheerful.</p>
-											</li>
-
-											<li>
-												<i class="fa fa-check-circle text-primary"></i>
-												<p>Clothes parlors however by cottage.</p>
-											</li>
-
-											<li>
-												<i class="fa fa-check-circle text-primary"></i>
-												<p>In views it or meant drift.</p>
-											</li>
-
-											<li>
-												<i class="fa fa-check-circle text-primary"></i>
-												<p>Be concern parlors settled.</p>
-											</li>
-
-											<li>
-												<i class="fa fa-check-circle text-primary"></i>
-												<p>Remainder northward performed</p>
-											</li>
-
-											<li>
-												<i class="fa fa-check-circle text-primary"></i>
-												<p>Yet late add name was rent.</p>
-											</li>
-
-											<li>
-												<i class="fa fa-check-circle text-primary"></i>
-												<p>park from rich</p>
-											</li>
-
-											<li>
-												<i class="fa fa-check-circle text-primary"></i>
-												<p>He always do do former.</p>
 											</li>
 
 										</ul>
@@ -1530,7 +1486,7 @@
 		<!-- end Main Wrapper -->
 		{% endblock %}
 		{% block other_js %}
-		<script>
+<script>
 
 /**
 *  Sidebar Sticky
@@ -1583,4 +1539,15 @@
 }(window.jQuery)
 
 </script>
-		{% endblock %}
+<script type="text/javascript">
+	var map = new AMap.Map('container', {
+	   resizeEnable: true,
+	   center:[121.499763,31.239580],
+	   zoom:15
+	});
+	AMap.plugin('AMap.ToolBar',function(){
+	   var toolbar = new AMap.ToolBar();
+	   map.addControl(toolbar)
+	})
+</script>
+{% endblock %}

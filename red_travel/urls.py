@@ -15,11 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from user.views import index
-
+from django.conf import settings
+from django.conf.urls.static import static
+from info.views import Index
 urlpatterns = [
-    url(r'^index/$', index, name='index'),
-    url(r'^$', index, name='index_root'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^info/', include('info.urls', namespace='info')),
     url(r'^purview/', include('user.urls', namespace='purview')),
@@ -27,4 +26,7 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls', namespace='blog')),
     url(r'^avow/', include('avow.urls', namespace='avow')),
     url(r'^social/', include('social_django.urls', namespace='social')),
+    url(r'^$', Index.as_view(),name='index'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

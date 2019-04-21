@@ -133,13 +133,13 @@ $(function () {
         modalAnimate($Retrieve, $formRegister);
     });
     $("#last_step_btn").on("click", function () {
-       modalAnimate($Retrieve, $formLost)
+        modalAnimate($Retrieve, $formLost)
     });
     $("#set_passwd_login_btn").on("click", function () {
-       modalAnimate($set_passwd, $formLogin)
+        modalAnimate($set_passwd, $formLogin)
     });
     $("#set_passwd_register_btn").on("click", function () {
-       modalAnimate($set_passwd, $formRegister)
+        modalAnimate($set_passwd, $formRegister)
     });
     function modalAnimate($oldForm, $newForm) {
         var $oldH = $oldForm.height();
@@ -353,8 +353,6 @@ $(function () {
         $(this).css('border', '1px solid #CCCCCC');
     });
 
-
-    // 检查两次密码是否一致
     $('#submit').click(function () {
         //检查手机号
         var phone_number = $('#add_phone').val();
@@ -364,7 +362,7 @@ $(function () {
             $('#add_phone').attr({'value': '', 'placeholder': '请输入正确的手机号'});
             return false;
         }
-
+        //检查验证码格式
         var code = $("#code").val();
         var REGEX_CODE_EXACT = /^\d{6}$/;
         var re_code_ret = code.match(REGEX_CODE_EXACT);
@@ -372,7 +370,7 @@ $(function () {
             $("#code").attr({'value': '', 'placeholder': '请输入6位数字验证码'});
             return false;
         }
-
+        // 检查用户名
         var register_username = $("#register_username").val();
         var REGEX_username_EXACT = /^[a-zA-Z0-9_-]{6,16}$/;
         var re_username_ret = register_username.match(REGEX_username_EXACT);
@@ -386,7 +384,7 @@ $(function () {
                 return false;
             }
         }
-
+        // 检查密码格式以及一致性
         var first_password = $('#register_password').val();
         var REGEX_passwd_EXACT = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
         var re_passwd_ret = first_password.match(REGEX_passwd_EXACT);
@@ -398,7 +396,34 @@ $(function () {
             $('#repeat_password').attr({'value': '', 'placeholder': '密码不一致，请确认！'});
             return false;
         }
+
+        // 上传头像
+        var update_result = Update_photo()
     });
+
+
+    //上传头像功能
+    function Update_photo() {
+        var cas = $('#tailoringImg').cropper('getCroppedCanvas', {width: 50, height: 50});//获取被裁剪后的canvas
+        var base64url = cas.toDataURL('image/png'); //转换为base64地址形式
+        $.ajax({
+            url: '/purview/update_photo/',
+            type: 'POST',
+            data: {
+                'imgData': base64url
+            },
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data)
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown)
+            }
+        })
+    }
 
     // 检查用户名是否存在
     $('#register_username').focus(function () {
@@ -476,15 +501,15 @@ $(function () {
                 if (!data.success) {
                     $('#login_password').attr({'value': '', 'placeholder': data.message});
                 } else {
-                    check_islogin();
-                    $('.glyphicon').click()
+                    $('.glyphicon').click();
+                    location.reload(true)
                 }
             }
         })
     }
 
     // 登录前获取JWT token
-    function get_jwt_token(username,password,remember_me) {
+    function get_jwt_token(username, password, remember_me) {
         if (!username) {
             return "username_is_none"
         }
@@ -505,6 +530,7 @@ $(function () {
                     localStorage.token = data.token;
                     localStorage.username = data.username;
                     localStorage.user_id = data.user_id;
+                    localStorage.head_photo = data.head_photo;
                 } else {
                     // 不记住
                     sessionStorage.clear();
@@ -512,6 +538,7 @@ $(function () {
                     sessionStorage.token = data.token;
                     sessionStorage.username = data.username;
                     sessionStorage.user_id = data.user_id;
+                    sessionStorage.head_photo = data.head_photo
                 }
                 login(username, password, token)
             },
@@ -526,8 +553,8 @@ $(function () {
         var username = $("#login_username").val();
         var password = $("#login_password").val();
         var remember_me = $('#remember_me_checkbox').attr("checked");
-        var result = get_jwt_token(username,password,remember_me);
-        if (result==="username_is_none"){
+        var result = get_jwt_token(username, password, remember_me);
+        if (result === "username_is_none") {
             $('#login_username').attr({'value': '', 'placeholder': "用户名不能为空"});
         }
     });
@@ -563,9 +590,9 @@ $(function () {
                 });
         }
         else {
-            if (data.return_type === 'param_error') {
+            if (data.return_type === 'param_error' || data.return_type === 'img_type_error') {
                 swal({
-                    title: "信息有误，请检查后重新输入",
+                    title: data.return_value,
                     type: "error"
                 })
             } else if (data.return_type === 'verification_code_error') {
@@ -592,7 +619,7 @@ $(function () {
             success: function (data) {
                 localStorage.clear();
                 sessionStorage.clear();
-                window.location.href = '/index/'
+                window.location.href = '/'
             }
         })
     });
@@ -613,12 +640,12 @@ $(function () {
             type: "post",
             url: "/purview/set_password/",
             dataType: 'json',
-            data: {'phone': phone_number,'request_type':"check_phone"},
+            data: {'phone': phone_number, 'request_type': "check_phone"},
             success: function (data) {
-                if (data.isExist){
+                if (data.isExist) {
                     modalAnimate($formLost, $Retrieve);
                     $('#set_passwd_SendCode').click()
-                }else {
+                } else {
                     $("#check_phone_info").html("该手机号未被注册")
                 }
             },
@@ -634,7 +661,7 @@ $(function () {
     $("#verification_code").focus(function () {
         $("#check_verification_code_info").html("验证码已发送至你的注册手机")
     });
-    $("#password").focus(function(){
+    $("#password").focus(function () {
         $("#set_passwd_info").html("请设置新密码")
     });
 
@@ -660,24 +687,28 @@ $(function () {
     });
 
     // 提交验证码
-    $("#send_verification_code").click(function() {
+    $("#send_verification_code").click(function () {
         var verification_code = $("#verification_code").val();
         var phone = $('#lost_phone').val();
         var REGEX_CODE_EXACT = /^\d{6}$/;
         var re_code_ret = verification_code.match(REGEX_CODE_EXACT);
-        if (!re_code_ret){
+        if (!re_code_ret) {
             $("#check_verification_code_info").text('请输入6位数字验证码')
-        }else{
+        } else {
             $.ajax({
-            type: 'post',
-            url: '/purview/set_password/',
-            data: {'verification_code': verification_code,'request_type':'check_verification_code','phone':phone},
-            dataType: 'json',
-            success: function (msg) {
-                if (msg.return_code !== true) {
-                    $('#check_verification_code_info').html("验证码不正确")
-                }else{
-                    modalAnimate($Retrieve, $set_passwd)
+                type: 'post',
+                url: '/purview/set_password/',
+                data: {
+                    'verification_code': verification_code,
+                    'request_type': 'check_verification_code',
+                    'phone': phone
+                },
+                dataType: 'json',
+                success: function (msg) {
+                    if (msg.return_code !== true) {
+                        $('#check_verification_code_info').html("验证码不正确")
+                    } else {
+                        modalAnimate($Retrieve, $set_passwd)
                     }
                 }
             })
@@ -685,41 +716,41 @@ $(function () {
     });
 
     // 设置新密码
-    $("#send_new_password").click(function(){
+    $("#send_new_password").click(function () {
         var password = $("#password").val();
         var confirm_password = $("#confirm_password").val();
-        if (password != confirm_password){
+        if (password != confirm_password) {
             alert(password);
             alert(confirm_password);
             $("#set_passwd_info").html("密码不一致，请重新输入")
-        }else{
+        } else {
             var REGEX_passwd_EXACT = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,16}$/;
-            if (!password.match(REGEX_passwd_EXACT)){
+            if (!password.match(REGEX_passwd_EXACT)) {
                 $("#set_passwd_info").html("请输入至少8位数字字母组成的密码")
-            }else{
+            } else {
                 var phone = $('#lost_phone').val();
                 $.ajax({
-                type: 'post',
-                url: '/purview/set_password/',
-                data: {'request_type':'set_password','phone':phone,'password':password},
-                dataType: 'json',
-                success: function (msg) {
-                    if (!msg.return_code){
-                        $("#set_passwd_info").html("修改未成功，请重试")
-                    }else{
-                        swal({
-                        title: "密码修改成功！",
-                        text: "去登录？",
-                        type: "success",
-                        showCancelButton: true
-                        },
-                        function (isTrue) {
-                            if (isTrue) {
-                                $('#set_passwd_login_btn').click();
-                            } else {
-                                $('#close').click();
-                                }
-                            })
+                    type: 'post',
+                    url: '/purview/set_password/',
+                    data: {'request_type': 'set_password', 'phone': phone, 'password': password},
+                    dataType: 'json',
+                    success: function (msg) {
+                        if (!msg.return_code) {
+                            $("#set_passwd_info").html("修改未成功，请重试")
+                        } else {
+                            swal({
+                                    title: "密码修改成功！",
+                                    text: "去登录？",
+                                    type: "success",
+                                    showCancelButton: true
+                                },
+                                function (isTrue) {
+                                    if (isTrue) {
+                                        $('#set_passwd_login_btn').click();
+                                    } else {
+                                        $('#close').click();
+                                    }
+                                })
                         }
                     }
                 })
@@ -817,7 +848,7 @@ $(function () {
 //		}
 
 //		$(document).ready(function() {
-//			
+//
 //			$('#instagram').on('didLoadInstagram', didLoadInstagram);
 //			$('#instagram').instagram({
 //			count: 20,
@@ -828,17 +859,3 @@ $(function () {
 //		});
 
 });
-
-function check_islogin() {
-    var username = localStorage.username;
-    var token = localStorage.token;
-    if (!token) {
-        username = sessionStorage.username;
-        token = sessionStorage.token;
-    }
-    if (token) {
-        var user_info = '<a data-toggle="modal" class="btn">' + username + '</a>';
-        $('.user-action').html(user_info);
-        $('.user-logout').show();
-    }
-}

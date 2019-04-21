@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-<!-- saved from url=(0085)http://www.17sucai.com/preview/185909/2014-08-27/bootstrap-css3-login-form/index.html -->
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -30,15 +29,13 @@
         </div>
 
         <form role="form" id="form_login">
-
+            {% csrf_token %}
             <div class="form-group">
 
                 <div class="input-group">
                     <div class="input-group-addon">
-                        <!--<i class="fa fa-user"></i>-->
                         <img src="/static/images/username.png">
                     </div>
-
                     <input type="text" class="form-control" name="username" id="username" placeholder="用户名或手机号"
                            autocomplete="off">
                 </div>

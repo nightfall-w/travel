@@ -1,10 +1,10 @@
-#coding=utf-8
+# coding=utf-8
 import requests
 import datetime
-import time
 from celery_tasks.main import app
 from utils.hash import hash_sign
 from utils.common import getConfig
+
 
 @app.task(name="request_to_chit_platform")
 def request_to_chit_platform(phone_number, verification_code):
@@ -16,6 +16,12 @@ def request_to_chit_platform(phone_number, verification_code):
         True:发送成功
         False:发送失败
     """
+
+    proxy_dict = {
+        "http": "http://child-prc.intel.com:913/",
+        "https": "http://child-prc.intel.com:913/"
+    }
+
     api = getConfig('MiaoDi', 'api')
     accountSid = getConfig('MiaoDi', 'accountSid')
     templateid = getConfig('MiaoDi', 'templateid')
@@ -27,11 +33,9 @@ def request_to_chit_platform(phone_number, verification_code):
         'accountSid': accountSid, 'templateid': templateid, 'param': param,
         'to': phone_number, 'timestamp': timestamp, 'sig': sign
     }
-    print(api)
-    print(data)
-    response = requests.post(url=api, data=data)
+    response = requests.post(url=api, data=data, proxies=proxy_dict)
+    # response = requests.post(url=api, data=data)
     ret_json = response.text
-    print(ret_json)
     ret_dict = eval(ret_json)
 
     if ret_dict.get('respCode') != '00000':

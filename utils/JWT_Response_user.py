@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from django.contrib.auth.backends import ModelBackend
-from user.models import User, auth_profile
+from user.models import User, Auth_profile
 import re
 
 
@@ -8,10 +8,13 @@ def jwt_response_payload_handler(token, user=None, request=None):
     """
     自定义jwt认证成功返回数据
     """
+    auth_profile = Auth_profile.objects.get(user_obj_id=user.id)
+
     return {
         'token': token,
         'user_id': user.id,
-        'username': user.username
+        'username': user.username,
+        'head_photo': auth_profile.head_photo
     }
 
 
@@ -25,11 +28,11 @@ def get_user_by_account(account):
     try:
         if re.match(phone_pat, account):
             # 帐号为手机号
-            user = auth_profile.objects.get(phone_number=account).user_obj
+            user = Auth_profile.objects.get(phone_number=account).user_obj
         else:
             # 帐号为用户名
             user = User.objects.get(username=account)
-    except (User.DoesNotExist, auth_profile.DoesNotExist):
+    except (User.DoesNotExist, Auth_profile.DoesNotExist):
         return None
     else:
         return user
