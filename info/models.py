@@ -16,14 +16,14 @@ class Scheme(models.Model):
     day = models.IntegerField(verbose_name="白天数")
     night = models.IntegerField(verbose_name="晚上数")
     create_date = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
-    favorites = models.ManyToManyField(User, verbose_name="被喜欢",blank=True,null=True)
+    favorites = models.ManyToManyField(User, verbose_name="被喜欢", blank=True)
     is_delete = models.BooleanField(choices=((1, 'delete'), (0, 'exist')), default=0, verbose_name="被删除")
-    groggery = models.ManyToManyField("Groggery", verbose_name="酒店",blank=True,null=True)
-    score = models.ManyToManyField("Score", verbose_name="评分",blank=True,null=True)
+    groggery = models.ManyToManyField("Groggery", verbose_name="酒店", blank=True)
+    score = models.ManyToManyField("Score", verbose_name="评分", blank=True)
 
     class Meta:
         db_table = 'scheme'
-        verbose_name = verbose_name_plural='旅游项目'
+        verbose_name = verbose_name_plural = '旅游项目'
 
     def __str__(self):
         return self.name
@@ -38,7 +38,7 @@ class Scenic(models.Model):
 
     class Meta:
         db_table = 'scenic'
-        verbose_name = verbose_name_plural='相册'
+        verbose_name = verbose_name_plural = '相册'
 
     def __str__(self):
         return self.name
@@ -56,7 +56,7 @@ class Ticket(models.Model):
 
     class Meta:
         db_table = 'ticket'
-        verbose_name = verbose_name_plural='票务'
+        verbose_name = verbose_name_plural = '票务'
 
     def __str__(self):
         return self.start_date
@@ -86,7 +86,7 @@ class Score(models.Model):
 
     class Meta:
         db_table = 'score'
-        verbose_name = verbose_name_plural='评价'
+        verbose_name = verbose_name_plural = '评价'
 
     def __str__(self):
         return self.category
@@ -105,7 +105,7 @@ class Review(models.Model):
 
     class Meta:
         db_table = 'review'
-        verbose_name = verbose_name_plural='用户评论'
+        verbose_name = verbose_name_plural = '用户评论'
 
     def __str__(self):
         return self.content
@@ -115,16 +115,16 @@ class Journey(models.Model):
     """
     行程类
     """
-    cafe = models.ForeignKey("Groggery",related_name="journey_groggery",verbose_name="入住酒店")
+    cafe = models.ForeignKey("Groggery", related_name="journey_groggery", verbose_name="入住酒店")
     time = models.DateTimeField(verbose_name="行程时间")
     day = models.IntegerField(verbose_name="第几天")
-    visit_address = models.CharField(max_length=20,verbose_name="游访地点")
+    visit_address = models.CharField(max_length=20, verbose_name="游访地点")
     content = models.TextField("游玩内容")
-    scheme = models.ForeignKey(Scheme,verbose_name="所属套餐")
+    scheme = models.ForeignKey(Scheme, verbose_name="所属套餐")
 
     class Meta:
         db_table = 'journey'
-        verbose_name = verbose_name_plural='行程'
+        verbose_name = verbose_name_plural = '行程'
 
     def __str__(self):
         return self.day
@@ -134,12 +134,12 @@ class Groggery(models.Model):
     """
     酒店类
     """
-    name = models.CharField(max_length=30,verbose_name="酒店名")
+    name = models.CharField(max_length=30, verbose_name="酒店名")
     image = models.ImageField(upload_to='images/groggery', verbose_name='酒店图片')
 
     class Meta:
         db_table = 'groggery'
-        verbose_name = verbose_name_plural='酒店'
+        verbose_name = verbose_name_plural = '酒店'
 
     def __str__(self):
         return self.name
