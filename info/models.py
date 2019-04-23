@@ -20,6 +20,7 @@ class Scheme(models.Model):
     is_delete = models.BooleanField(choices=((1, 'delete'), (0, 'exist')), default=0, verbose_name="被删除")
     groggery = models.ManyToManyField("Groggery", verbose_name="酒店", blank=True)
     score = models.ManyToManyField("Score", verbose_name="评分", blank=True)
+    scenic = models.ManyToManyField('Scenic',verbose_name='相册',blank=True)
 
     class Meta:
         db_table = 'scheme'
@@ -48,7 +49,7 @@ class Ticket(models.Model):
     """
     票务类
     """
-    Scheme = models.ForeignKey(Scheme, verbose_name="套餐对象")
+    scheme = models.ForeignKey(Scheme, verbose_name="套餐对象")
     start_date = models.DateField(verbose_name="出发时间")
     end_date = models.DateField(verbose_name="返程时间")
     surplus = models.IntegerField(verbose_name="剩余票数")
@@ -59,7 +60,7 @@ class Ticket(models.Model):
         verbose_name = verbose_name_plural = '票务'
 
     def __str__(self):
-        return self.start_date
+        return self.scheme.name
 
 
 class Score(models.Model):
@@ -89,7 +90,7 @@ class Score(models.Model):
         verbose_name = verbose_name_plural = '评价'
 
     def __str__(self):
-        return self.category
+        return str(self.score_number)
 
 
 class Review(models.Model):
@@ -108,7 +109,7 @@ class Review(models.Model):
         verbose_name = verbose_name_plural = '用户评论'
 
     def __str__(self):
-        return self.content
+        return self.scheme.name
 
 
 class Journey(models.Model):
@@ -116,7 +117,7 @@ class Journey(models.Model):
     行程类
     """
     cafe = models.ForeignKey("Groggery", related_name="journey_groggery", verbose_name="入住酒店")
-    time = models.DateTimeField(verbose_name="行程时间")
+    time = models.TimeField(verbose_name="行程时间")
     day = models.IntegerField(verbose_name="第几天")
     visit_address = models.CharField(max_length=20, verbose_name="游访地点")
     content = models.TextField("游玩内容")
@@ -127,7 +128,7 @@ class Journey(models.Model):
         verbose_name = verbose_name_plural = '行程'
 
     def __str__(self):
-        return self.day
+        return self.scheme.name
 
 
 class Groggery(models.Model):

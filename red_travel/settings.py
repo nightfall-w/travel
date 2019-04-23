@@ -29,6 +29,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djcelery',
+    'graphene_django',
     'rest_framework',
     'social_django',
     'user',

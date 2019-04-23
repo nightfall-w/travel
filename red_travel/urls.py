@@ -13,11 +13,15 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
-from django.contrib import admin
 from django.conf import settings
+from django.conf.urls import include, url
 from django.conf.urls.static import static
+from django.contrib import admin
+from graphene_django.views import GraphQLView
+
 from info.views import Index
+from .schema import schema
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^info/', include('info.urls', namespace='info')),
@@ -26,7 +30,8 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls', namespace='blog')),
     url(r'^avow/', include('avow.urls', namespace='avow')),
     url(r'^social/', include('social_django.urls', namespace='social')),
-    url(r'^$', Index.as_view(),name='index'),
+    url(r'^graphql/', GraphQLView.as_view(graphiql=True, schema=schema)),
+    url(r'^$', Index.as_view(), name='index'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
