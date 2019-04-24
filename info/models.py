@@ -8,7 +8,7 @@ class Scheme(models.Model):
     """
     套餐类
     """
-    name = models.CharField(max_length=40, verbose_name="套餐名")
+    name = models.CharField(max_length=200, verbose_name="套餐名")
     coordinate = models.CharField(max_length=50, verbose_name="坐标")
     originating = models.CharField(max_length=20, verbose_name="始发地")
     end_locale = models.CharField(max_length=20, verbose_name="目的地")

@@ -2,13 +2,42 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth.models import User
-from info.models import Scheme
+from info.models import Scheme, Ticket, Scenic, Score, Review, Journey, Groggery
 
 
 class SchemeType(DjangoObjectType):
-
     class Meta:
         model = Scheme
+
+
+class TicketType(DjangoObjectType):
+    class Meta:
+        model = Ticket
+
+
+class ScenicType(DjangoObjectType):
+    class Meta:
+        model = Scenic
+
+
+class ScoreType(DjangoObjectType):
+    class Meta:
+        model = Score
+
+
+class ReviewType(DjangoObjectType):
+    class Meta:
+        model = Review
+
+
+class JourneyType(DjangoObjectType):
+    class Meta:
+        model = Journey
+
+
+class GroggeryType(DjangoObjectType):
+    class Meta:
+        model = Groggery
 
 
 # 定义Mutation元素输入类型
@@ -37,3 +66,16 @@ class UserFavorites(graphene.Mutation):
         else:
             ok = False
         return UserFavorites(ok=ok)
+
+
+class Query(object):
+    all_scheme = graphene.List(SchemeType)
+    all_ticket = graphene.List(TicketType)
+
+    def resolve_all_scheme(self, info, **kwargs):
+        schemes = Scheme.objects.all()
+        return schemes
+
+    def resolve_all_ticket(self, info, **kwargs):
+        tickets = Ticket.objects.all()
+        return tickets
