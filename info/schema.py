@@ -40,6 +40,15 @@ class GroggeryType(DjangoObjectType):
         model = Groggery
 
 
+class SchemeListType(DjangoObjectType):
+    class Meta:
+        model = Scheme
+    is_favorites = graphene.Boolean()
+    review_number = graphene.Int()
+    score_result = graphene.Int()
+
+
+
 # 定义Mutation元素输入类型
 class SchemeInput(graphene.InputObjectType):
     scheme_id = graphene.Int(required=True)
@@ -72,6 +81,12 @@ class Query(object):
     all_scheme = graphene.List(SchemeType)
     all_ticket = graphene.List(TicketType)
 
+    scheme_list = graphene.List(SchemeListType, originating=graphene.String(), end_locale=graphene.String(),
+                                year=graphene.Int(),
+                                month=graphene.Int(), scheme_name=graphene.String(), min_price=graphene.Int(),
+                                max_price=graphene.Int(),
+                                score=graphene.Int())
+
     def resolve_all_scheme(self, info, **kwargs):
         schemes = Scheme.objects.all()
         return schemes
@@ -79,3 +94,19 @@ class Query(object):
     def resolve_all_ticket(self, info, **kwargs):
         tickets = Ticket.objects.all()
         return tickets
+
+    def resolve_scheme_list(self, info, **kwargs):
+        originating = kwargs.get('originating', None)
+        end_locale = kwargs.get('end_locale', None)
+        year = kwargs.get('end_locale', None)
+        month = kwargs.get('month', None)
+        scheme_name = kwargs.get('scheme_name', None)
+        min_price = kwargs.get('min_price', None)
+        max_price = kwargs.get('max_price', None)
+        score = kwargs.get('score', None)
+        schemes = Scheme.objects.all()
+        for i in schemes:
+            i.is_favorites = True
+            i.review_number = 6
+            i.score_result = 6
+        return schemes

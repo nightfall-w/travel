@@ -15,6 +15,7 @@ class Scheme(models.Model):
     through_time = models.IntegerField(verbose_name="历时天数")
     day = models.IntegerField(verbose_name="白天数")
     night = models.IntegerField(verbose_name="晚上数")
+    introduce = models.TextField(verbose_name="套餐介绍")
     create_date = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     favorites = models.ManyToManyField(User, verbose_name="被喜欢", blank=True)
     is_delete = models.BooleanField(choices=((1, 'delete'), (0, 'exist')), default=0, verbose_name="被删除")
