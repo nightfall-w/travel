@@ -2,7 +2,7 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 from django.contrib.auth.models import User
-from info.models import Scheme, Ticket, Scenic, Score, Review, Journey, Groggery
+from info.models import Scheme, Ticket, Scenic, Score, Review, Journey
 
 
 class SchemeType(DjangoObjectType):
@@ -35,18 +35,13 @@ class JourneyType(DjangoObjectType):
         model = Journey
 
 
-class GroggeryType(DjangoObjectType):
-    class Meta:
-        model = Groggery
-
-
 class SchemeListType(DjangoObjectType):
     class Meta:
         model = Scheme
+
     is_favorites = graphene.Boolean()
     review_number = graphene.Int()
     score_result = graphene.Int()
-
 
 
 # 定义Mutation元素输入类型

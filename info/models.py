@@ -9,19 +9,18 @@ class Scheme(models.Model):
     套餐类
     """
     name = models.CharField(max_length=200, verbose_name="套餐名")
-    coordinate = models.CharField(max_length=50, verbose_name="坐标")
+    coordinate = models.CharField(max_length=50, verbose_name="坐标", null=True)
     originating = models.CharField(max_length=20, verbose_name="始发地")
     end_locale = models.CharField(max_length=20, verbose_name="目的地")
-    through_time = models.IntegerField(verbose_name="历时天数")
     day = models.IntegerField(verbose_name="白天数")
     night = models.IntegerField(verbose_name="晚上数")
     introduce = models.TextField(verbose_name="套餐介绍")
+    feature = models.TextField(verbose_name='特色')
+    contains_content = models.TextField(verbose_name='包含内容')
     create_date = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     favorites = models.ManyToManyField(User, verbose_name="被喜欢", blank=True)
     is_delete = models.BooleanField(choices=((1, 'delete'), (0, 'exist')), default=0, verbose_name="被删除")
-    groggery = models.ManyToManyField("Groggery", verbose_name="酒店", blank=True)
     score = models.ManyToManyField("Score", verbose_name="评分", blank=True)
-    scenic = models.ManyToManyField('Scenic',verbose_name='相册',blank=True)
 
     class Meta:
         db_table = 'scheme'
@@ -117,12 +116,13 @@ class Journey(models.Model):
     """
     行程类
     """
-    cafe = models.ForeignKey("Groggery", related_name="journey_groggery", verbose_name="入住酒店")
-    time = models.TimeField(verbose_name="行程时间")
+    hotel = models.CharField(verbose_name="入住酒店", max_length=600, null=True)
+    time = models.TimeField(verbose_name="行程时间", null=True)
     day = models.IntegerField(verbose_name="第几天")
-    visit_address = models.CharField(max_length=20, verbose_name="游访地点")
+    visit_address = models.CharField(max_length=300, verbose_name="游访地点")
     content = models.TextField("游玩内容")
     scheme = models.ForeignKey(Scheme, verbose_name="所属套餐")
+    scenic = models.ManyToManyField(Scenic, verbose_name='相册', blank=True, null=True)
 
     class Meta:
         db_table = 'journey'
@@ -130,18 +130,3 @@ class Journey(models.Model):
 
     def __str__(self):
         return self.scheme.name
-
-
-class Groggery(models.Model):
-    """
-    酒店类
-    """
-    name = models.CharField(max_length=30, verbose_name="酒店名")
-    image = models.ImageField(upload_to='images/groggery', verbose_name='酒店图片')
-
-    class Meta:
-        db_table = 'groggery'
-        verbose_name = verbose_name_plural = '酒店'
-
-    def __str__(self):
-        return self.name
