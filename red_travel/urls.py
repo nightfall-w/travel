@@ -20,7 +20,7 @@ from django.contrib import admin
 from graphql_access.view import PublicGraphQLView, PrivateGraphQLView
 
 from info.views import Index
-from .schema import schema
+from .schema import public_schema, private_schema
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -30,8 +30,8 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls', namespace='blog')),
     url(r'^avow/', include('avow.urls', namespace='avow')),
     url(r'^social/', include('social_django.urls', namespace='social')),
-    url(r'^graphql/', PublicGraphQLView.as_view(graphiql=True, schema=schema)),
-    url(r'^private_graphql/', PrivateGraphQLView.as_view(graphiql=True, schema=schema)),
+    url(r'^graphql/', PublicGraphQLView.as_view(graphiql=True, schema=public_schema)),
+    url(r'^private_graphql/', PrivateGraphQLView.as_view(graphiql=True, schema=private_schema)),
     # url(r'^graphql/', PrivateGraphQLView.as_view(graphiql=True, schema=schema)),
     url(r'^$', Index.as_view(), name='index'),
 ]

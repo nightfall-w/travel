@@ -4,7 +4,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class PrivateGraphQLView(LoginRequiredMixin,GraphQLView):
+class PrivateGraphQLView(LoginRequiredMixin, GraphQLView):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
