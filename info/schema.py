@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import graphene
 from graphene_django.types import DjangoObjectType
-from django.contrib.auth.models import User
+
 from info.models import Scheme, Ticket, Scenic, Score, Review, Journey
 
 
