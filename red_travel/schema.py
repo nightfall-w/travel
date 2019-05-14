@@ -2,30 +2,30 @@
 # 总的schema入口
 
 import graphene
-import info.schema
+from graphql_access import public_schema, private_schema
 
 
-class PublicQuery(info.schema.Query, graphene.ObjectType):
+class PublicQuery(public_schema.Query, graphene.ObjectType):
     # 总的Public Schema的query入口
     pass
 
 
 class PublicMutations(graphene.ObjectType):
     # 总的Public Schema的mutations入口
-    UserFavorites = info.schema.UserFavorites.Field()
+    UserFavorites = public_schema.UserFavorites.Field()
 
 
-public_schema = graphene.Schema(query=PublicQuery, mutation=PublicMutations)
+PublicSchema = graphene.Schema(query=PublicQuery, mutation=PublicMutations)
 
 
-class PrivateQuery(info.schema.Query, graphene.ObjectType):
+class PrivateQuery(private_schema.Query, graphene.ObjectType):
     # 总的Private Schema的query入口
     pass
 
 
 class PrivateMutations(graphene.ObjectType):
     # 总的Private Schema的mutations入口
-    UserFavorites = info.schema.UserFavorites.Field()
+    UserFavorites = private_schema.UserFavorites.Field()
 
 
-private_schema = graphene.Schema(query=PrivateQuery, mutation=PrivateMutations)
+PrivateSchema = graphene.Schema(query=PrivateQuery, mutation=PrivateMutations)
