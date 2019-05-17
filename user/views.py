@@ -152,7 +152,7 @@ class UserRegister(APIView):
         return Response('PUT请求，响应内容')
 
 
-class Set_password(APIView):
+class SetPassword(APIView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -196,7 +196,7 @@ class Set_password(APIView):
             return Response({'return_code': True})
 
 
-class Update_photo(APIView):
+class UpdatePhoto(APIView):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
@@ -212,4 +212,3 @@ class Update_photo(APIView):
             request.session['head_photo'] = '/media/head_portrait/{}.jepg'.format(
                 photo_name)
         return Response({'return_code': True})
-

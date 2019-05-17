@@ -34,8 +34,8 @@ def request_to_chit_platform(phone_number, verification_code):
         'accountSid': accountSid, 'templateid': templateid, 'param': param,
         'to': phone_number, 'timestamp': timestamp, 'sig': sign
     }
-    # response = requests.post(url=api, data=data, proxies=proxy_dict)
-    response = requests.post(url=api, data=data)
+    response = requests.post(url=api, data=data, proxies=proxy_dict)
+    # response = requests.post(url=api, data=data)
     ret_json = response.text
     ret_dict = eval(ret_json)
 

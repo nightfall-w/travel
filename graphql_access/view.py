@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from graphene_django.views import GraphQLView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
