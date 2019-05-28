@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'order'
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -117,22 +117,36 @@ JWT_AUTH = {
 
 # 使用redis保存session数据
 ESSION_SAVE_EVERY_REQUEST = False  # 如果设置为True,django为每次request请求都保存session的内容，默认为False
-SESSION_COOKIE_AGE = 60*60*24*3     # 设置SESSION的过期时间，单位是秒，默认是两周
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 3  # 设置SESSION的过期时间，单位是秒，默认是两周
 SESSION_ENGINE = 'redis_sessions.session'  # 使用redis作为session存储介质
 SESSION_REDIS_HOST = 'localhost'
 SESSION_REDIS_PORT = 6379
-SESSION_REDIS_DB = 0               # 选择存储槽
+SESSION_REDIS_DB = 0  # 选择存储槽
 SESSION_REDIS_PASSWORD = ''
 # SESSION_REDIS_PREFIX = 'session'
 
 # CELERY STUFF
-BROKER_URL = 'redis://localhost:6379/1'
+BROKER_URL = 'amqp://guest@localhost//'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/2'
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_RESULT_EXPIRES = 24 * 60 * 60
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TIMEZONE = 'Asia/Shanghai'
+
+CELERY_IMPORTS = ('user.tasks', )
+
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+from datetime import timedelta
+
+CELERYBEAT_SCHEDULE = {
+
+    'request_to_chit_platform': {
+        "task": "user.tasks.request_to_chit_platform",
+        "schedule": timedelta(seconds=10),
+        # "args": (),
+    },
+}
 
 CELERY_QUEUES = (
     Queue(
@@ -145,6 +159,9 @@ CELERY_QUEUES = (
         routing_key="request_to_chit_platform"),
 )
 CELERY_ROUTES = {
+    'test_beat': {"queue": "default",
+                "routing_key": "default"},
+
     'request_to_chit_platform': {"queue": "request_to_chit_platform",
                                  "routing_key": "request_to_chit_platform"},
 }

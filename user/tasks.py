@@ -34,6 +34,8 @@ def request_to_chit_platform(phone_number, verification_code):
         'accountSid': accountSid, 'templateid': templateid, 'param': param,
         'to': phone_number, 'timestamp': timestamp, 'sig': sign
     }
+
+    return True
     response = requests.post(url=api, data=data, proxies=proxy_dict)
     # response = requests.post(url=api, data=data)
     ret_json = response.text
@@ -43,3 +45,9 @@ def request_to_chit_platform(phone_number, verification_code):
         return False
     else:
         return True
+
+
+@task(name='test_beat')
+def test_beat():
+    print('beat ' * 5)
+    return True
