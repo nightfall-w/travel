@@ -122,7 +122,7 @@ class Journey(models.Model):
     visit_address = models.CharField(max_length=300, verbose_name="游访地点")
     content = models.TextField("游玩内容")
     scheme = models.ForeignKey(Scheme, verbose_name="所属套餐", on_delete=models.CASCADE)
-    scenic = models.ManyToManyField(Scenic, verbose_name='相册', blank=True, null=True)
+    scenic = models.ManyToManyField(Scenic, verbose_name='相册', blank=True)
 
     class Meta:
         db_table = 'journey'
