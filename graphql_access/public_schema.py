@@ -1,8 +1,11 @@
 # -*- coding:utf-8 -*-
+import datetime
+import graphene
 from rest_framework.pagination import LimitOffsetPagination, _positive_int
 from rest_framework.views import APIView
 
 from graphql_access.schema_base import *
+from graphql_access.utils import SORTKEY
 
 
 class MyLimitOffsetPagination(LimitOffsetPagination):
@@ -29,13 +32,57 @@ class MyLimitOffsetPagination(LimitOffsetPagination):
             return self.default_limit
 
     def get_offset(self, request):
-        # 同get_offset,只是取offset
+        # 与get_offset同理,只是取offset
         try:
             return _positive_int(
                 request.offset,
             )
         except:
             return 0
+
+
+class PageSchemeType(graphene.ObjectType):
+    total = graphene.Int()
+    limit = graphene.Int()
+    offset = graphene.Int()
+    sort_by = graphene.Int()
+    page_scheme = graphene.List(SchemeType)
+
+    def resolve_page_scheme(self, info):
+        '''
+        根据过滤条件 返回对应的schemes数据
+        :param info:
+        :return: 过滤并分页后的schemes queryset
+        '''
+        # 看sort条件是否在规定符合规定，0表示默认，不排序）
+        self.sort_by = self.sort_by if self.sort_by in SORTKEY.keys() else 0
+        sort_key = SORTKEY[self.sort_by]
+        if abs(self.sort_by) == 1:
+            # 根据scheme name进行排序
+            schemes = Scheme.objects.order_by(sort_key)
+            self.total = len(schemes)
+        elif abs(self.sort_by) == 2:
+            # 根据当日价格排序
+            current_date = datetime.date.today()
+            scheme_id_tuple = tuple(
+                Ticket.objects.filter(start_date=current_date).order_by(sort_key).values_list('scheme',
+                                                                                              flat=True))
+            self.total = len(scheme_id_tuple)
+            schemes = list()
+            for scheme_id in scheme_id_tuple:
+                scheme_obj = Scheme.objects.get(id=scheme_id)
+                schemes.append(scheme_obj)
+        else:
+            schemes = Scheme.objects.all()
+            self.total = len(schemes)
+        pg = MyLimitOffsetPagination()
+        request = APIView().initialize_request(info.context)
+        if self.limit:
+            request.limit = self.limit
+        if self.offset:
+            request.offset = self.offset
+        page_schemes = pg.paginate_queryset(queryset=schemes, request=request)
+        return page_schemes
 
 
 # 定义Mutation元素输入类型
@@ -68,6 +115,7 @@ class UserFavorites(graphene.Mutation):
 
 class Query(object):
     scheme = graphene.List(SchemeType, limit=graphene.Int(), offset=graphene.Int())
+    page_schemes = graphene.List(PageSchemeType, limit=graphene.Int(), offset=graphene.Int(), sort_by=graphene.Int())
     ticket = graphene.List(TicketType)
 
     def resolve_scheme(self, info, **kwargs):
@@ -80,7 +128,15 @@ class Query(object):
         if kwargs.get('offset'):
             request.offset = kwargs.get('offset')
         page_schemes = pg.paginate_queryset(queryset=schemes, request=request)
+        for scheme in page_schemes:
+            scheme.total = len(schemes)
         return page_schemes
+
+    def resolve_page_schemes(self, info, **kwargs):
+        # 返回套餐数据
+        total_schemes = len(Scheme.objects.all())
+        return [PageSchemeType(limit=kwargs.get('limit', None), offset=kwargs.get('offset', None),
+                               sort_by=kwargs.get('sort_by', 0))]
 
     def resolve_ticket(self, info, **kwargs):
         # 返回指定scheme
