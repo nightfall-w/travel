@@ -60,21 +60,28 @@ class PageSchemeType(graphene.ObjectType):
         if abs(self.sort_by) == 1:
             # 根据scheme name进行排序
             schemes = Scheme.objects.order_by(sort_key)
-            self.total = len(schemes)
         elif abs(self.sort_by) == 2:
             # 根据当日价格排序
             current_date = datetime.date.today()
-            scheme_id_tuple = tuple(
-                Ticket.objects.filter(start_date=current_date).order_by(sort_key).values_list('scheme',
-                                                                                              flat=True))
-            self.total = len(scheme_id_tuple)
-            schemes = list()
-            for scheme_id in scheme_id_tuple:
-                scheme_obj = Scheme.objects.get(id=scheme_id)
-                schemes.append(scheme_obj)
+            # scheme_id_tuple = tuple(
+            #     Ticket.objects.filter(start_date=current_date).order_by(sort_key).values_list('scheme',
+            #                                                                                   flat=True))
+            schemes = [ticket.scheme for ticket in
+                       Ticket.objects.order_by(sort_key).select_related('scheme').filter(start_date=current_date).only('scheme')]
+            # schemes = list()
+            # for scheme_id in scheme_id_tuple:
+            #     scheme_obj = Scheme.objects.get(id=scheme_id)
+            #     schemes.append(scheme_obj)
+        elif abs(self.sort_by) == 3:
+            # 根据目的地排序
+            schemes = Scheme.objects.order_by(self.sort_by)
+        elif abs(self.sort_by) == 4:
+            schemes = Scheme.objects.all().prefetch_related('score')
+            for scheme in schemes:
+                print(scheme.score)
+            print(schemes)
         else:
             schemes = Scheme.objects.all()
-            self.total = len(schemes)
         pg = MyLimitOffsetPagination()
         request = APIView().initialize_request(info.context)
         if self.limit:
