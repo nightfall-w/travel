@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 
 from graphql_access.schema_base import *
 from graphql_access.utils import SORTKEY
+from django.db.models import Max, Avg, F, Q
 
 
 class MyLimitOffsetPagination(LimitOffsetPagination):
@@ -63,23 +64,29 @@ class PageSchemeType(graphene.ObjectType):
         elif abs(self.sort_by) == 2:
             # 根据当日价格排序
             current_date = datetime.date.today()
-            # scheme_id_tuple = tuple(
-            #     Ticket.objects.filter(start_date=current_date).order_by(sort_key).values_list('scheme',
-            #                                                                                   flat=True))
             schemes = [ticket.scheme for ticket in
-                       Ticket.objects.order_by(sort_key).select_related('scheme').filter(start_date=current_date).only('scheme')]
-            # schemes = list()
-            # for scheme_id in scheme_id_tuple:
-            #     scheme_obj = Scheme.objects.get(id=scheme_id)
-            #     schemes.append(scheme_obj)
+                       Ticket.objects.order_by(sort_key).select_related('scheme').filter(start_date=current_date).only(
+                           'scheme')]
         elif abs(self.sort_by) == 3:
             # 根据目的地排序
-            schemes = Scheme.objects.order_by(self.sort_by)
+            schemes = Scheme.objects.order_by(sort_key)
         elif abs(self.sort_by) == 4:
-            schemes = Scheme.objects.all().prefetch_related('score')
+            # 根据评分进行排序
+            schemes = Scheme.objects.prefetch_related('score')
+            schemes_dict = dict()
             for scheme in schemes:
-                print(scheme.score)
-            print(schemes)
+                # 遍历scheme对象，拿到对应的平均评分，结果形式为  例:{'score_number__avg':4.6}
+                score_avg = scheme.score.aggregate(Avg('score_number'))
+                # 如果scheme(套餐还未被评分，为None，我们设为1)
+                if score_avg['score_number__avg'] is None:
+                    score_avg['score_number__avg'] = 1
+                schemes_dict[scheme] = score_avg['score_number__avg']
+            if self.sort_by == 4:
+                # 将schemes由评由高到低排序，默认
+                schemes = sorted(schemes_dict, key=schemes_dict.__getitem__, reverse=True)
+            else:
+                # 将schemes由评分由低到高排序
+                schemes = sorted(schemes_dict, key=schemes_dict.__getitem__)
         else:
             schemes = Scheme.objects.all()
         pg = MyLimitOffsetPagination()
@@ -140,8 +147,7 @@ class Query(object):
         return page_schemes
 
     def resolve_page_schemes(self, info, **kwargs):
-        # 返回套餐数据
-        total_schemes = len(Scheme.objects.all())
+
         return [PageSchemeType(limit=kwargs.get('limit', None), offset=kwargs.get('offset', None),
                                sort_by=kwargs.get('sort_by', 0))]
 
