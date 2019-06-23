@@ -81,7 +81,7 @@ class Score(models.Model):
         (3, '舒适'),
         (4, '条件'),
     ]
-    score_number = models.IntegerField(choices=SCORE_CHOICES, verbose_name="分数")
+    score_number = models.IntegerField(choices=SCORE_CHOICES, verbose_name="分数", default=1)
     user = models.ManyToManyField(User, verbose_name="评分者")
     category = models.IntegerField(choices=CATEGORY_CHOICES, default=1, verbose_name="评分类别")
 
