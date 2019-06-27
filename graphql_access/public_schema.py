@@ -152,21 +152,13 @@ class Query(object):
         sort_key = kwargs.get('sort_by', 0)
         sort_key = sort_key if sort_key in SORTKEY.keys() else 0
         sort_by = SORTKEY[sort_key]
-        if abs(sort_key) == 1:
-            # 根据scheme name进行排序
-            schemes = Scheme.objects.order_by(sort_by)
-        elif abs(sort_key) == 2:
-            # 根据当日价格排序
+        if abs(sort_key) == 2:
+            # 因为要根据当天票的价格排序 所以只查找当天有票的套餐
             current_date = datetime.date.today()
             schemes = Ticket.objects.order_by(sort_by).select_related('scheme').filter(start_date=current_date).only(
                 'scheme')
-        elif abs(sort_key) == 3:
-            # 根据目的地排序
-            schemes = Scheme.objects.order_by(sort_by)
-        elif abs(sort_key) == 4:
-            # 根据评分进行排序
-            schemes = Scheme.objects.prefetch_related('score')
         else:
+            # 否则其他排序方式都是查所有的套餐
             schemes = Scheme.objects.all()
         total_schemes = len(schemes)
         return [PageSchemeType(limit=limit, offset=offset, sort_by=sort_key, total=total_schemes)]

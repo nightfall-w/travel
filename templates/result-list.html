@@ -1,463 +1,516 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-	{% block loading %}
-	<div id="introLoader" class="introLoading"></div>
-	{% endblock %}
-		{% block detailed_node %}
+{% block loading %}
+<div id="introLoader" class="introLoading"></div>
+{% endblock %}
+{% block detailed_node %}
+<div class="clear"></div>
+<!-- start Main Wrapper -->
+<div class="main-wrapper">
 
-		<div class="clear"></div>
-		<!-- start Main Wrapper -->
-		<div class="main-wrapper">
+    <!-- start end Page title -->
+    <div class="page-title" style="background-image:url('/static/images/hero-header/breadcrumb.jpg');">
+        <div class="container">
 
-			<!-- start end Page title -->
-			<div class="page-title" style="background-image:url('/static/images/hero-header/breadcrumb.jpg');">
-				<div class="container">
+            <div class="row">
 
-					<div class="row">
+                <div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3">
 
-						<div class="col-sm-10 col-sm-offset-1 col-md-6 col-md-offset-3">
+                </div>
 
-						</div>
+            </div>
 
-					</div>
+        </div>
 
-				</div>
+    </div>
+    <!-- end Page title -->
 
-			</div>
-			<!-- end Page title -->
+    <div class="content-wrapper">
 
-			<div class="content-wrapper">
+        <div class="container">
 
-				<div class="container">
+            <div class="row">
 
-					<div class="row">
+                <div class="col-sm-4 col-md-3">
 
-						<div class="col-sm-4 col-md-3">
+                    <aside class="sidebar with-filter">
 
-							<aside class="sidebar with-filter">
+                        <div class="sidebar-search-wrapper bg-light-2">
 
-								<div class="sidebar-search-wrapper bg-light-2">
+                            <div class="sidebar-search-header">
+                                <h4>Search Again</h4>
+                            </div>
 
-									<div class="sidebar-search-header">
-										<h4>Search Again</h4>
-									</div>
+                            <div class="sidebar-search-content">
 
-									<div class="sidebar-search-content">
+                                <div class="form-group">
 
-										<div class="form-group">
+                                    <select name="destination" class="select2-multi form-control"
+                                            data-placeholder="Choose a Destination" multiple>
+                                        <option value="">Choose a Destination</option>
+                                        <option value="0">Any Destination</option>
+                                        <option value="Albania">Albania</option>
+                                        <option value="Austria" selected>Austria</option>
+                                        <option value="Belgium">Belgium</option>
+                                        <option value="Bosnia">Bosnia</option>
+                                        <option value="Croatia">Croatia</option>
+                                        <option value="Czech Republic">Czech Republic</option>
+                                        <option value="Denmark">Denmark</option>
+                                        <option value="Egypt">Egypt</option>
+                                        <option value="England">England</option>
+                                        <option value="Estonia">Estonia</option>
+                                        <option value="Finland">Finland</option>
+                                        <option value="France" selected>France</option>
+                                        <option value="Germany" selected>Germany</option>
+                                        <option value="Greece">Greece</option>
+                                        <option value="Herzegovina">Herzegovina</option>
+                                        <option value="Hungary">Hungary</option>
+                                        <option value="Ireland">Ireland</option>
+                                        <option value="Italy">Italy</option>
+                                        <option value="Latvia">Latvia</option>
+                                        <option value="Liechtenstein">Liechtenstein</option>
+                                        <option value="Lithuania">Lithuania</option>
+                                        <option value="Luxembourg">Luxembourg</option>
+                                        <option value="Monaco">Monaco</option>
+                                        <option value="Montenegro">Montenegro</option>
+                                        <option value="Netherlands">Netherlands</option>
+                                        <option value="Northern Ireland">Northern Ireland</option>
+                                        <option value="Poland">Poland</option>
+                                        <option value="Portugal">Portugal</option>
+                                        <option value="Russia">Russia</option>
+                                        <option value="Scotland">Scotland</option>
+                                        <option value="Serbia">Serbia</option>
+                                        <option value="Slovakia">Slovakia</option>
+                                        <option value="Slovenia">Slovenia</option>
+                                        <option value="Spain">Spain</option>
+                                        <option value="Sweden">Sweden</option>
+                                        <option value="Switzerland">Switzerland</option>
+                                        <option value="Turkey">Turkey</option>
+                                        <option value="Vatican City">Vatican City</option>
+                                        <option value="Wales">Wales</option>
+                                    </select>
 
-											<select name="destination" class="select2-multi form-control" data-placeholder="Choose a Destination" multiple>
-												<option value="">Choose a Destination</option>
-												<option value="0">Any Destination</option>
-												<option value="Albania">Albania</option>
-												<option value="Austria" selected>Austria</option>
-												<option value="Belgium">Belgium</option>
-												<option value="Bosnia">Bosnia</option>
-												<option value="Croatia">Croatia</option>
-												<option value="Czech Republic">Czech Republic</option>
-												<option value="Denmark">Denmark</option>
-												<option value="Egypt">Egypt</option>
-												<option value="England">England</option>
-												<option value="Estonia">Estonia</option>
-												<option value="Finland">Finland</option>
-												<option value="France" selected>France</option>
-												<option value="Germany" selected>Germany</option>
-												<option value="Greece">Greece</option>
-												<option value="Herzegovina">Herzegovina</option>
-												<option value="Hungary">Hungary</option>
-												<option value="Ireland">Ireland</option>
-												<option value="Italy">Italy</option>
-												<option value="Latvia">Latvia</option>
-												<option value="Liechtenstein">Liechtenstein</option>
-												<option value="Lithuania">Lithuania</option>
-												<option value="Luxembourg">Luxembourg</option>
-												<option value="Monaco">Monaco</option>
-												<option value="Montenegro">Montenegro</option>
-												<option value="Netherlands">Netherlands</option>
-												<option value="Northern Ireland">Northern Ireland</option>
-												<option value="Poland">Poland</option>
-												<option value="Portugal">Portugal</option>
-												<option value="Russia">Russia</option>
-												<option value="Scotland">Scotland</option>
-												<option value="Serbia">Serbia</option>
-												<option value="Slovakia">Slovakia</option>
-												<option value="Slovenia">Slovenia</option>
-												<option value="Spain">Spain</option>
-												<option value="Sweden">Sweden</option>
-												<option value="Switzerland">Switzerland</option>
-												<option value="Turkey">Turkey</option>
-												<option value="Vatican City">Vatican City</option>
-												<option value="Wales">Wales</option>
-											</select>
+                                </div>
 
-										</div>
+                                <div class="form-group">
 
-										<div class="form-group">
+                                    <select name="month" class="select2-multi form-control"
+                                            data-placeholder="Choose a Departure Month" multiple>
+                                        <option value="">Choose a Departure Month</option>
+                                        <option value="0">Any Departure Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4" selected>April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
 
-											<select name="month" class="select2-multi form-control" data-placeholder="Choose a Departure Month" multiple>
-												<option value="">Choose a Departure Month</option>
-												<option value="0">Any Departure Month</option>
-												<option value="1">January</option>
-												<option value="2">February</option>
-												<option value="3">March</option>
-												<option value="4" selected>April</option>
-												<option value="5">May</option>
-												<option value="6">June</option>
-												<option value="7">July</option>
-												<option value="8">August</option>
-												<option value="9">September</option>
-												<option value="10">October</option>
-												<option value="11">November</option>
-												<option value="12">December</option>
-											</select>
+                                </div>
 
-										</div>
+                                <div class="form-group">
 
-										<div class="form-group">
+                                    <select name="year" class="select2-multi form-control"
+                                            data-placeholder="Choose a Departure Year" multiple>
+                                        <option value="">Choose a Departure Year</option>
+                                        <option value="0">Any Departure Year</option>
+                                        <option value="2016" selected>2016</option>
+                                        <option value="2017">2017</option>
+                                    </select>
 
-											<select name="year" class="select2-multi form-control" data-placeholder="Choose a Departure Year" multiple>
-												<option value="">Choose a Departure Year</option>
-												<option value="0">Any Departure Year</option>
-												<option value="2016" selected>2016</option>
-												<option value="2017">2017</option>
-											</select>
+                                </div>
 
-										</div>
+                                <a href="#" class="btn btn-primary btn-block">Search</a>
 
-										<a href="#" class="btn btn-primary btn-block">Search</a>
+                            </div>
 
-									</div>
+                        </div>
 
-								</div>
+                        <div class="sidebar-header clearfix">
+                            <h4>Filter Results</h4>
+                            <a href="#" class="sidebar-reset-filter"><i class="fa fa-times"></i> reset filter</a>
+                        </div>
 
-								<div class="sidebar-header clearfix">
-									<h4>Filter Results</h4>
-									<a href="#" class="sidebar-reset-filter"><i class="fa fa-times"></i> reset filter</a>
-								</div>
+                        <div class="sidebar-inner">
 
-								<div class="sidebar-inner">
+                            <div class="sidebar-module">
+                                <h6 class="sidebar-title">Name Contain</h6>
 
-									<div class="sidebar-module">
-										<h6 class="sidebar-title">Name Contain</h6>
-										<div class="sidebar-module-inner">
-											<div class="sidebar-mini-search">
-												<div class="input-group">
-													<input type="text" class="form-control" placeholder="Search for...">
+                                <div class="sidebar-module-inner">
+                                    <div class="sidebar-mini-search">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search for...">
 													<span class="input-group-btn">
-														<button class="btn btn-primary" type="button"><i class="fa fa-search"></i></button>
+														<button class="btn btn-primary" type="button"><i
+                                                                class="fa fa-search"></i></button>
 													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-
-									<div class="sidebar-module">
-										<h6 class="sidebar-title">Price Range</h6>
-										<div class="sidebar-module-inner">
-											<input id="price_range" />
-										</div>
-									</div>
-
-									<div class="clear"></div>
-
-									<div class="sidebar-module">
-										<h6 class="sidebar-title">Star Range</h6>
-										<div class="sidebar-module-inner">
-											<input id="star_range" />
-										</div>
-									</div>
-
-									<div class="clear"></div>
-
-									<div class="sidebar-module">
-
-										<h6 class="sidebar-title">Starting Point</h6>
-										<div class="sidebar-module-inner">
-											<div class="checkbox-block">
-												<input id="starting_point-1" name="starting_point" type="checkbox" class="checkbox"/>
-												<label class="" for="starting_point-1">Berlin <span class="checkbox-count">(854)</span></label>
-											</div>
-											<div class="checkbox-block">
-												<input id="starting_point-2" name="starting_point" type="checkbox" class="checkbox"/>
-												<label class="" for="starting_point-2">Paris <span class="checkbox-count">(25)</span></label>
-											</div>
-											<div class="checkbox-block">
-												<input id="starting_point-3" name="starting_point" type="checkbox" class="checkbox"/>
-												<label class="" for="starting_point-3">Munich <span class="checkbox-count">(254)</span></label>
-											</div>
-											<div class="starting_point-block">
-												<input id="property_type-4" name="starting_point" type="checkbox" class="checkbox"/>
-												<label class="" for="property_type-4">Lyon<span class="checkbox-count">(22)</span></label>
-											</div>
-											<div class="starting_point-block">
-												<input id="property_type-5" name="starting_point" type="checkbox" class="checkbox"/>
-												<label class="" for="property_type-5">Vienna  <span class="checkbox-count">(9)</span></label>
-											</div>
-
-											<div class="more-less-wrapper">
-
-												<div id="property_type_more_less" class="collapse">
-													<div class="more-less-inner">
-
-														<div class="checkbox-block">
-															<input id="starting_point-6" name="starting_point" type="checkbox" class="checkbox"/>
-															<label class="" for="starting_point-6">Toulouse <span class="checkbox-count">(3)</span></label>
-														</div>
-														<div class="checkbox-block">
-															<input id="starting_point-7" name="starting_point" type="checkbox" class="checkbox"/>
-															<label class="" for="starting_point-7">Graz  <span class="checkbox-count">(25)</span></label>
-														</div>
-														<div class="checkbox-block">
-															<input id="starting_point-8" name="starting_point" type="checkbox" class="checkbox"/>
-															<label class="" for="starting_point-8">Linz  <span class="checkbox-count">(2)</span></label>
-														</div>
-
-													</div>
-												</div>
-												<button class="btn btn-more-less collapsed" data-toggle="collapse" data-target="#property_type_more_less">Show more</button>
-
-											</div>
-
-										</div>
-
-									</div>
-
-									<div class="clear"></div>
-
-									<div class="sidebar-module">
-
-										<h6 class="sidebar-title">Ending Point</h6>
-										<div class="sidebar-module-inner">
-											<div class="checkbox-block">
-												<input id="ending_point-1" name="ending_point" type="checkbox" class="checkbox"/>
-												<label class="" for="ending_point-1">Berlin <span class="checkbox-count">(854)</span></label>
-											</div>
-											<div class="checkbox-block">
-												<input id="ending_point-2" name="ending_point" type="checkbox" class="checkbox"/>
-												<label class="" for="ending_point-2">Paris <span class="checkbox-count">(25)</span></label>
-											</div>
-											<div class="checkbox-block">
-												<input id="ending_point-3" name="ending_point" type="checkbox" class="checkbox"/>
-												<label class="" for="ending_point-3">Munich <span class="checkbox-count">(254)</span></label>
-											</div>
-											<div class="starting_point-block">
-												<input id="ending_point-4" name="ending_point" type="checkbox" class="checkbox"/>
-												<label class="" for="ending_point-4">Lyon<span class="checkbox-count">(22)</span></label>
-											</div>
-											<div class="starting_point-block">
-												<input id="ending_point-5" name="ending_point" type="checkbox" class="checkbox"/>
-												<label class="" for="ending_point-5">Vienna  <span class="checkbox-count">(9)</span></label>
-											</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sidebar-module">
+                                <h6 class="sidebar-title">Price Range</h6>
+
+                                <div class="sidebar-module-inner">
+                                    <input id="price_range"/>
+                                </div>
+                            </div>
+
+                            <div class="clear"></div>
+
+                            <div class="sidebar-module">
+                                <h6 class="sidebar-title">Star Range</h6>
+
+                                <div class="sidebar-module-inner">
+                                    <input id="star_range"/>
+                                </div>
+                            </div>
+
+                            <div class="clear"></div>
+
+                            <div class="sidebar-module">
+
+                                <h6 class="sidebar-title">Starting Point</h6>
+
+                                <div class="sidebar-module-inner">
+                                    <div class="checkbox-block">
+                                        <input id="starting_point-1" name="starting_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="starting_point-1">Berlin <span
+                                                class="checkbox-count">(854)</span></label>
+                                    </div>
+                                    <div class="checkbox-block">
+                                        <input id="starting_point-2" name="starting_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="starting_point-2">Paris <span
+                                                class="checkbox-count">(25)</span></label>
+                                    </div>
+                                    <div class="checkbox-block">
+                                        <input id="starting_point-3" name="starting_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="starting_point-3">Munich <span
+                                                class="checkbox-count">(254)</span></label>
+                                    </div>
+                                    <div class="starting_point-block">
+                                        <input id="property_type-4" name="starting_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="property_type-4">Lyon<span
+                                                class="checkbox-count">(22)</span></label>
+                                    </div>
+                                    <div class="starting_point-block">
+                                        <input id="property_type-5" name="starting_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="property_type-5">Vienna <span
+                                                class="checkbox-count">(9)</span></label>
+                                    </div>
+
+                                    <div class="more-less-wrapper">
+
+                                        <div id="property_type_more_less" class="collapse">
+                                            <div class="more-less-inner">
+
+                                                <div class="checkbox-block">
+                                                    <input id="starting_point-6" name="starting_point" type="checkbox"
+                                                           class="checkbox"/>
+                                                    <label class="" for="starting_point-6">Toulouse <span
+                                                            class="checkbox-count">(3)</span></label>
+                                                </div>
+                                                <div class="checkbox-block">
+                                                    <input id="starting_point-7" name="starting_point" type="checkbox"
+                                                           class="checkbox"/>
+                                                    <label class="" for="starting_point-7">Graz <span
+                                                            class="checkbox-count">(25)</span></label>
+                                                </div>
+                                                <div class="checkbox-block">
+                                                    <input id="starting_point-8" name="starting_point" type="checkbox"
+                                                           class="checkbox"/>
+                                                    <label class="" for="starting_point-8">Linz <span
+                                                            class="checkbox-count">(2)</span></label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-more-less collapsed" data-toggle="collapse"
+                                                data-target="#property_type_more_less">Show more
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="clear"></div>
+
+                            <div class="sidebar-module">
+
+                                <h6 class="sidebar-title">Ending Point</h6>
+
+                                <div class="sidebar-module-inner">
+                                    <div class="checkbox-block">
+                                        <input id="ending_point-1" name="ending_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="ending_point-1">Berlin <span
+                                                class="checkbox-count">(854)</span></label>
+                                    </div>
+                                    <div class="checkbox-block">
+                                        <input id="ending_point-2" name="ending_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="ending_point-2">Paris <span
+                                                class="checkbox-count">(25)</span></label>
+                                    </div>
+                                    <div class="checkbox-block">
+                                        <input id="ending_point-3" name="ending_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="ending_point-3">Munich <span
+                                                class="checkbox-count">(254)</span></label>
+                                    </div>
+                                    <div class="starting_point-block">
+                                        <input id="ending_point-4" name="ending_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="ending_point-4">Lyon<span
+                                                class="checkbox-count">(22)</span></label>
+                                    </div>
+                                    <div class="starting_point-block">
+                                        <input id="ending_point-5" name="ending_point" type="checkbox"
+                                               class="checkbox"/>
+                                        <label class="" for="ending_point-5">Vienna <span
+                                                class="checkbox-count">(9)</span></label>
+                                    </div>
 
-											<div class="more-less-wrapper">
+                                    <div class="more-less-wrapper">
 
-												<div id="hotel_facilities_more_less" class="collapse">
-													<div class="more-less-inner">
+                                        <div id="hotel_facilities_more_less" class="collapse">
+                                            <div class="more-less-inner">
 
-														<div class="checkbox-block">
-															<input id="ending_point-6" name="ending_point" type="checkbox" class="checkbox"/>
-															<label class="" for="ending_point-6">Toulouse <span class="checkbox-count">(3)</span></label>
-														</div>
-														<div class="checkbox-block">
-															<input id="ending_point-7" name="ending_point" type="checkbox" class="checkbox"/>
-															<label class="" for="ending_point-7">Graz  <span class="checkbox-count">(25)</span></label>
-														</div>
-														<div class="checkbox-block">
-															<input id="ending_point-8" name="ending_point" type="checkbox" class="checkbox"/>
-															<label class="" for="ending_point-8">Linz  <span class="checkbox-count">(2)</span></label>
-														</div>
+                                                <div class="checkbox-block">
+                                                    <input id="ending_point-6" name="ending_point" type="checkbox"
+                                                           class="checkbox"/>
+                                                    <label class="" for="ending_point-6">Toulouse <span
+                                                            class="checkbox-count">(3)</span></label>
+                                                </div>
+                                                <div class="checkbox-block">
+                                                    <input id="ending_point-7" name="ending_point" type="checkbox"
+                                                           class="checkbox"/>
+                                                    <label class="" for="ending_point-7">Graz <span
+                                                            class="checkbox-count">(25)</span></label>
+                                                </div>
+                                                <div class="checkbox-block">
+                                                    <input id="ending_point-8" name="ending_point" type="checkbox"
+                                                           class="checkbox"/>
+                                                    <label class="" for="ending_point-8">Linz <span
+                                                            class="checkbox-count">(2)</span></label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-more-less collapsed" data-toggle="collapse"
+                                                data-target="#hotel_facilities_more_less">Show more
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <div class="clear"></div>
+
+                            <div class="sidebar-module">
+
+                                <h6 class="sidebar-title">Filter Select</h6>
+
+                                <div class="sidebar-module-inner">
+                                    <select class="select2-single form-control" data-placeholder="Select Placeholder">
+                                        <option value="">Select Placeholder</option>
+                                        <option value="0">Select One</option>
+                                        <option value="1">Select Two</option>
+                                        <option value="2">Select Three</option>
+                                        <option value="3">Select Four</option>
+                                        <option value="4">Select Five</option>
+                                    </select>
+                                </div>
+
+                            </div>
+
+                            <div class="clear"></div>
+
+                            <div class="sidebar-module">
+
+                                <h6 class="sidebar-title">Filter Text Inside Sidebar Inner</h6>
+
+                                <div class="sidebar-module-inner">
+                                    <p>Park fat she nor does play deal our. Procured sex material his offering humanity
+                                        laughing moderate can.</p>
+                                </div>
+
+                            </div>
+
+                            <div class="clear"></div>
+
+                        </div>
+
+                        <div class="sidebar-box">
+                            <h4 class="sidebar-title">Sidebar Text</h4>
+
+                            <p>Park fat she nor does play deal our. Procured sex material his offering humanity laughing
+                                moderate can. Unreserved had she nay dissimilar admiration interested.</p>
+                        </div>
+
+                    </aside>
+
+
+                </div>
+
+                <div class="col-sm-8 col-md-9">
+
+                    <div class="sorting-wrappper">
+
+                        <div class="sorting-header">
+                            <h3 class="sorting-title uppercase">3 Countries: Germany, France, Austria</h3>
+
+                            <p class="sorting-lead">587 results found</p>
+                        </div>
+
+                        <div class="sorting-content">
+
+                            <div class="row">
+
+                                <div class="col-sm-12 col-md-8">
+                                    <div class="sort-by-wrapper">
+                                        <label class="sorting-label">Sort by: </label>
+
+                                        <div class="sorting-middle-holder">
+                                            <ul class="sort-by">
+                                                <li class="active up"><a href="#">Name <i
+                                                        class="fa fa-long-arrow-down"></i></a></li>
+                                                <li><a href="#">Price</a></li>
+                                                <li><a href="#">Location</a></li>
+                                                <li><a href="#">Start Rating</a></li>
+                                                <li><a href="#">User Rating</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="sort-by-wrapper mt pull-right pull-left-sm mt-10-sm">
+                                        <label class="sorting-label">View as: </label>
 
-													</div>
-												</div>
-												<button class="btn btn-more-less collapsed" data-toggle="collapse" data-target="#hotel_facilities_more_less">Show more</button>
+                                        <div class="sorting-middle-holder">
+                                            <a href="{% url 'info:result-list' %}" class="btn btn-sorting active"><i
+                                                    class="fa fa-th-list"></i></a>
+                                            <a href="{% url 'info:result-grid' %}" class="btn btn-sorting"><i
+                                                    class="fa fa-th-large"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
 
-											</div>
+                            </div>
 
-										</div>
+                        </div>
 
+                    </div>
 
-									</div>
+                    <div class="package-list-item-wrapper on-page-result-page">
 
-									<div class="clear"></div>
+                        <div class="package-list-item clearfix">
+                            <div class="image">
+                                <img src="{% static 'images/tour-package/01.jpg' %}" alt="Tour Package"/>
 
-									<div class="sidebar-module">
+                                <div class="absolute-in-image">
+                                    <div class="duration"><span>4 days 3 nights</span></div>
+                                </div>
+                            </div>
 
-										<h6 class="sidebar-title">Filter Select</h6>
-										<div class="sidebar-module-inner">
-											<select class="select2-single form-control" data-placeholder="Select Placeholder">
-												<option value="">Select Placeholder</option>
-												<option value="0">Select One</option>
-												<option value="1">Select Two</option>
-												<option value="2">Select Three</option>
-												<option value="3">Select Four</option>
-												<option value="4">Select Five</option>
-											</select>
-										</div>
+                            <div class="content">
+                                <h5>Paris in Love
+                                    <button class="btn"><i class="fa fa-heart-o"></i></button>
+                                </h5>
+                                <div class="row gap-10">
+                                    <div class="col-sm-12 col-md-9">
 
-									</div>
+                                        <p class="line18">Letter wooded direct two men indeed income sister. Impression
+                                            up admiration partiality is...</p><br>
+                                        <ul class="list-info">
+                                            <li><span class="icon"><i class="fa fa-map-marker"></i></span> <span
+                                                    class="font600">Countries: (1)</span> France
+                                            </li>
+                                            <li><span class="icon"><i class="fa fa-flag"></i></span> <span
+                                                    class="font600">Starting Point:</span> Paris
+                                            </li>
+                                            <li><span class="icon"><i class="fa fa-flag"></i></span> <span
+                                                    class="font600">Ending Point:</span> Paris
+                                            </li>
+                                        </ul>
 
-									<div class="clear"></div>
+                                    </div>
+                                    <div class="col-sm-12 col-md-3 text-right text-left-sm">
 
-									<div class="sidebar-module">
+                                        <div class="rating-wrapper">
+                                            <div class="raty-wrapper">
+                                                <div class="star-rating-12px" data-rating-score="4.0"></div>
+                                                <span> / 7 review</span>
+                                            </div>
+                                        </div>
 
-										<h6 class="sidebar-title">Filter Text Inside Sidebar Inner</h6>
-										<div class="sidebar-module-inner">
-											<p>Park fat she nor does play deal our. Procured sex material his offering humanity laughing moderate can.</p>
-										</div>
+                                        <div class="price">$1422</div>
 
-									</div>
+                                        <a href="detail-page.html" class="btn btn-primary btn-sm">view</a>
 
-									<div class="clear"></div>
+                                    </div>
+                                </div>
+                            </div>
 
-								</div>
+                        </div>
 
-								<div class="sidebar-box">
-									<h4 class="sidebar-title">Sidebar Text</h4>
-									<p>Park fat she nor does play deal our. Procured sex material his offering humanity laughing moderate can. Unreserved had she nay dissimilar admiration interested.</p>
-								</div>
+                    </div>
 
-							</aside>
+                    <div class="pager-wrappper clearfix">
 
+                        <div class="pager-innner">
 
-						</div>
+                            <div class="flex-row flex-align-middle">
 
-						<div class="col-sm-8 col-md-9">
+                                <div class="pages">
+                                    <div id="Pagination"></div>
+                                    <div class="searchPage">
+                                        <span class="page-sum">共<strong class="allPage">15</strong>页</span>
+                                        <span class="page-go">跳转<input type="text">页</span>
+                                        <a href="javascript:;" class="page-btn">GO</a>
+                                    </div>
+                                </div>
 
-							<div class="sorting-wrappper">
+                            </div>
 
-								<div class="sorting-header">
-									<h3 class="sorting-title uppercase">3 Countries: Germany, France, Austria</h3>
-									<p class="sorting-lead">587 results found</p>
-								</div>
+                        </div>
 
-								<div class="sorting-content">
+                    </div>
 
-									<div class="row">
+                </div>
 
-										<div class="col-sm-12 col-md-8">
-											<div class="sort-by-wrapper">
-												<label class="sorting-label">Sort by: </label>
-												<div class="sorting-middle-holder">
-													<ul class="sort-by">
-														<li class="active up"><a href="#">Name <i class="fa fa-long-arrow-down"></i></a></li>
-														<li><a href="#">Price</a></li>
-														<li><a href="#">Location</a></li>
-														<li><a href="#">Start Rating</a></li>
-														<li><a href="#">User Rating</a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
+            </div>
 
-										<div class="col-sm-12 col-md-4">
-											<div class="sort-by-wrapper mt pull-right pull-left-sm mt-10-sm">
-												<label class="sorting-label">View as: </label>
-												<div class="sorting-middle-holder">
-													<a href="{% url 'info:result-list' %}" class="btn btn-sorting active"><i class="fa fa-th-list"></i></a>
-													<a href="{% url 'info:result-grid' %}" class="btn btn-sorting"><i class="fa fa-th-large"></i></a>
-												</div>
-											</div>
-										</div>
+        </div>
 
-									</div>
+    </div>
 
-								</div>
 
-							</div>
+</div>
+<!-- end Main Wrapper -->
+{% endblock %}
+{% block other_js %}
 
-							<div class="package-list-item-wrapper on-page-result-page">
+<script type="text/javascript" src="{% static 'js/jquery.pagination.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/graphql_client.js' %}"></script>
 
-								<div class="package-list-item clearfix">
-									<div class="image">
-										<img src="{% static 'images/tour-package/01.jpg' %}" alt="Tour Package" />
-										<div class="absolute-in-image">
-											<div class="duration"><span>4 days 3 nights</span></div>
-										</div>
-									</div>
-
-									<div class="content">
-										<h5>Paris in Love <button class="btn"><i class="fa fa-heart-o"></i></button></h5>
-										<div class="row gap-10">
-											<div class="col-sm-12 col-md-9">
-
-												<p class="line18">Letter wooded direct two men indeed income sister. Impression up admiration partiality is...</p>
-
-												<ul class="list-info">
-													<li><span class="icon"><i class="fa fa-map-marker"></i></span> <span class="font600">Countries: (1)</span> France</li>
-													<li><span class="icon"><i class="fa fa-flag"></i></span> <span class="font600">Starting Point:</span> Paris</li>
-													<li><span class="icon"><i class="fa fa-flag"></i></span> <span class="font600">Ending Point:</span> Paris</li>
-												</ul>
-
-											</div>
-											<div class="col-sm-12 col-md-3 text-right text-left-sm">
-
-												<div class="rating-wrapper">
-													<div class="raty-wrapper">
-														<div class="star-rating-12px" data-rating-score="4.0"></div> <span> / 7 review</span>
-													</div>
-												</div>
-
-												<div class="price">$1422</div>
-
-												<a href="detail-page.html" class="btn btn-primary btn-sm">view</a>
-
-											</div>
-										</div>
-									</div>
-
-								</div>
-
-							</div>
-
-							<div class="pager-wrappper clearfix">
-
-								<div class="pager-innner">
-
-									<div class="flex-row flex-align-middle">
-
-										<div class="flex-column flex-sm-12">
-											Showing reslut 1 to 15 from 248
-										</div>
-
-										<div class="flex-column flex-sm-12">
-											<nav class="pager-right">
-												<ul class="pagination">
-													<li>
-														<a href="#" aria-label="Previous">
-															<span aria-hidden="true">&laquo;</span>
-														</a>
-													</li>
-													<li class="active"><a href="#">1</a></li>
-													<li><a href="#">2</a></li>
-													<li><a href="#">3</a></li>
-													<li><span>...</span></li>
-													<li><a href="#">11</a></li>
-													<li><a href="#">12</a></li>
-													<li><a href="#">13</a></li>
-													<li>
-														<a href="#" aria-label="Next">
-															<span aria-hidden="true">&raquo;</span>
-														</a>
-													</li>
-												</ul>
-											</nav>
-										</div>
-
-									</div>
-
-								</div>
-
-							</div>
-
-						</div>
-
-					</div>
-
-				</div>
-
-			</div>
-
-
-		</div>
-		<!-- end Main Wrapper -->
-		{% endblock %}
+{% endblock %}
