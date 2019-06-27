@@ -1,5 +1,4 @@
 $(function () {
-    alert($("[name='csrfmiddlewaretoken']").val());
     getData()
 });
 
@@ -19,9 +18,15 @@ function getData(limit = 18, offset = 0, sort_by = 0) {
         body: JSON.stringify({query: query, variables: variables}),
     }).then(function (response) {
         //打印返回的json数据
-        response.json().then(function (data) {
-            console.log(data);
-        })
+        if (response.status === 200){
+        response.json().then(function (json) {
+            console.log(json.data);
+            return json.data
+        })}
+        else{
+            response.json().then(function (json) {
+            console.log(json.errors);
+        })}
     }).catch(function (e) {
         console.log('error: ' + e.toString());
     })
