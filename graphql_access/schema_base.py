@@ -1,10 +1,19 @@
 # -*- coding:utf-8 -*-
+import graphene
 from graphene_django.types import DjangoObjectType
 
 from info.models import Scheme, Ticket, Scenic, Score, Review, Journey
 
 
-class SchemeType(DjangoObjectType):
+class UserFields(graphene.AbstractType):
+    price = graphene.Int()
+    grade = graphene.Float()
+    be_like = graphene.Boolean()
+    review_num = graphene.Int()
+    photo_url = graphene.String()
+
+
+class SchemeType(DjangoObjectType, UserFields):
     class Meta:
         model = Scheme
 

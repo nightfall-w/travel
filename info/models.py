@@ -49,7 +49,7 @@ class Ticket(models.Model):
     """
     票务类
     """
-    scheme = models.ForeignKey(Scheme, verbose_name="套餐对象", on_delete=models.CASCADE)
+    scheme = models.ForeignKey(Scheme, verbose_name="套餐对象", related_name='ticket_scheme', on_delete=models.CASCADE)
     start_date = models.DateField(verbose_name="出发时间")
     end_date = models.DateField(verbose_name="返程时间")
     surplus = models.IntegerField(verbose_name="剩余票数")
@@ -101,8 +101,8 @@ class Review(models.Model):
     content = models.TextField(verbose_name="评论内容")
     create = models.DateTimeField(auto_now_add=True, verbose_name="评论发表时间")
     user = models.ForeignKey(User, related_name="review_user", verbose_name="评论者", on_delete=models.CASCADE)
-    assist = models.BigIntegerField(verbose_name="赞同数")
-    oppose = models.BigIntegerField(verbose_name="反对数")
+    assist = models.BigIntegerField(verbose_name="赞同数", blank=True, default=0)
+    oppose = models.BigIntegerField(verbose_name="反对数", blank=True, default=0)
 
     class Meta:
         db_table = 'review'
@@ -121,7 +121,7 @@ class Journey(models.Model):
     day = models.IntegerField(verbose_name="第几天")
     visit_address = models.CharField(max_length=300, verbose_name="游访地点")
     content = models.TextField("游玩内容")
-    scheme = models.ForeignKey(Scheme, verbose_name="所属套餐", on_delete=models.CASCADE)
+    scheme = models.ForeignKey(Scheme, related_name="journey_scheme", verbose_name="所属套餐", on_delete=models.CASCADE)
     scenic = models.ManyToManyField(Scenic, verbose_name='相册', blank=True)
 
     class Meta:

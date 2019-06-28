@@ -1,12 +1,13 @@
 # -*- coding:utf-8 -*-
 import datetime
-import graphene
+
 from rest_framework.pagination import LimitOffsetPagination, _positive_int
 from rest_framework.views import APIView
 
+from django.db.models import Avg
+
 from graphql_access.schema_base import *
 from graphql_access.utils import SORTKEY
-from django.db.models import Max, Avg, F, Q
 
 
 class MyLimitOffsetPagination(LimitOffsetPagination):
@@ -58,12 +59,12 @@ class PageSchemeType(graphene.ObjectType):
         # 看sort条件是否在规定符合规定，0表示默认，不排序）
         self.sort_by = self.sort_by if self.sort_by in SORTKEY.keys() else 0
         sort_key = SORTKEY[self.sort_by]
+        current_date = datetime.date.today()
         if abs(self.sort_by) == 1:
             # 根据scheme name进行排序
             schemes = Scheme.objects.order_by(sort_key)
         elif abs(self.sort_by) == 2:
             # 根据当日价格排序
-            current_date = datetime.date.today()
             schemes = [ticket.scheme for ticket in
                        Ticket.objects.order_by(sort_key).select_related('scheme').filter(start_date=current_date).only(
                            'scheme')]
@@ -89,13 +90,31 @@ class PageSchemeType(graphene.ObjectType):
                 schemes = sorted(schemes_dict, key=schemes_dict.__getitem__)
         else:
             schemes = Scheme.objects.all()
+
+        # 实例化我们的分页类
         pg = MyLimitOffsetPagination()
+        # 将graphql封装为restful 的request    封装前request = info.context
         request = APIView().initialize_request(info.context)
         if self.limit:
             request.limit = self.limit
         if self.offset:
             request.offset = self.offset
         page_schemes = pg.paginate_queryset(queryset=schemes, request=request)
+
+
+        # 获取当前登录用户所喜欢的所有套餐
+        user = request.user
+        like_schemes = user.scheme_set.all() if user and user.username else []
+        # 为分页后的套餐实现抽象的属性
+        for scheme in page_schemes:
+            tickets = scheme.ticket_scheme.filter(start_date=current_date)
+            score_avg = scheme.score.aggregate(Avg('score_number'))
+            review_num = scheme.review_scheme.count()
+
+            scheme.grade = score_avg['score_number__avg'] if score_avg['score_number__avg'] else 1
+            scheme.price = tickets[0].unit_price if tickets else 0
+            scheme.be_like = 1 if scheme in like_schemes else 0
+            scheme.review_num = review_num
         return page_schemes
 
 
