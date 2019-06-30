@@ -35,7 +35,7 @@ class Scenic(models.Model):
     相册类
     """
     name = models.CharField(max_length=40, verbose_name="照片名")
-    image = models.ImageField(upload_to='images/scenic', verbose_name='景点照片')
+    image = models.ImageField(upload_to='media/images/scenic', verbose_name='景点照片')
 
     class Meta:
         db_table = 'scenic'
@@ -81,7 +81,7 @@ class Score(models.Model):
         (3, '舒适'),
         (4, '条件'),
     ]
-    score_number = models.IntegerField(choices=SCORE_CHOICES, verbose_name="分数", default=1)
+    score_number = models.IntegerField(choices=SCORE_CHOICES, verbose_name="分数", default=4)
     user = models.ManyToManyField(User, verbose_name="评分者")
     category = models.IntegerField(choices=CATEGORY_CHOICES, default=1, verbose_name="评分类别")
 

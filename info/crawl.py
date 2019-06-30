@@ -125,7 +125,7 @@ class Crawl(object):
                                 img_data = requests.get(url=img_url, headers=self.headers).content
                                 with open('../media/images/scenic/{}'.format(img_url[-23::]), 'wb') as f:
                                     f.write(img_data)
-                                scenic = Scenic(name=tourSpot, image='images/scenic/{}'.format(img_url[-23::]))
+                                scenic = Scenic(name=tourSpot, image='media/images/scenic/{}'.format(img_url[-23::]))
                                 scenics.append(scenic)
                                 scenic_objs = Scenic.objects.bulk_create(scenics)
                         Journey.objects.create(day=number, hotel=hotel, time=time, content=content,

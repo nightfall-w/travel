@@ -268,20 +268,6 @@ $(function () {
         }
     });
 
-    // Smaller size star
-    $('.star-rating-12px').raty({
-        path: "/static/images/raty",
-        starHalf: 'star-half-sm.png',
-        starOff: 'star-off-sm.png',
-        starOn: 'star-on-sm.png',
-        readOnly: true,
-        round: {down: .2, full: .6, up: .8},
-        half: true,
-        space: false,
-        score: function () {
-            return $(this).attr('data-rating-score');
-        }
-    });
 
     // White color default size star
     $('.star-rating-white').raty({
@@ -340,6 +326,7 @@ $(function () {
             "<i class='fa fa-star'></i> <i class='fa fa-star'></i> <i class='fa fa-star'></i> <i class='fa fa-star'></i> <i class='fa fa-star'></i>"
         ]
     });
+
 
     // 输入手机号input边框颜色变化
     $('#add_phone').focus(function () {

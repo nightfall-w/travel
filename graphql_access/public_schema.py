@@ -78,9 +78,9 @@ class PageSchemeType(graphene.ObjectType):
             for scheme in schemes:
                 # 遍历scheme对象，拿到对应的平均评分，结果形式为  例:{'score_number__avg':4.6}
                 score_avg = scheme.score.aggregate(Avg('score_number'))
-                # 如果scheme(套餐还未被评分，为None，我们设为1)
+                # 如果scheme(套餐还未被评分，为None，我们设为4)
                 if score_avg['score_number__avg'] is None:
-                    score_avg['score_number__avg'] = 1
+                    score_avg['score_number__avg'] = 4
                 schemes_dict[scheme] = score_avg['score_number__avg']
             if self.sort_by == 4:
                 # 将schemes由评由高到低排序，默认
@@ -101,17 +101,32 @@ class PageSchemeType(graphene.ObjectType):
             request.offset = self.offset
         page_schemes = pg.paginate_queryset(queryset=schemes, request=request)
 
-
         # 获取当前登录用户所喜欢的所有套餐
         user = request.user
         like_schemes = user.scheme_set.all() if user and user.username else []
         # 为分页后的套餐实现抽象的属性
         for scheme in page_schemes:
+            journeys = scheme.journey_scheme.prefetch_related('scenic').only('scenic')
+            if journeys:
+                for journey in journeys:
+                    if not journey.scenic:
+                        break
+                    for scenic in journey.scenic.all():
+                        image = scenic.image
+                        if image:
+                            scheme.photo_url = image
+                            break
+                        else:
+                            continue
+                    else:
+                        continue
+                    break
+            else:
+                scheme.photo_url = ''
             tickets = scheme.ticket_scheme.filter(start_date=current_date)
             score_avg = scheme.score.aggregate(Avg('score_number'))
             review_num = scheme.review_scheme.count()
-
-            scheme.grade = score_avg['score_number__avg'] if score_avg['score_number__avg'] else 1
+            scheme.grade = '%.1' % score_avg['score_number__avg'] if score_avg['score_number__avg'] else 4.0
             scheme.price = tickets[0].unit_price if tickets else 0
             scheme.be_like = 1 if scheme in like_schemes else 0
             scheme.review_num = review_num
