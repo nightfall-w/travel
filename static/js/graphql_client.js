@@ -1,14 +1,33 @@
 $(function () {
     // 页面加载,以默认的排序方式请求数据
     getData();
-
-    // 根据排序方式发送graphql请求，获取数据
-    $('.sort').each(function () {
-        $(this).click(function () {
-
-        })
-    })
 });
+
+
+function getDataBySort(obj){
+    // 根据排序方式发送graphql请求，获取数据
+    if(!$(obj).parent().attr('class')){
+        $(obj).parent().siblings().removeClass('active up').find('i').remove();
+        $(obj).parent().attr('class','active up');
+        var i = '<i class="fa fa-long-arrow-down"></i>';
+        $(obj).append(i);
+        var sort = $(obj).attr('sort');
+        $(obj).attr('sort',sort-(2*sort))
+        getData(limit = 18, offset = 0, sort_by = sort-(2*sort));
+    }else{
+        var sort = $(obj).attr('sort');
+        var sortUpDown = $(obj).children('i').attr('class');
+        if (sortUpDown === 'fa fa-long-arrow-down'){
+            $(obj).children('i').attr('class','fa fa-long-arrow-up');
+            $(obj).attr('sort',Math.abs(sort));
+        }else{
+            $(obj).children('i').attr('class','fa fa-long-arrow-down');
+            $(obj).attr('sort',sort-(2*sort))
+        }
+        var sort = $(obj).attr('sort');
+        getData(limit = 18, offset = 0, sort_by = sort)
+    }
+}
 
 function loadGrade() {
     // Smaller size star
@@ -93,9 +112,9 @@ function applyTemplate(scheme) {
         '</div>';
     return scheme_content
 }
-// 遍历加载所有scheme数据
-function loadDate(pageSchemes) {
 
+function loadDate(pageSchemes) {
+    // 遍历加载所有scheme数据
     let scheme_list_template = '';
     pageSchemes.forEach(function (scheme) {
         aSchemeData = applyTemplate(scheme);
@@ -106,8 +125,8 @@ function loadDate(pageSchemes) {
     loadGrade();
 }
 
-// 渲染分页条
 function loadPagination(page_info) {
+    // 渲染分页条
     const limit = page_info.limit;
     const offset = page_info.offset;
     const totalData = page_info.total;
@@ -163,7 +182,6 @@ function getData(limit = 18, offset = 0, sort_by = 0) {
         //打印返回的json数据
         if (response.status === 200) {
             response.json().then(function (json) {
-                console.log(json.data);
                 const page_info = json.data.pageSchemes;
                 // 将返回数据通过loadData()到页面渲染
                 loadPagination(page_info[0]);
