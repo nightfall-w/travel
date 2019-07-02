@@ -1,56 +1,75 @@
 $(function () {
     // 页面加载,以默认的排序方式请求数据
-    if (window.location.pathname === '/info/result-list/'){
+    if (window.location.pathname === '/info/result-list/') {
         limit = 12;
         getData();
-    }else{
+    } else {
         limit = 18;
-        getData(limit = limit, offset = 0, sort_by = 0)
+        getData(limit, 0, 0)
     }
 });
 
-function getSpecifiedPage(page_id){
-    if (page_id === 0){
-        return false
-    };
-    if ($('.current').text === page_id+1){
+function skipPage() {
+    let page_id = $("input[name='pageId']").val();
+    let maxPage = parseInt($('.ep').text());
+    if (parseInt(page_id, 10) !== 'NaN') {
+        page_id = parseInt(page_id, 10)
+    }
+    if (page_id <= 0 || !Number.isInteger(page_id) || page_id > maxPage) {
         return false
     }
-    let offset = page_id * limit + 1;
-    if ($('.fa.fa-long-arrow-up')){
-        var sort_by = $('.fa.fa-long-arrow-up').parent().attr('sort')
-    }else{
-        var sort_by = $('.fa.fa-long-arrow-down').parent().attr('sort')
+    let offset = (page_id - 1) * limit;
+    if ($('.fa.fa-long-arrow-up').length === 1) {
+        var sort_by = parseInt($('.fa.fa-long-arrow-up').parent().attr('sort'))
+    } else {
+        var sort_by = parseInt($('.fa.fa-long-arrow-down').parent().attr('sort'))
     }
-    getData(limit = limit, offset = offset, sort_by = sort_by)
+    $('.content-wrapper').hide(1);
+    $('.loadbox').show(1);
+    getData(limit, offset, sort_by)
 }
 
-function getDataBySort(obj){
+function getSpecifiedPage(page_id) {
+    if ($('.current').text() === page_id + 1) {
+        return false
+    }
+    let offset = page_id * limit;
+    if ($('.fa.fa-long-arrow-up').length === 1) {
+        var sort_by = parseInt($('.fa.fa-long-arrow-up').parent().attr('sort'))
+    } else {
+        var sort_by = parseInt($('.fa.fa-long-arrow-down').parent().attr('sort'))
+    }
+    $('.content-wrapper').hide(1);
+    $('.loadbox').show(1);
+    getData(limit, offset, sort_by)
+}
+
+function getDataBySort(obj) {
     // 根据排序方式发送graphql请求，获取数据
-    if(!$(obj).parent().attr('class')){
+    if (!$(obj).parent().attr('class')) {
         $(obj).parent().siblings().removeClass('active up').find('i').remove();
-        $(obj).parent().attr('class','active up');
-        var i = '<i class="fa fa-long-arrow-down"></i>';
+        $(obj).parent().attr('class', 'active up');
+        let i = '<i class="fa fa-long-arrow-down"></i>';
         $(obj).append(i);
-        var sort = $(obj).attr('sort');
-        $(obj).attr('sort',sort-(2*sort));
+        let sort = $(obj).attr('sort');
+        $(obj).attr('sort', sort - (2 * sort));
         $('.content-wrapper').hide(1);
         $('.loadbox').show(1);
-        getData(limit = 12, offset = 0, sort_by = sort-(2*sort));
-    }else{
-        var sort = $(obj).attr('sort');
-        var sortUpDown = $(obj).children('i').attr('class');
-        if (sortUpDown === 'fa fa-long-arrow-down'){
-            $(obj).children('i').attr('class','fa fa-long-arrow-up');
-            $(obj).attr('sort',Math.abs(sort));
-        }else{
-            $(obj).children('i').attr('class','fa fa-long-arrow-down');
-            $(obj).attr('sort',sort-(2*sort))
+        getData(limit, 0, sort - (2 * sort));
+    } else {
+        let sort = parseInt($(obj).attr('sort'));
+        let sortUpDown = $(obj).children('i').attr('class');
+        if (sortUpDown === 'fa fa-long-arrow-down') {
+            $(obj).children('i').attr('class', 'fa fa-long-arrow-up');
+            $(obj).attr('sort', Math.abs(sort));
+        } else {
+            $(obj).children('i').attr('class', 'fa fa-long-arrow-down');
+            $(obj).attr('sort', sort - (2 * sort))
         }
-        var sort = $(obj).attr('sort');
+        sort = parseInt($(obj).attr('sort'));
         $('.content-wrapper').hide(1);
         $('.loadbox').show(1);
-        getData(limit = 12, offset = 0, sort_by = sort)
+        getData(limit, 0, sort)
     }
 }
 
@@ -101,7 +120,7 @@ function applyTemplate(scheme) {
     let beLike = scheme.beLike;
     let grade = scheme.grade;
     let photoUrl = scheme.photoUrl;
-    var scheme_content = '<div class="package-list-item clearfix">' +
+    let scheme_content = '<div class="package-list-item clearfix">' +
         '<div class="image">' + '<img src="' + '../../' + photoUrl + '" alt="Tour Package"/>' +
         '<div class="absolute-in-image">' +
         '<div class="duration"><span>' + day + ' 天' + night + '夜</span></div>' +
