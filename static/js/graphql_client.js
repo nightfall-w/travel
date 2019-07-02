@@ -1,8 +1,29 @@
 $(function () {
     // 页面加载,以默认的排序方式请求数据
-    getData();
+    if (window.location.pathname === '/info/result-list/'){
+        limit = 12;
+        getData();
+    }else{
+        limit = 18;
+        getData(limit = limit, offset = 0, sort_by = 0)
+    }
 });
 
+function getSpecifiedPage(page_id){
+    if (page_id === 0){
+        return false
+    };
+    if ($('.current').text === page_id+1){
+        return false
+    }
+    let offset = page_id * limit + 1;
+    if ($('.fa.fa-long-arrow-up')){
+        var sort_by = $('.fa.fa-long-arrow-up').parent().attr('sort')
+    }else{
+        var sort_by = $('.fa.fa-long-arrow-down').parent().attr('sort')
+    }
+    getData(limit = limit, offset = offset, sort_by = sort_by)
+}
 
 function getDataBySort(obj){
     // 根据排序方式发送graphql请求，获取数据
@@ -12,8 +33,10 @@ function getDataBySort(obj){
         var i = '<i class="fa fa-long-arrow-down"></i>';
         $(obj).append(i);
         var sort = $(obj).attr('sort');
-        $(obj).attr('sort',sort-(2*sort))
-        getData(limit = 18, offset = 0, sort_by = sort-(2*sort));
+        $(obj).attr('sort',sort-(2*sort));
+        $('.content-wrapper').hide(1);
+        $('.loadbox').show(1);
+        getData(limit = 12, offset = 0, sort_by = sort-(2*sort));
     }else{
         var sort = $(obj).attr('sort');
         var sortUpDown = $(obj).children('i').attr('class');
@@ -25,7 +48,9 @@ function getDataBySort(obj){
             $(obj).attr('sort',sort-(2*sort))
         }
         var sort = $(obj).attr('sort');
-        getData(limit = 18, offset = 0, sort_by = sort)
+        $('.content-wrapper').hide(1);
+        $('.loadbox').show(1);
+        getData(limit = 12, offset = 0, sort_by = sort)
     }
 }
 
@@ -121,6 +146,8 @@ function loadDate(pageSchemes) {
         scheme_list_template += aSchemeData;
     });
     $('.package-list-item-wrapper').html(scheme_list_template);
+    $('.content-wrapper').show(1);
+    $('.loadbox').hide(1);
     foldIntroduce();
     loadGrade();
 }
@@ -137,11 +164,12 @@ function loadPagination(page_info) {
     $(".totalData").text(totalData);
     $("#Pagination").pagination(pageCount, {
         current_page: current,
+        callback: getSpecifiedPage
     });
     loadDate(pageSchemes)
 }
 
-function getData(limit = 18, offset = 0, sort_by = 0) {
+function getData(limit = 12, offset = 0, sort_by = 0) {
     // 定义graphql查询语句
     const query =
         'query pageSchemes($limit: Int, $offset: Int, $sortBy: Int) { ' +
