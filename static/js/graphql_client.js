@@ -11,22 +11,21 @@ $(function () {
 
 function skipPage() {
     let page_id = $("input[name='pageId']").val();
-    let maxPage = parseInt($('.ep').text());
-    if (parseInt(page_id, 10) !== 'NaN') {
-        page_id = parseInt(page_id, 10)
+    let maxPage = parseInt($('.next').prev().text());
+    page_id = parseInt(page_id, 10)
+    if (page_id == 'NaN' || page_id <= 0 || !Number.isInteger(page_id) || page_id > maxPage) {
+        console.log('错误的页码：'+page_id)
+    }else{
+        let offset = (page_id - 1) * limit;
+        if ($('.fa.fa-long-arrow-up').length === 1) {
+            var sort_by = parseInt($('.fa.fa-long-arrow-up').parent().attr('sort'))
+        } else {
+            var sort_by = parseInt($('.fa.fa-long-arrow-down').parent().attr('sort'))
+        }
+        $('.content-wrapper').hide(1);
+        $('.loadbox').show(1);
+        getData(limit, offset, sort_by)
     }
-    if (page_id <= 0 || !Number.isInteger(page_id) || page_id > maxPage) {
-        return false
-    }
-    let offset = (page_id - 1) * limit;
-    if ($('.fa.fa-long-arrow-up').length === 1) {
-        var sort_by = parseInt($('.fa.fa-long-arrow-up').parent().attr('sort'))
-    } else {
-        var sort_by = parseInt($('.fa.fa-long-arrow-down').parent().attr('sort'))
-    }
-    $('.content-wrapper').hide(1);
-    $('.loadbox').show(1);
-    getData(limit, offset, sort_by)
 }
 
 function getSpecifiedPage(page_id) {
