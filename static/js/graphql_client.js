@@ -120,7 +120,7 @@ function applyTemplate(scheme) {
     let grade = scheme.grade;
     let photoUrl = scheme.photoUrl;
     let scheme_content = '<div class="package-list-item clearfix">' +
-        '<div class="image">' + '<img src="' + '../../' + photoUrl + '" alt="Tour Package"/>' +
+        '<div class="image">' + '<img src="' + '../..' + photoUrl + '" alt="Tour Package"/>' +
         '<div class="absolute-in-image">' +
         '<div class="duration"><span>' + day + ' 天' + night + '夜</span></div>' +
         '</div>' +

@@ -16,29 +16,35 @@
                     <li class="slide">
                         <div class="flexslider-image-bg"
                              style="background: url(/static/images/hero-header/02.jpg) center center no-repeat; background-size:cover"></div>
-                    </li><!-- slide1 end -->
+                    </li>
+                    <!-- slide1 end -->
 
                     <li class="slide">
                         <div class="flexslider-image-bg"
                              style="background: url(/static/images/hero-header/03.jpg) center center no-repeat; background-size:cover"></div>
-                    </li><!-- slide2 end -->
+                    </li>
+                    <!-- slide2 end -->
 
                     <li class="slide">
                         <div class="flexslider-image-bg"
                              style="background: url(/static/images/hero-header/04.jpg) center center no-repeat; background-size:cover"></div>
-                    </li><!-- slide3 end -->
+                    </li>
+                    <!-- slide3 end -->
 
                     <li class="slide">
                         <div class="flexslider-image-bg"
                              style="background: url(/static/images/hero-header/05.jpg) center center no-repeat; background-size:cover"></div>
-                    </li><!-- slide4 end -->
+                    </li>
+                    <!-- slide4 end -->
                     !-- slide5 end -->
 
-                </ul><!-- slides end -->
+                </ul>
+                <!-- slides end -->
 
                 <div class="flexslider-overlay"></div>
 
-            </div><!-- flexslider end -->
+            </div>
+            <!-- flexslider end -->
         </div>
 
         <div class="main-search-holder">
@@ -49,8 +55,9 @@
 
                     <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 
-                        <h1 class="hero-title">Tour with Tour Packer</h1>
-                        <p class="lead">Visit Europe, America, Asia, Africa or beyond!</p>
+                        <h1 class="hero-title">带上背包去旅行</h1>
+
+                        <p class="lead">走遍大江南北 锦绣山河 我的旅行包都装得下</p>
 
                     </div>
 
@@ -65,48 +72,12 @@
                             <div class="form-group">
 
                                 <select name="destination" class="select2-multi form-control"
-                                        data-placeholder="Choose a Destination" multiple>
-                                    <option value="">Choose a Destination</option>
-                                    <option value="0">Any Destination</option>
-                                    <option value="Albania">Albania</option>
-                                    <option value="Austria">Austria</option>
-                                    <option value="Belgium">Belgium</option>
-                                    <option value="Bosnia">Bosnia</option>
-                                    <option value="Croatia">Croatia</option>
-                                    <option value="Czech Republic">Czech Republic</option>
-                                    <option value="Denmark">Denmark</option>
-                                    <option value="Egypt">Egypt</option>
-                                    <option value="England">England</option>
-                                    <option value="Estonia">Estonia</option>
-                                    <option value="Finland">Finland</option>
-                                    <option value="France">France</option>
-                                    <option value="Germany">Germany</option>
-                                    <option value="Greece">Greece</option>
-                                    <option value="Herzegovina">Herzegovina</option>
-                                    <option value="Hungary">Hungary</option>
-                                    <option value="Ireland">Ireland</option>
-                                    <option value="Italy">Italy</option>
-                                    <option value="Latvia">Latvia</option>
-                                    <option value="Liechtenstein">Liechtenstein</option>
-                                    <option value="Lithuania">Lithuania</option>
-                                    <option value="Luxembourg">Luxembourg</option>
-                                    <option value="Monaco">Monaco</option>
-                                    <option value="Montenegro">Montenegro</option>
-                                    <option value="Netherlands">Netherlands</option>
-                                    <option value="Northern Ireland">Northern Ireland</option>
-                                    <option value="Poland">Poland</option>
-                                    <option value="Portugal">Portugal</option>
-                                    <option value="Russia">Russia</option>
-                                    <option value="Scotland">Scotland</option>
-                                    <option value="Serbia">Serbia</option>
-                                    <option value="Slovakia">Slovakia</option>
-                                    <option value="Slovenia">Slovenia</option>
-                                    <option value="Spain">Spain</option>
-                                    <option value="Sweden">Sweden</option>
-                                    <option value="Switzerland">Switzerland</option>
-                                    <option value="Turkey">Turkey</option>
-                                    <option value="Vatican City">Vatican City</option>
-                                    <option value="Wales">Wales</option>
+                                        data-placeholder="选择一个目的地" multiple>
+                                    <option value="">选择一个目的地</option>
+                                    <option value="0">任意地点</option>
+                                    {% for end_locale in end_locales %}
+                                    <option value="{{ end_locale }}">{{ end_locale }}</option>
+                                    {% endfor %}
                                 </select>
 
                             </div>
@@ -118,21 +89,21 @@
                             <div class="form-group">
 
                                 <select name="month" class="select2-multi form-control"
-                                        data-placeholder="Choose a Departure Month" multiple>
-                                    <option value="">Choose a Departure Month</option>
-                                    <option value="0">Any Departure Month</option>
-                                    <option value="1">January</option>
-                                    <option value="2">February</option>
-                                    <option value="3">March</option>
-                                    <option value="4">April</option>
-                                    <option value="5">May</option>
-                                    <option value="6">June</option>
-                                    <option value="7">July</option>
-                                    <option value="8">August</option>
-                                    <option value="9">September</option>
-                                    <option value="10">October</option>
-                                    <option value="11">November</option>
-                                    <option value="12">December</option>
+                                        data-placeholder="选择你的出发月份" multiple>
+                                    <option value="">选择你的出发月份</option>
+                                    <option value="0">任意月份</option>
+                                    <option value="1">1 月</option>
+                                    <option value="2">2 月</option>
+                                    <option value="3">3 月</option>
+                                    <option value="4">4 月</option>
+                                    <option value="5">5 月</option>
+                                    <option value="6">6 月</option>
+                                    <option value="7">7 月</option>
+                                    <option value="8">8 月</option>
+                                    <option value="9">9 月</option>
+                                    <option value="10">10 月</option>
+                                    <option value="11">11 月</option>
+                                    <option value="12">12 月</option>
                                 </select>
 
                             </div>
@@ -144,11 +115,12 @@
                             <div class="form-group">
 
                                 <select name="year" class="select2-multi form-control"
-                                        data-placeholder="Choose a Departure Year" multiple>
-                                    <option value="">Choose a Departure Year</option>
-                                    <option value="0">Any Departure Year</option>
-                                    <option value="2016">2016</option>
-                                    <option value="2017">2017</option>
+                                        data-placeholder="选择你的出发年份" multiple>
+                                    <option value="">选择你的出发年份</option>
+                                    <option value="0">任意年份</option>
+                                    {% for year in years %}
+                                    <option value="{{ year }}">{{ year }}</option>
+                                    {% endfor %}
                                 </select>
 
                             </div>
@@ -159,7 +131,7 @@
 
                             <div class="form-group">
 
-                                <a href="#" class="btn btn-primary btn-block">Search</a>
+                                <a href="#" class="btn btn-primary btn-block">搜一下</a>
 
                             </div>
 
@@ -297,6 +269,7 @@
                     <div class="section-title">
 
                         <h3>Special Packages</h3>
+
                         <p>Of distrusts immediate enjoyment curiosity do. Marianne numerous saw thoughts the
                             humoured.</p>
 
@@ -315,12 +288,14 @@
                             <a href="detail-page.html">
                                 <div class="image">
                                     <img src="{% static 'images/tour-package/01.jpg' %}" alt="Tour Package"/>
+
                                     <div class="absolute-in-image">
                                         <div class="duration"><span>4 days 3 nights</span></div>
                                     </div>
                                 </div>
                                 <div class="content clearfix">
                                     <h5>Paris in Love</h5>
+
                                     <div class="rating-wrapper">
                                         <div class="raty-wrapper">
                                             <div class="star-rating-read-only" data-rating-score="4.0"></div>
@@ -329,6 +304,7 @@
                                     </div>
                                     <div class="absolute-in-content">
                                         <span class="btn"><i class="fa fa-heart-o"></i></span>
+
                                         <div class="price">$1422</div>
                                     </div>
                                 </div>
@@ -341,12 +317,14 @@
                             <a href="detail-page.html">
                                 <div class="image">
                                     <img src="{% static 'images/tour-package/02.jpg' %}" alt="Tour Package"/>
+
                                     <div class="absolute-in-image">
                                         <div class="duration"><span>4 days 3 nights</span></div>
                                     </div>
                                 </div>
                                 <div class="content clearfix">
                                     <h5>Classic Europe</h5>
+
                                     <div class="rating-wrapper">
                                         <div class="raty-wrapper">
                                             <div class="star-rating-read-only" data-rating-score="3.5"></div>
@@ -355,6 +333,7 @@
                                     </div>
                                     <div class="absolute-in-content">
                                         <span class="btn"><i class="fa fa-heart-o"></i></span>
+
                                         <div class="price">$1422</div>
                                     </div>
                                 </div>
@@ -367,12 +346,14 @@
                             <a href="detail-page.html">
                                 <div class="image">
                                     <img src="{% static 'images/tour-package/03.jpg' %}" alt="Tour Package"/>
+
                                     <div class="absolute-in-image">
                                         <div class="duration"><span>4 days 3 nights</span></div>
                                     </div>
                                 </div>
                                 <div class="content clearfix">
                                     <h5>Best of Egypt</h5>
+
                                     <div class="rating-wrapper">
                                         <div class="raty-wrapper">
                                             <div class="star-rating-read-only" data-rating-score="4.5"></div>
@@ -381,6 +362,7 @@
                                     </div>
                                     <div class="absolute-in-content">
                                         <span class="btn"><i class="fa fa-heart-o"></i></span>
+
                                         <div class="price">$1422</div>
                                     </div>
                                 </div>
@@ -393,12 +375,14 @@
                             <a href="detail-page.html">
                                 <div class="image">
                                     <img src="{% static 'images/tour-package/04.jpg' %}" alt="Tour Package"/>
+
                                     <div class="absolute-in-image">
                                         <div class="duration"><span>4 days 3 nights</span></div>
                                     </div>
                                 </div>
                                 <div class="content clearfix">
                                     <h5>Adriatic Coastal Explorer</h5>
+
                                     <div class="rating-wrapper">
                                         <div class="raty-wrapper">
                                             <div class="star-rating-read-only" data-rating-score="5.0"></div>
@@ -407,6 +391,7 @@
                                     </div>
                                     <div class="absolute-in-content">
                                         <span class="btn"><i class="fa fa-heart-o"></i></span>
+
                                         <div class="price">$1422</div>
                                     </div>
                                 </div>
@@ -419,12 +404,14 @@
                             <a href="detail-page.html">
                                 <div class="image">
                                     <img src="{% static 'images/tour-package/05.jpg' %}" alt="Tour Package"/>
+
                                     <div class="absolute-in-image">
                                         <div class="duration"><span>4 days 3 nights</span></div>
                                     </div>
                                 </div>
                                 <div class="content clearfix">
                                     <h5>Athens, Mykonos &amp; Santorini</h5>
+
                                     <div class="rating-wrapper">
                                         <div class="raty-wrapper">
                                             <div class="star-rating-read-only" data-rating-score="4.5"></div>
@@ -433,6 +420,7 @@
                                     </div>
                                     <div class="absolute-in-content">
                                         <span class="btn"><i class="fa fa-heart-o"></i></span>
+
                                         <div class="price">$1422</div>
                                     </div>
                                 </div>
@@ -445,12 +433,14 @@
                             <a href="detail-page.html">
                                 <div class="image">
                                     <img src="{% static 'images/tour-package/06.jpg' %}" alt="Tour Package"/>
+
                                     <div class="absolute-in-image">
                                         <div class="duration"><span>4 days 3 nights</span></div>
                                     </div>
                                 </div>
                                 <div class="content clearfix">
                                     <h5>Honeymoon Time in Maldives</h5>
+
                                     <div class="rating-wrapper">
                                         <div class="raty-wrapper">
                                             <div class="star-rating-read-only" data-rating-score="4.5"></div>
@@ -459,6 +449,7 @@
                                     </div>
                                     <div class="absolute-in-content">
                                         <span class="btn"><i class="fa fa-heart-o"></i></span>
+
                                         <div class="price">$1422</div>
                                     </div>
                                 </div>
@@ -471,12 +462,14 @@
                             <a href="detail-page.html">
                                 <div class="image">
                                     <img src="{% static 'images/tour-package/07.jpg' %}" alt="Tour Package"/>
+
                                     <div class="absolute-in-image">
                                         <div class="duration"><span>4 days 3 nights</span></div>
                                     </div>
                                 </div>
                                 <div class="content clearfix">
                                     <h5>Scandinavia Attractions</h5>
+
                                     <div class="rating-wrapper">
                                         <div class="raty-wrapper">
                                             <div class="star-rating-read-only" data-rating-score="5.0"></div>
@@ -485,6 +478,7 @@
                                     </div>
                                     <div class="absolute-in-content">
                                         <span class="btn"><i class="fa fa-heart-o"></i></span>
+
                                         <div class="price">$1422</div>
                                     </div>
                                 </div>
@@ -497,12 +491,14 @@
                             <a href="detail-page.html">
                                 <div class="image">
                                     <img src="{% static 'images/tour-package/08.jpg' %}" alt="Tour Package"/>
+
                                     <div class="absolute-in-image">
                                         <div class="duration"><span>4 days 3 nights</span></div>
                                     </div>
                                 </div>
                                 <div class="content clearfix">
                                     <h5>Monaco in Love</h5>
+
                                     <div class="rating-wrapper">
                                         <div class="raty-wrapper">
                                             <div class="star-rating-read-only" data-rating-score="4.0"></div>
@@ -511,6 +507,7 @@
                                     </div>
                                     <div class="absolute-in-content">
                                         <span class="btn"><i class="fa fa-heart-o"></i></span>
+
                                         <div class="price">$1422</div>
                                     </div>
                                 </div>
@@ -523,12 +520,14 @@
                             <a href="detail-page.html">
                                 <div class="image">
                                     <img src="{% static 'images/tour-package/09.jpg' %}" alt="Tour Package"/>
+
                                     <div class="absolute-in-image">
                                         <div class="duration"><span>4 days 3 nights</span></div>
                                     </div>
                                 </div>
                                 <div class="content clearfix">
                                     <h5>Highlights of Italy</h5>
+
                                     <div class="rating-wrapper">
                                         <div class="raty-wrapper">
                                             <div class="star-rating-read-only" data-rating-score="4.5"></div>
@@ -537,6 +536,7 @@
                                     </div>
                                     <div class="absolute-in-content">
                                         <span class="btn"><i class="fa fa-heart-o"></i></span>
+
                                         <div class="price">$1422</div>
                                     </div>
                                 </div>
@@ -563,6 +563,7 @@
                     <div class="section-title text-left">
 
                         <h3>Why Booking With Us</h3>
+
                         <p>There are several seasons that you must travel with us</p>
 
                     </div>
@@ -639,6 +640,7 @@
                     <div class="section-title">
 
                         <h3>Testimonial</h3>
+
                         <p>What our customers say about us</p>
                     </div>
 
@@ -658,6 +660,7 @@
                             <div class="content">
                                 <h4>Antony Robert</h4>
                                 <h6>From Spain</h6>
+
                                 <p>She meant new their sex could defer child. An lose at quit to life do dull. Moreover
                                     end horrible endeavor entrance any families. Income appear extent on of thrown in
                                     admire.</p>
@@ -673,6 +676,7 @@
                             <div class="content">
                                 <h4>Mohammed Salem</h4>
                                 <h6>From Turkey</h6>
+
                                 <p>Consider now provided laughter boy landlord dashwood. Often voice and the spoke. No
                                     shewing fertile village equally prepare up females sentiments increasing
                                     particular.</p>
@@ -701,6 +705,7 @@
                         </div>
                         <div class="content">
                             <h3>Signup for Newsletter</h3>
+
                             <p>Affronting everything discretion men now own did. Still round match we to. Frankness
                                 pronounce daughters remainder extensive has but.</p>
                         </div>
@@ -754,6 +759,9 @@
             }
         );
 
+    getHotScheme();
+
     });
+
 </script>
 {% endblock %}

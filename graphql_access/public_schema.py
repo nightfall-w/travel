@@ -114,7 +114,7 @@ class PageSchemeType(graphene.ObjectType):
                     for scenic in journey.scenic.all():
                         image = scenic.image
                         if image:
-                            scheme.photo_url = image
+                            scheme.photo_url = image.url
                             break
                         else:
                             continue

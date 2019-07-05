@@ -35,7 +35,7 @@ class Scenic(models.Model):
     相册类
     """
     name = models.CharField(max_length=40, verbose_name="照片名")
-    image = models.ImageField(upload_to='media/images/scenic', verbose_name='景点照片')
+    image = models.ImageField(upload_to='images/scenic', verbose_name='景点照片')
 
     class Meta:
         db_table = 'scenic'
