@@ -2995,7 +2995,7 @@ h6.heading {
 }
 
 [class*=GridLex-grid-][class*=-noGutter]>[class*=GridLex-col] {
-    padding: 0
+    padding: 6px
 }
 
 [class*=GridLex-grid-][class*=-center] {

@@ -202,7 +202,7 @@
 
                     <div class="section-title">
 
-                        <h3>Top Destinations</h3>
+                        <h3>热门景点</h3>
 
                     </div>
 
@@ -210,50 +210,48 @@
 
             </div>
 
-            <div class="grid destination-grid-wrapper">
-
-                <div class="grid-item" data-colspan="10" data-rowspan="10">
-                    <a href="result-grid.html" class="top-destination-image-bg"
-                       style="background-image:url('/static/images/destination-grid/01.jpg');">
-                        <div class="relative">
-                            <h4>Turkey</h4>
-                            <span>Starting from $322</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="grid-item" data-colspan="10" data-rowspan="4">
-                    <a href="result-grid.html" class="top-destination-image-bg"
-                       style="background-image:url('/static/images/destination-grid/02.jpg');">
-                        <div class="relative">
-                            <h4>Croatia</h4>
-                            <span>Starting from $322</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="grid-item" data-colspan="5" data-rowspan="6">
-                    <a href="result-grid.html" class="top-destination-image-bg"
-                       style="background-image:url('/static/images/destination-grid/03.jpg');">
-                        <div class="relative">
-                            <h4>USA</h4>
-                            <span>Starting from $322</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="grid-item" data-colspan="5" data-rowspan="6">
-                    <a href="result-grid.html" class="top-destination-image-bg"
-                       style="background-image:url('/static/images/destination-grid/04.jpg');">
-                        <div class="relative">
-                            <h4>Emirates</h4>
-                            <span>Starting from $322</span>
-                        </div>
-                    </a>
-                </div>
-
+            {% verbatim %}
+            <div class="grid destination-grid-wrapper" id="recommended_schemes">
+                <template v-for="schemeInfo,index in schemesInfo">
+                    <div class="grid-item" v-if="index===0" data-colspan="10" data-rowspan="10">
+                        <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
+                           v-bind:style="{backgroundImage:'url(' + schemeInfo.background_img + ')'}">
+                            <div class="relative">
+                                <h4>{{ schemeInfo.end_locale }}</h4>
+                                <span> {{ schemeInfo.start_price }} 元起</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="grid-item" v-else-if="index===1" data-colspan="10" data-rowspan="4">
+                        <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
+                           v-bind:style="{backgroundImage:'url(' + schemeInfo.background_img + ')'}">
+                            <div class="relative">
+                                <h4>{{ schemeInfo.end_locale }}</h4>
+                                <span>￥{{ schemeInfo.start_price }} 元起</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="grid-item" v-else-if="index===2" data-colspan="5" data-rowspan="6">
+                        <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
+                           v-bind:style="{backgroundImage:'url(' + schemeInfo.background_img + ')'}">
+                            <div class="relative">
+                                <h4>{{ schemeInfo.end_locale }}</h4>
+                                <span>{{ schemeInfo.start_price }} 元起</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="grid-item" v-else-if="index===3" data-colspan="5" data-rowspan="6">
+                        <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
+                           v-bind:style="{backgroundImage:'url(' + schemeInfo.background_img + ')'}">
+                            <div class="relative">
+                                <h4>{{ schemeInfo.end_locale }}</h4>
+                                <span>{{ schemeInfo.start_price }} 元起</span>
+                            </div>
+                        </a>
+                    </div>
+                </template>
             </div>
-
+            {% endverbatim %}
         </div>
 
     </section>
@@ -279,274 +277,49 @@
 
             </div>
 
+            {% verbatim %}
             <div class="GridLex- gap-30-wrappper package-grid-item-wrapper">
 
-                <div class="GridLex-grid-noGutter-equalHeight">
+                <div class="GridLex-grid-noGutter-equalHeight" id="scheme_app">
 
-                    <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                        <div class="package-grid-item">
-                            <a href="detail-page.html">
-                                <div class="image">
-                                    <img src="{% static 'images/tour-package/01.jpg' %}" alt="Tour Package"/>
+                    <template v-for="schemeInfo in schemesInfo">
+                        <div class="GridLex-col-4_sm-6_xs-12 mb-30">
+                            <div class="package-grid-item">
+                                <a href="detail-page.html">
+                                    <div class="image">
+                                        <img :src="schemeInfo.photo_url" alt="Tour Package"/>
 
-                                    <div class="absolute-in-image">
-                                        <div class="duration"><span>4 days 3 nights</span></div>
-                                    </div>
-                                </div>
-                                <div class="content clearfix">
-                                    <h5>Paris in Love</h5>
-
-                                    <div class="rating-wrapper">
-                                        <div class="raty-wrapper">
-                                            <div class="star-rating-read-only" data-rating-score="4.0"></div>
-                                            <span> / 7 review</span>
+                                        <div class="absolute-in-image">
+                                            <div class="duration">
+                                                <span>{{ schemeInfo.day }} 天 {{ schemeInfo.night }} 夜</span></div>
                                         </div>
                                     </div>
-                                    <div class="absolute-in-content">
-                                        <span class="btn"><i class="fa fa-heart-o"></i></span>
+                                    <div class="content clearfix">
+                                        <h5>{{ schemeInfo.name }}</h5>
 
-                                        <div class="price">$1422</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                                        <div class="rating-wrapper">
+                                            <div class="raty-wrapper">
+                                                <div class="star-rating-read-only"
+                                                     v-bind:data-rating-score="schemeInfo.score_avg"></div>
+                                                <span> / {{ schemeInfo.review_num }} 评论</span>
+                                            </div>
+                                        </div>
+                                        <div class="absolute-in-content">
+                                            <span class="btn"><i class="fa fa-heart-o"></i></span>
 
-                    <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                        <div class="package-grid-item">
-                            <a href="detail-page.html">
-                                <div class="image">
-                                    <img src="{% static 'images/tour-package/02.jpg' %}" alt="Tour Package"/>
-
-                                    <div class="absolute-in-image">
-                                        <div class="duration"><span>4 days 3 nights</span></div>
-                                    </div>
-                                </div>
-                                <div class="content clearfix">
-                                    <h5>Classic Europe</h5>
-
-                                    <div class="rating-wrapper">
-                                        <div class="raty-wrapper">
-                                            <div class="star-rating-read-only" data-rating-score="3.5"></div>
-                                            <span> / 7 review</span>
+                                            <div class="price" v-if="schemeInfo.unit_price === 0">售罄</div>
+                                            <div class="price" v-else>￥{{ schemeInfo.unit_price }}</div>
                                         </div>
                                     </div>
-                                    <div class="absolute-in-content">
-                                        <span class="btn"><i class="fa fa-heart-o"></i></span>
-
-                                        <div class="price">$1422</div>
-                                    </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                        <div class="package-grid-item">
-                            <a href="detail-page.html">
-                                <div class="image">
-                                    <img src="{% static 'images/tour-package/03.jpg' %}" alt="Tour Package"/>
-
-                                    <div class="absolute-in-image">
-                                        <div class="duration"><span>4 days 3 nights</span></div>
-                                    </div>
-                                </div>
-                                <div class="content clearfix">
-                                    <h5>Best of Egypt</h5>
-
-                                    <div class="rating-wrapper">
-                                        <div class="raty-wrapper">
-                                            <div class="star-rating-read-only" data-rating-score="4.5"></div>
-                                            <span> / 7 review</span>
-                                        </div>
-                                    </div>
-                                    <div class="absolute-in-content">
-                                        <span class="btn"><i class="fa fa-heart-o"></i></span>
-
-                                        <div class="price">$1422</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                        <div class="package-grid-item">
-                            <a href="detail-page.html">
-                                <div class="image">
-                                    <img src="{% static 'images/tour-package/04.jpg' %}" alt="Tour Package"/>
-
-                                    <div class="absolute-in-image">
-                                        <div class="duration"><span>4 days 3 nights</span></div>
-                                    </div>
-                                </div>
-                                <div class="content clearfix">
-                                    <h5>Adriatic Coastal Explorer</h5>
-
-                                    <div class="rating-wrapper">
-                                        <div class="raty-wrapper">
-                                            <div class="star-rating-read-only" data-rating-score="5.0"></div>
-                                            <span> / 7 review</span>
-                                        </div>
-                                    </div>
-                                    <div class="absolute-in-content">
-                                        <span class="btn"><i class="fa fa-heart-o"></i></span>
-
-                                        <div class="price">$1422</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                        <div class="package-grid-item">
-                            <a href="detail-page.html">
-                                <div class="image">
-                                    <img src="{% static 'images/tour-package/05.jpg' %}" alt="Tour Package"/>
-
-                                    <div class="absolute-in-image">
-                                        <div class="duration"><span>4 days 3 nights</span></div>
-                                    </div>
-                                </div>
-                                <div class="content clearfix">
-                                    <h5>Athens, Mykonos &amp; Santorini</h5>
-
-                                    <div class="rating-wrapper">
-                                        <div class="raty-wrapper">
-                                            <div class="star-rating-read-only" data-rating-score="4.5"></div>
-                                            <span> / 7 review</span>
-                                        </div>
-                                    </div>
-                                    <div class="absolute-in-content">
-                                        <span class="btn"><i class="fa fa-heart-o"></i></span>
-
-                                        <div class="price">$1422</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                        <div class="package-grid-item">
-                            <a href="detail-page.html">
-                                <div class="image">
-                                    <img src="{% static 'images/tour-package/06.jpg' %}" alt="Tour Package"/>
-
-                                    <div class="absolute-in-image">
-                                        <div class="duration"><span>4 days 3 nights</span></div>
-                                    </div>
-                                </div>
-                                <div class="content clearfix">
-                                    <h5>Honeymoon Time in Maldives</h5>
-
-                                    <div class="rating-wrapper">
-                                        <div class="raty-wrapper">
-                                            <div class="star-rating-read-only" data-rating-score="4.5"></div>
-                                            <span> / 7 review</span>
-                                        </div>
-                                    </div>
-                                    <div class="absolute-in-content">
-                                        <span class="btn"><i class="fa fa-heart-o"></i></span>
-
-                                        <div class="price">$1422</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                        <div class="package-grid-item">
-                            <a href="detail-page.html">
-                                <div class="image">
-                                    <img src="{% static 'images/tour-package/07.jpg' %}" alt="Tour Package"/>
-
-                                    <div class="absolute-in-image">
-                                        <div class="duration"><span>4 days 3 nights</span></div>
-                                    </div>
-                                </div>
-                                <div class="content clearfix">
-                                    <h5>Scandinavia Attractions</h5>
-
-                                    <div class="rating-wrapper">
-                                        <div class="raty-wrapper">
-                                            <div class="star-rating-read-only" data-rating-score="5.0"></div>
-                                            <span> / 7 review</span>
-                                        </div>
-                                    </div>
-                                    <div class="absolute-in-content">
-                                        <span class="btn"><i class="fa fa-heart-o"></i></span>
-
-                                        <div class="price">$1422</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                        <div class="package-grid-item">
-                            <a href="detail-page.html">
-                                <div class="image">
-                                    <img src="{% static 'images/tour-package/08.jpg' %}" alt="Tour Package"/>
-
-                                    <div class="absolute-in-image">
-                                        <div class="duration"><span>4 days 3 nights</span></div>
-                                    </div>
-                                </div>
-                                <div class="content clearfix">
-                                    <h5>Monaco in Love</h5>
-
-                                    <div class="rating-wrapper">
-                                        <div class="raty-wrapper">
-                                            <div class="star-rating-read-only" data-rating-score="4.0"></div>
-                                            <span> / 7 review</span>
-                                        </div>
-                                    </div>
-                                    <div class="absolute-in-content">
-                                        <span class="btn"><i class="fa fa-heart-o"></i></span>
-
-                                        <div class="price">$1422</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                        <div class="package-grid-item">
-                            <a href="detail-page.html">
-                                <div class="image">
-                                    <img src="{% static 'images/tour-package/09.jpg' %}" alt="Tour Package"/>
-
-                                    <div class="absolute-in-image">
-                                        <div class="duration"><span>4 days 3 nights</span></div>
-                                    </div>
-                                </div>
-                                <div class="content clearfix">
-                                    <h5>Highlights of Italy</h5>
-
-                                    <div class="rating-wrapper">
-                                        <div class="raty-wrapper">
-                                            <div class="star-rating-read-only" data-rating-score="4.5"></div>
-                                            <span> / 7 review</span>
-                                        </div>
-                                    </div>
-                                    <div class="absolute-in-content">
-                                        <span class="btn"><i class="fa fa-heart-o"></i></span>
-
-                                        <div class="price">$1422</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                    </template>
 
                 </div>
 
             </div>
+            {% endverbatim %}
 
         </div>
 
@@ -745,9 +518,11 @@
 {% endblock %}
 {% block other_js %}
 <script type="text/javascript" src="{% static 'js/jquery.flexslider-min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/common.js' %}"></script>
 <script>
     $(document).ready(function () {
-
         $('#mainFlexSlider').flexslider(
             {
                 animation: 'fade',
@@ -758,10 +533,11 @@
                 slideshowSpeed: 4000,
             }
         );
-
     getHotScheme();
-
+    getRecommendedSchemes();
     });
+
+
 
 </script>
 {% endblock %}

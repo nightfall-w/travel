@@ -189,48 +189,6 @@ $(function () {
      */
     $('[data-toggle="tooltip"]').tooltip();
 
-
-    /**
-     * responsivegrid - layout grid
-     */
-    $('.grid').responsivegrid({
-        gutter: '0',
-        itemSelector: '.grid-item',
-        'breakpoints': {
-            'desktop': {
-                'range': '1200-',
-                'options': {
-                    'column': 20,
-                }
-            },
-            'tablet-landscape': {
-                'range': '1000-1200',
-                'options': {
-                    'column': 20,
-                }
-            },
-            'tablet-portrate': {
-                'range': '767-1000',
-                'options': {
-                    'column': 20,
-                }
-            },
-            'mobile-landscape': {
-                'range': '-767',
-                'options': {
-                    'column': 10,
-                }
-            },
-            'mobile-portrate': {
-                'range': '-479',
-                'options': {
-                    'column': 10,
-                }
-            },
-        }
-    });
-
-
     /**
      * Payment Option
      */
@@ -256,19 +214,6 @@ $(function () {
             return $(this).attr('data-rating-score');
         }
     });
-
-    // Read onlu default size star
-    $('.star-rating-read-only').raty({
-        readOnly: true,
-        round: {down: .2, full: .6, up: .8},
-        half: true,
-        space: false,
-        score: function () {
-            return $(this).attr('data-rating-score');
-        }
-    });
-
-
     // White color default size star
     $('.star-rating-white').raty({
         path: '/static/images/raty',
@@ -744,6 +689,7 @@ $(function () {
             }
         }
     });
+
     /**
      * slick
      */

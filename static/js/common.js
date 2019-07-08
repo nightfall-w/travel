@@ -1,16 +1,105 @@
+function loadGrade(){
+    $('.star-rating-read-only').raty({
+        readOnly: true,
+        round: {down: .2, full: .6, up: .8},
+        half: true,
+        space: false,
+        score: function () {
+            return $(this).attr('data-rating-score');
+        }
+    });
+}
+
 function getHotScheme(){
-    fetch('/info/schemes', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-CSRFToken': $.cookie('csrftoken')    // 请求头必须携带csrf_token,不然会csrf验证失败 403
-    },
-    }).then(function (response) {
-        if (response.status === 200) {
-            response.json().then(function (json) {
-                console.log(json)
-            })
+    new Vue({
+        el: '#scheme_app',
+        data () {
+            return {
+            schemesInfo: null
+            }
+        },
+        watch:{
+            schemesInfo:function(){
+                this.$nextTick(function(){
+                    loadGrade()
+                })
+            }
+        },
+        mounted () {
+            axios
+            .get('/info/schemes')
+            .then(response => (this.schemesInfo = response.data))
+            .catch(function (error) { // 请求失败处理
+                console.log(error);
+            });
+        }
+    })
+}
+
+function loadGrid(){
+    /**
+     * responsivegrid - layout grid
+     */
+    $('.grid').responsivegrid({
+        gutter: '0',
+        itemSelector: '.grid-item',
+        'breakpoints': {
+            'desktop': {
+                'range': '1200-',
+                'options': {
+                    'column': 20,
+                }
+            },
+            'tablet-landscape': {
+                'range': '1000-1200',
+                'options': {
+                    'column': 20,
+                }
+            },
+            'tablet-portrate': {
+                'range': '767-1000',
+                'options': {
+                    'column': 20,
+                }
+            },
+            'mobile-landscape': {
+                'range': '-767',
+                'options': {
+                    'column': 10,
+                }
+            },
+            'mobile-portrate': {
+                'range': '-479',
+                'options': {
+                    'column': 10,
+                }
+            },
+        }
+    });
+}
+function getRecommendedSchemes(){
+    new Vue({
+        el: '#recommended_schemes',
+        data () {
+            return {
+                schemesInfo: null,
+//                style_data: [{colspan:'10',rowspan:"10"},{colspan:'10',rowspan:"4"},{colspan:'5',rowspan:"6"},{colspan:'5',rowspan:"6"}]
+            }
+        },
+        watch:{
+            schemesInfo:function(){
+                this.$nextTick(function(){
+                    loadGrid()
+                })
+            }
+        },
+        mounted () {
+            axios
+            .get('/info/ScenicSpot')
+            .then(response => (this.schemesInfo = response.data))
+            .catch(function (error) { // 请求失败处理
+                console.log(error);
+            });
         }
     })
 }

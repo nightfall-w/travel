@@ -56,3 +56,27 @@ class schemeSerializer(serializers.Serializer):
         tickets = obj.ticket_scheme.filter(start_date=current_date)
         unit_price = tickets[0].unit_price if tickets else 0
         return unit_price
+
+
+class scenicSpotSerializer(serializers.Serializer):
+    end_locale = serializers.CharField(read_only=True, max_length=20)
+    start_price = serializers.SerializerMethodField(read_only=True)
+    background_img = serializers.SerializerMethodField(read_only=True)
+    detail_url = serializers.SerializerMethodField(read_only=True)
+
+    def get_start_price(self, obj):
+        today = datetime.date.today()
+        return obj.ticket_scheme.filter(start_date=today)[0].unit_price
+
+    def get_background_img(self, obj):
+        journeys = obj.journey_scheme.all()
+        for journey in journeys:
+            if journey.scenic.all():
+                for scenic in journey.scenic.all():
+                    if scenic.image:
+                        return scenic.image.url
+        else:
+            return ''
+
+    def get_detail_url(self, obj):
+        return '/info/detail/?id={}'.format(obj.id)

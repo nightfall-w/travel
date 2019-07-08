@@ -10,6 +10,7 @@ $(function () {
 });
 
 function skipPage() {
+    // go标签里 输入页码进行跳转
     let page_id = $("input[name='pageId']").val();
     let maxPage = parseInt($('.next').prev().text());
     page_id = parseInt(page_id, 10)
@@ -29,6 +30,7 @@ function skipPage() {
 }
 
 function getSpecifiedPage(page_id) {
+    // 点击页码条获取指定页数据
     if ($('.current').text() === page_id + 1) {
         return false
     }
@@ -115,6 +117,12 @@ function applyTemplate(scheme) {
     let night = scheme.night;
     let endLocale = scheme.endLocale;
     let price = scheme.price;
+    if (price === 0){
+        price = '售罄'
+    }
+    else{
+        price = '￥'+price
+    }
     let reviewNum = scheme.reviewNum;
     let beLike = scheme.beLike;
     let grade = scheme.grade;
@@ -147,7 +155,7 @@ function applyTemplate(scheme) {
         '<span>' + reviewNum + ' /评论</span>' +
         '</div>' +
         '</div>' +
-        '<div class="price">￥' + price + '</div>' +
+        '<div class="price">' + price + '</div>' +
         '<a href="detail-page.html" class="btn btn-primary btn-sm">详情</a>' +
         '</div>' +
         '</div>' +
