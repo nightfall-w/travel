@@ -1,18 +1,21 @@
 # coding=utf-8
-import re
-import os
-import uuid
 import base64
-from Logging import logger
-from celery_tasks.SMS.tasks import request_to_chit_platform
+import os
+import re
+import uuid
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
-from red_travel.settings import MEDIA_ROOT
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from Logging import logger
+from user.tasks import request_to_chit_platform
+from info.models import User as mongoUser
+from red_travel.settings import MEDIA_ROOT
 from user.form import userRegister
 from user.models import Auth_profile
 from utils.common import create_verification
@@ -97,6 +100,7 @@ class UserRegister(APIView):
             verification_code = create_verification()  # 产生一个6位的随机验证码
             request.session[phone_number] = verification_code
             request.session.set_expiry(60 * 5)
+            print(phone_number, verification_code)
             request_to_chit_platform.delay(
                 phone_number, verification_code)  # 向第三方平台发送该手机号验证码的请求
         return Response({'return_code': True})
@@ -145,6 +149,9 @@ class UserRegister(APIView):
         else:
             Auth_profile.objects.create(
                 phone_number=phone_number, user_obj=user)
+        # 用户注册信息写入数据库，但是因为info app mongo models 需要和mysql中user建立关系，所以需要user:id & username 写入mongo
+        mongo_user = mongoUser(uid=user.id, username=user.username)
+        mongo_user.save()
         del request.session[phone_number]
         return Response({'return_code': True, 'return_value': '注册成功！'})
 
@@ -206,9 +213,9 @@ class UpdatePhoto(APIView):
             data = base64.b64decode(photo.split(',')[1])
             photo_name = uuid.uuid1()
             path = os.path.join(MEDIA_ROOT,
-                                'head_portrait/{}.jepg'.format(photo_name))
+                                'head_portrait/{}.jpeg'.format(photo_name))
             with open(path, 'wb') as f:
                 f.write(data)
-            request.session['head_photo'] = '/media/head_portrait/{}.jepg'.format(
+            request.session['head_photo'] = '/media/head_portrait/{}.jpeg'.format(
                 photo_name)
         return Response({'return_code': True})

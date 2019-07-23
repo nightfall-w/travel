@@ -15,8 +15,8 @@ function skipPage() {
     let maxPage = parseInt($('.next').prev().text());
     page_id = parseInt(page_id, 10)
     if (page_id == 'NaN' || page_id <= 0 || !Number.isInteger(page_id) || page_id > maxPage) {
-        console.log('错误的页码：'+page_id)
-    }else{
+        console.log('错误的页码：' + page_id)
+    } else {
         let offset = (page_id - 1) * limit;
         if ($('.fa.fa-long-arrow-up').length === 1) {
             var sort_by = parseInt($('.fa.fa-long-arrow-up').parent().attr('sort'))
@@ -116,19 +116,14 @@ function applyTemplate(scheme) {
     let day = scheme.day;
     let night = scheme.night;
     let endLocale = scheme.endLocale;
-    let price = scheme.price;
-    if (price === 0){
-        price = '售罄'
-    }
-    else{
-        price = '￥'+price
-    }
-    let reviewNum = scheme.reviewNum;
+    let minPrice = scheme.minPrice;
+    price = '￥' + minPrice;
+    let reviewNum = scheme.reviewNumber;
     let beLike = scheme.beLike;
-    let grade = scheme.grade;
-    let photoUrl = scheme.photoUrl;
+    let grade = scheme.avgScore;
+    let firstPhoto = scheme.firstPhoto;
     let scheme_content = '<div class="package-list-item clearfix">' +
-        '<div class="image">' + '<img src="' + '../..' + photoUrl + '" alt="Tour Package"/>' +
+        '<div class="image">' + '<img src="' + '../../' + firstPhoto + '" alt="Tour Package"/>' +
         '<div class="absolute-in-image">' +
         '<div class="duration"><span>' + day + ' 天' + night + '夜</span></div>' +
         '</div>' +
@@ -209,13 +204,13 @@ function getData(limit = 12, offset = 0, sort_by = 0) {
         'introduce,' +
         'originating,' +
         'endLocale,' +
-        'price,' +
-        'reviewNum,' +
+        'minPrice,' +
+        'reviewNumber,' +
         'beLike,' +
-        'grade,' +
+        'avgScore,' +
         'day,' +
         'night,' +
-        'photoUrl,' +
+        'firstPhoto,' +
         '}' +
         '}' +
         '}';

@@ -1,12 +1,13 @@
 # coding=utf-8
-import requests
 import datetime
-import eventlet
-from celery import task
-from utils.hash import hash_sign
-from utils.common import getConfig
 
-# eventlet.monkey_patch(all=True)
+import requests
+from celery import task
+
+from utils.common import getConfig
+from utils.hash import hash_sign
+
+
 @task(name="request_to_chit_platform")
 def request_to_chit_platform(phone_number, verification_code):
     """
@@ -17,11 +18,6 @@ def request_to_chit_platform(phone_number, verification_code):
         True:发送成功
         False:发送失败
     """
-
-    proxy_dict = {
-        "http": "http://child-prc.intel.com:913/",
-        "https": "http://child-prc.intel.com:913/"
-    }
 
     api = getConfig('MiaoDi', 'api')
     accountSid = getConfig('MiaoDi', 'accountSid')
@@ -34,13 +30,9 @@ def request_to_chit_platform(phone_number, verification_code):
         'accountSid': accountSid, 'templateid': templateid, 'param': param,
         'to': phone_number, 'timestamp': timestamp, 'sig': sign
     }
-
-    return True
-    response = requests.post(url=api, data=data, proxies=proxy_dict)
-    # response = requests.post(url=api, data=data)
+    response = requests.post(url=api, data=data)
     ret_json = response.text
     ret_dict = eval(ret_json)
-
     if ret_dict.get('respCode') != '00000':
         return False
     else:

@@ -1,43 +1,40 @@
 # -*- coding:utf-8 -*-
 import graphene
-from graphene_django.types import DjangoObjectType
+from graphene_mongo.types import MongoengineObjectType
 
 from info.models import Scheme, Ticket, Scenic, Score, Review, Journey
 
 
-class UserFields(graphene.AbstractType):
-    price = graphene.Int()
-    grade = graphene.Float()
+class SubjoinFields(graphene.AbstractType):
     be_like = graphene.Boolean()
-    review_num = graphene.Int()
     photo_url = graphene.String()
 
 
-class SchemeType(DjangoObjectType, UserFields):
+class SchemeType(MongoengineObjectType, SubjoinFields):
     class Meta:
         model = Scheme
 
 
-class TicketType(DjangoObjectType):
+class TicketType(MongoengineObjectType):
     class Meta:
         model = Ticket
 
 
-class ScenicType(DjangoObjectType):
+class ScenicType(MongoengineObjectType):
     class Meta:
         model = Scenic
 
 
-class ScoreType(DjangoObjectType):
+class ScoreType(MongoengineObjectType):
     class Meta:
         model = Score
 
 
-class ReviewType(DjangoObjectType):
+class ReviewType(MongoengineObjectType):
     class Meta:
         model = Review
 
 
-class JourneyType(DjangoObjectType):
+class JourneyType(MongoengineObjectType):
     class Meta:
         model = Journey

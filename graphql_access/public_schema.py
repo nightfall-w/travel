@@ -1,13 +1,13 @@
 # -*- coding:utf-8 -*-
 import datetime
 
+from django.db.models import Avg
 from rest_framework.pagination import LimitOffsetPagination, _positive_int
 from rest_framework.views import APIView
 
-from django.db.models import Avg
-
 from graphql_access.schema_base import *
 from graphql_access.utils import SORTKEY
+from info.models import User
 
 
 class MyLimitOffsetPagination(LimitOffsetPagination):
@@ -59,35 +59,12 @@ class PageSchemeType(graphene.ObjectType):
         # 看sort条件是否在规定符合规定，0表示默认，不排序）
         self.sort_by = self.sort_by if self.sort_by in SORTKEY.keys() else 0
         sort_key = SORTKEY[self.sort_by]
-        current_date = datetime.date.today()
-        if abs(self.sort_by) == 1:
-            # 根据scheme name进行排序
+        if abs(self.sort_by) in [1, 2, 3, 4]:
+            # 1 根据scheme name进行排序
+            # 2 根据当日价格排序
+            # 3 根据目的地排序
+            # 4 根据评分进行排序
             schemes = Scheme.objects.order_by(sort_key)
-        elif abs(self.sort_by) == 2:
-            # 根据当日价格排序
-            schemes = [ticket.scheme for ticket in
-                       Ticket.objects.order_by(sort_key).select_related('scheme').filter(start_date=current_date).only(
-                           'scheme')]
-        elif abs(self.sort_by) == 3:
-            # 根据目的地排序
-            schemes = Scheme.objects.order_by(sort_key)
-        elif abs(self.sort_by) == 4:
-            # 根据评分进行排序
-            schemes = Scheme.objects.prefetch_related('score')
-            schemes_dict = dict()
-            for scheme in schemes:
-                # 遍历scheme对象，拿到对应的平均评分，结果形式为  例:{'score_number__avg':4.6}
-                score_avg = scheme.score.aggregate(Avg('score_number'))
-                # 如果scheme(套餐还未被评分，为None，我们设为4)
-                if score_avg['score_number__avg'] is None:
-                    score_avg['score_number__avg'] = 4
-                schemes_dict[scheme] = score_avg['score_number__avg']
-            if self.sort_by == 4:
-                # 将schemes由评由高到低排序，默认
-                schemes = sorted(schemes_dict, key=schemes_dict.__getitem__, reverse=True)
-            else:
-                # 将schemes由评分由低到高排序
-                schemes = sorted(schemes_dict, key=schemes_dict.__getitem__)
         else:
             schemes = Scheme.objects.all()
 
@@ -101,35 +78,16 @@ class PageSchemeType(graphene.ObjectType):
             request.offset = self.offset
         page_schemes = pg.paginate_queryset(queryset=schemes, request=request)
 
-        # 获取当前登录用户所喜欢的所有套餐
-        user = request.user
-        like_schemes = user.scheme_set.all() if user and user.username else []
+        # 获取当前登录用户
+        uid = request.user.id
+        if uid:
+            user = User.objects.filter(uid=uid).first()
+        else:
+            user = None
         # 为分页后的套餐实现抽象的属性
         for scheme in page_schemes:
-            journeys = scheme.journey_scheme.prefetch_related('scenic').only('scenic')
-            if journeys:
-                for journey in journeys:
-                    if not journey.scenic:
-                        break
-                    for scenic in journey.scenic.all():
-                        image = scenic.image
-                        if image:
-                            scheme.photo_url = image.url
-                            break
-                        else:
-                            continue
-                    else:
-                        continue
-                    break
-            else:
-                scheme.photo_url = ''
-            tickets = scheme.ticket_scheme.filter(start_date=current_date)
-            score_avg = scheme.score.aggregate(Avg('score_number'))
-            review_num = scheme.review_scheme.count()
-            scheme.grade = '%.1' % score_avg['score_number__avg'] if score_avg['score_number__avg'] else 4.0
-            scheme.price = tickets[0].unit_price if tickets else 0
-            scheme.be_like = 1 if scheme in like_schemes else 0
-            scheme.review_num = review_num
+            # 如果user存在于scheme中,那be_like为1,表示用户喜欢这个此套餐,否则反之
+            scheme.be_like = 1 if user and user in scheme.favorites else 0
         return page_schemes
 
 
@@ -164,11 +122,11 @@ class UserFavorites(graphene.Mutation):
 class Query(object):
     scheme = graphene.List(SchemeType, limit=graphene.Int(), offset=graphene.Int())
     page_schemes = graphene.List(PageSchemeType, limit=graphene.Int(), offset=graphene.Int(), sort_by=graphene.Int())
-    ticket = graphene.List(TicketType)
 
     def resolve_scheme(self, info, **kwargs):
         # 返回套餐数据
         schemes = Scheme.objects.all()
+
         pg = MyLimitOffsetPagination()
         request = APIView().initialize_request(info.context)
         if kwargs.get('limit'):
@@ -176,8 +134,6 @@ class Query(object):
         if kwargs.get('offset'):
             request.offset = kwargs.get('offset')
         page_schemes = pg.paginate_queryset(queryset=schemes, request=request)
-        for scheme in page_schemes:
-            scheme.total = len(schemes)
         return page_schemes
 
     def resolve_page_schemes(self, info, **kwargs):
@@ -186,18 +142,5 @@ class Query(object):
         sort_key = kwargs.get('sort_by', 0)
         sort_key = sort_key if sort_key in SORTKEY.keys() else 0
         sort_by = SORTKEY[sort_key]
-        if abs(sort_key) == 2:
-            # 因为要根据当天票的价格排序 所以只查找当天有票的套餐
-            current_date = datetime.date.today()
-            schemes = Ticket.objects.order_by(sort_by).select_related('scheme').filter(start_date=current_date).only(
-                'scheme')
-        else:
-            # 否则其他排序方式都是查所有的套餐
-            schemes = Scheme.objects.all()
-        total_schemes = len(schemes)
+        total_schemes = Scheme.objects.order_by(sort_by).count()
         return [PageSchemeType(limit=limit, offset=offset, sort_by=sort_key, total=total_schemes)]
-
-    def resolve_ticket(self, info, **kwargs):
-        # 返回指定scheme
-        tickets = Ticket.objects.all()
-        return tickets

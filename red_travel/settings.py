@@ -77,10 +77,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'travel',
         'USER': 'root',
-        # 'PASSWORD': 'intel@123',
         'PASSWORD': '111111',
-        'HOST': 'centos-k8stest-sh-intel-com',
-        # 'HOST': '127.0.0.1',
+        'HOST': '127.0.0.1',
         'PORT': 13306,
         'OPTIONS': {
             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -95,7 +93,7 @@ MONGODB_DATABASES = {
         "tz_aware": True,  # 设置时区
     },
 }
-connect('test', host='127.0.0.1')
+connect('travel', host='127.0.0.1')
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (

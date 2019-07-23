@@ -18,14 +18,14 @@ class PublicMutations(graphene.ObjectType):
 PublicSchema = graphene.Schema(query=PublicQuery, mutation=PublicMutations)
 
 
-class PrivateQuery(private_schema.Query, graphene.ObjectType):
+class PrivateQuery(graphene.ObjectType):
     # 总的Private Schema的query入口
     pass
 
 
 class PrivateMutations(graphene.ObjectType):
     # 总的Private Schema的mutations入口
-    UserFavorites = private_schema.UserFavorites.Field()
+    # UserFavorites = private_schema.UserFavorites.Field()
+    pass
 
-
-PrivateSchema = graphene.Schema(query=PrivateQuery, mutation=PrivateMutations)
+# PrivateSchema = graphene.Schema(query=PrivateQuery, mutation=PrivateMutations)

@@ -1,82 +1,25 @@
 # -*- coding:utf-8 -*-
 import datetime
 
-from rest_framework import serializers
-from django.db.models import Avg
+from info.models import Scheme
+from rest_framework_mongoengine import serializers
 
 
-class schemeSerializer(serializers.Serializer):
-    name = serializers.CharField(read_only=True, max_length=20)
-    day = serializers.IntegerField(read_only=True)
-    night = serializers.IntegerField(read_only=True)
-    favorites = serializers.SerializerMethodField(read_only=True)
-    score_avg = serializers.SerializerMethodField(read_only=True, default=4.0)
-    photo_url = serializers.SerializerMethodField(read_only=True)
-    review_num = serializers.SerializerMethodField(read_only=True)
-    unit_price = serializers.SerializerMethodField(read_only=True)
+class schemeSerializer(serializers.DocumentSerializer):
+    '''
+    schemes序列化器(DocumentSerializer继承自drf中的ModelSerializer，用于代替ModelSerializer序列化mongodb中的document)
+    '''
 
-    def get_favorites(self, obj):
-        user = self.context['request'].user
-        like_schemes = user.scheme_set.all() if user and user.username else []
-        favorites = 1 if obj in like_schemes else 0
-        return favorites
-
-    def get_score_avg(self, obj):
-        score_avg = obj.score.aggregate(Avg('score_number'))['score_number__avg']
-        if score_avg is None:
-            score_avg = 4
-        return score_avg
-
-    def get_photo_url(self, obj):
-        journeys = obj.journey_scheme.prefetch_related('scenic').only('scenic')
-        if journeys:
-            for journey in journeys:
-                if not journey.scenic:
-                    break
-                for scenic in journey.scenic.all():
-                    image = scenic.image
-                    if image:
-                        photo_url = image.url
-                        break
-                    else:
-                        continue
-                else:
-                    continue
-                break
-        else:
-            photo_url = ''
-        return photo_url
-
-    def get_review_num(self, obj):
-        review_num = obj.review_scheme.count()
-        return review_num
-
-    def get_unit_price(self, obj):
-        current_date = datetime.date.today()
-        tickets = obj.ticket_scheme.filter(start_date=current_date)
-        unit_price = tickets[0].unit_price if tickets else 0
-        return unit_price
+    class Meta:
+        model = Scheme
+        fields = ['name', 'day', 'night', 'review_number', 'first_photo', 'avg_score', 'min_price']
 
 
-class scenicSpotSerializer(serializers.Serializer):
-    end_locale = serializers.CharField(read_only=True, max_length=20)
-    start_price = serializers.SerializerMethodField(read_only=True)
-    background_img = serializers.SerializerMethodField(read_only=True)
-    detail_url = serializers.SerializerMethodField(read_only=True)
+class spotSchemeSerializer(serializers.DocumentSerializer):
+    '''
+    热门套餐的序列化器
+    '''
 
-    def get_start_price(self, obj):
-        today = datetime.date.today()
-        return obj.ticket_scheme.filter(start_date=today)[0].unit_price
-
-    def get_background_img(self, obj):
-        journeys = obj.journey_scheme.all()
-        for journey in journeys:
-            if journey.scenic.all():
-                for scenic in journey.scenic.all():
-                    if scenic.image:
-                        return scenic.image.url
-        else:
-            return ''
-
-    def get_detail_url(self, obj):
-        return '/info/detail/?id={}'.format(obj.id)
+    class Meta:
+        model = Scheme
+        fields = ['end_locale', 'min_price', 'first_photo']

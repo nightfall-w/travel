@@ -10,12 +10,14 @@ django.setup()
 import requests
 from lxml import etree
 from info.models import *
+from django.db.utils import InternalError
 
 
 class Crawl(object):
-    def __init__(self):
+    def __init__(self, page):
         self.host = 'https://utzu3.package.qunar.com'
-        self.entrance_url = 'http://utzu3.package.qunar.com/search/a-a-a-a-a---a----opt-desc-a-/78#vid=qb2c_frly&func=6Lef5Zui5ri4&pid=388238920&rid=28253804&vd=56aP5Lq65peF5ri4'
+        self.entrance_url = 'http://utzu3.package.qunar.com/search/a-a-a-a-a---a----opt-desc-a-/{}#vid=qb2c_frly&func=6Lef5Zui5ri4&pid=388238920&rid=28253804&vd=56aP5Lq65peF5ri4'.format(
+            page)
         self.user_agents = [
             'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0',
             'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2',
@@ -41,7 +43,6 @@ class Crawl(object):
         print(scheme_url)
         response = requests.get(url=scheme_url, headers=self.headers).text
         html = etree.HTML(response)
-
         name = html.xpath('//*[@id="page-root"]/div[2]/div[3]/div[2]/h1/text()')[1].strip()
         features = html.xpath('//*[@id="page-root"]/div[2]/div[3]/div[2]/h2/div/span/text()')
         feature_list = [str.strip() for str in features]
@@ -57,13 +58,20 @@ class Crawl(object):
             if not originating:
                 originating = response['data']['TRAFFIC']['round'][0]['backs'][0].get('gatherSpot', None)
         except:
-            originating = response['data']['TRAFFIC']['tos'][0][0]['depStation']
+            try:
+                originating = response['data']['TRAFFIC']['tos'][0][0].get('depStation', None)
+                if not originating:
+                    originating = response['data']['TRAFFIC']['tos'][0][0].get('arrCity', '')
+            except TypeError:
+                raise TypeError
         try:
             end_locale = response['data']['TRAFFIC']['round'][0]['backs'][0].get('depCity', None)
             if not end_locale:
                 end_locale = response['data']['TRAFFIC']['round'][0]['backs'][0].get('arrStation', None)
         except:
-            end_locale = response['data']['TRAFFIC']['tos'][0][0]['arrStation']
+            end_locale = response['data']['TRAFFIC']['backs'][0][0].get('depCity', '')
+            if not end_locale:
+                end_locale = response['data']['TRAFFIC']['tos'][0][0]['arrStation']
         through_time = html.xpath('//*[@id="page-root"]/div[2]/div[3]/div[2]/div[3]/ul/li[2]/span/em[2]/text()')[
             0].strip()
         if len(list(through_time)) == 2:
@@ -91,7 +99,6 @@ class Crawl(object):
                                            end_locale=end_locale,
                                            day=day,
                                            night=night, introduce=introduce, contains_content=contains_content)
-
         return scheme_obj
 
     def get_journey(self, current_scheme, scheme_obj):
@@ -116,20 +123,24 @@ class Crawl(object):
                         tourSpot = experience['tourDetails']['tourSpot']
                         print(time)
                         print(content)
-                        scenic_objs = None
+                        scenic_objs = []
                         if images:
                             scenics = []
                             for img_url in images:
                                 if img_url.startswith('//'):
                                     img_url = 'https:' + img_url
                                 img_data = requests.get(url=img_url, headers=self.headers).content
-                                with open('../media/images/scenic/{}'.format(img_url[-23::]), 'wb') as f:
+                                with open('../media/images/scenic/{}'.format(''.join(img_url[-38::].split('/'))),
+                                          'wb') as f:
                                     f.write(img_data)
-                                scenic = Scenic(name=tourSpot, image='media/images/scenic/{}'.format(img_url[-23::]))
+                                scenic = Scenic(name=tourSpot, path='media/images/scenic/{}'.format(
+                                    ''.join(img_url[-38::].split('/'))))
                                 scenics.append(scenic)
-                                scenic_objs = Scenic.objects.bulk_create(scenics)
-                        Journey.objects.create(day=number, hotel=hotel, time=time, content=content,
-                                               visit_address=tourSpot, scheme=scheme_obj, scenic=scenic_objs)
+                            scenic_objs.append(scenics)
+                        journey = Journey(day=number, hotel=hotel, time=time, content=content,
+                                          visit_address=tourSpot, scenic=scenic_objs)
+                        scheme_obj.journeys.append(journey)
+                        scheme_obj.save()
                         print(images)
                         print(tourSpot)
             else:
@@ -137,6 +148,8 @@ class Crawl(object):
                     content = i['description']
                 print('内容:{}'.format(content))
                 time = i['scheduleTours'][0]['time']
+                if not time:
+                    time = i['scheduleTours'][1]['time']
                 print(time)
                 details = i['scheduleTourDetails']
                 visit_address = []
@@ -153,19 +166,23 @@ class Crawl(object):
                             if img_url.startswith('//'):
                                 img_url = 'https:' + img_url
                             img_data = requests.get(url=img_url, headers=self.headers).content
-                            with open('../media/images/scenic/{}'.format(img_url[-23::]), 'wb') as f:
+                            with open('../media/images/scenic/{}'.format(''.join(img_url[-38::].split('/'))),
+                                      'wb') as f:
                                 f.write(img_data)
-                            scenic = Scenic.objects.create(name=tourSpot,
-                                                           image='images/scenic/{}'.format(img_url[-23::]))
-                            scenics.append(scenic.id)
-                        scenic_objs += scenics
-                    journey = Journey.objects.create(day=number, hotel=hotel, time=time, content=content,
-                                                     visit_address=','.join(visit_address),
-                                                     scheme=scheme_obj)
-                    journey.scenic.add(*scenic_objs)
+                            scenic = Scenic(name=tourSpot,
+                                            path='media/images/scenic/{}'.format(
+                                                ''.join(img_url[-38::].split('/'))))
+                            scenics.append(scenic)
+                        scenic_objs.extend(scenics)
+                    journey = Journey(day=number, hotel=hotel, time=time, content=content,
+                                      visit_address=','.join(visit_address), scenics=scenic_objs)
+                    scheme_obj.journeys.append(journey)
+                    scheme_obj.save()
                 else:
-                    Journey.objects.create(day=number, hotel=hotel, time=time, content=content,
-                                           visit_address=scheme_obj.end_locale, scheme=scheme_obj)
+                    journey = Journey(day=number, hotel=hotel, time=time, content=content,
+                                      visit_address='')
+                    scheme_obj.journeys.append(journey)
+                    scheme_obj.save()
 
     def get_ticket(self, current_scheme, scheme_obj):
         scheme_url = self.host + current_scheme
@@ -175,7 +192,7 @@ class Crawl(object):
             'referer': 'https://utzu3.package.qunar.com/user/id={}'.format(pid),
             'Cookie': 'QN99=7702; QN300=auto_4e0d874a; QN1=eIQjmlzBqHFhRT6bDfWjAg==; QunarGlobal=10.86.213.150_21340582_16a546e783d_24cd|1556195442035; QN205=auto_4e0d874a; QN277=auto_4e0d874a; QN601=4405cb449f5f74e47e559d919c6908a8; _i=VInJOyfIzIYwCPO3ZDpzKOXMI-Yq; QN269=F1050570675511E99D43FA163E8B6C19; QN48=4f4d85f0-da3d-4546-a4f0-7f23c94889fd; fid=739f6953-eced-475f-a342-1c80358b10bb; QN49=28253804; _jzqx=1.1556195459.1556339418.2.jzqsr=dujia%2Equnar%2Ecom|jzqct=/pi/detail_28253804.jzqsr=utzu3%2Epackage%2Equnar%2Ecom|jzqct=/search/a-a-a-a-a---a----opt-desc--; _vi=pXoyH-6P3sxy37s_Qed-O8oYYruUZKPjDkuZk4piOJ0ajU43zyZrr3swuU7Ynm769UP2WfYUXkV64bx7ctRmVWW2kK36u-mhc-GWt76HyZHqJ3sA-6hvMvHZ4eU1lw8qQh9IWJCR4jeJrZ1oec3hbYAL9oMBSid30z52gq812gk_; _jzqckmp=1; csrfToken=A73mjrtJd5G89ADz4NCIaXhlth7xBEoZ; _qzjc=1; _jzqa=1.2817153281033170000.1556195459.1556376179.1556449335.10; _jzqc=1; Hm_lvt_a8a41d37454fd880cdb23d6ef05d917b=1556195459,1556199009,1556365403,1556449335; QN271=d3c9888f-63e0-431d-a60d-d00c707a592e; QN243=344; _qzja=1.807867989.1556195458625.1556376179521.1556449335082.1556449335082.1556449710375..0.0.57.10; _qzjb=1.1556449335081.2.0.0.0; _qzjto=2.1.0; _jzqb=1.4.10.1556449335.1; Hm_lpvt_a8a41d37454fd880cdb23d6ef05d917b=1556449710'
         }
-        get_ticket_api = '{}/api/calPrices.json?tuId=&pId={}&month=2019-06'.format(self.host, pid)
+        get_ticket_api = '{}/api/calPrices.json?tuId=&pId={}&month=2019-08'.format(self.host, pid)
         print(get_ticket_api)
         response = json.loads(requests.get(get_ticket_api, headers=headers).text)
         for ticket in response['data']['team']:
@@ -186,20 +203,28 @@ class Crawl(object):
                 end_date = response['data']['team'][
                     response['data']['team'].index(ticket) + scheme_obj.night]['date']
                 surplus = random.choice(range(500))
-                Ticket.objects.create(scheme=scheme_obj, start_date=ticket['date'], end_date=end_date, surplus=surplus,
-                                      unit_price=ticket['prices']['adultPrice'])
+                ticket = Ticket(start_date=ticket['date'], end_date=end_date, surplus=surplus,
+                                unit_price=ticket['prices']['adultPrice'])
+                scheme_obj.tickets.append(ticket)
+                scheme_obj.save()
             except IndexError:
                 break
 
 
-def main():
-    crawl = Crawl()
+def main(page):
+    crawl = Crawl(page=page)
     crawl.get_schemes()
     for scheme in crawl.schemes:
-        scheme_obj = crawl.get_details(scheme)
+        try:
+            scheme_obj = crawl.get_details(scheme)
+        except Exception as ex:
+            print(ex)
+            continue
         crawl.get_journey(scheme, scheme_obj=scheme_obj)
         crawl.get_ticket(scheme, scheme_obj=scheme_obj)
 
 
 if __name__ == '__main__':
-    main()
+    for page in range(29, 139):
+        print('*' * 150 + str(page))
+        main(page)

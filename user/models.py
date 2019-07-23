@@ -9,7 +9,7 @@ class Auth_profile(models.Model):
     user_obj = models.OneToOneField(User, on_delete=models.CASCADE)
     head_photo = models.FilePathField(
         path='media/head_portrait',
-        default='/media/head_portrait/default.jepg')
+        default='/media/head_portrait/default.jpeg')
 
     class Meta:
         db_table = 'auth_profile'

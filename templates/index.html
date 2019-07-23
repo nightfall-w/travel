@@ -1,142 +1,189 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block loading %}
-<div id="introLoader" class="introLoading"></div>
+    <div id="introLoader" class="introLoading"></div>
 {% endblock %}
 {% block detailed_node %}
 
-<div class="clear"></div>
-<!-- start Main Wrapper -->
-<div class="main-wrapper">
+    <div class="clear"></div>
+    <!-- start Main Wrapper -->
+    <div class="main-wrapper">
 
-    <div class="flexslider-hero-slider">
-        <div id="mainFlexSlider">
-            <div class="flexslider">
-                <ul class="slides">
-                    <li class="slide">
-                        <div class="flexslider-image-bg"
-                             style="background: url(/static/images/hero-header/02.jpg) center center no-repeat; background-size:cover"></div>
-                    </li>
-                    <!-- slide1 end -->
+        <div class="flexslider-hero-slider">
+            <div id="mainFlexSlider">
+                <div class="flexslider">
+                    <ul class="slides">
+                        <li class="slide">
+                            <div class="flexslider-image-bg"
+                                 style="background: url(/static/images/hero-header/02.jpg) center center no-repeat; background-size:cover"></div>
+                        </li>
+                        <!-- slide1 end -->
 
-                    <li class="slide">
-                        <div class="flexslider-image-bg"
-                             style="background: url(/static/images/hero-header/03.jpg) center center no-repeat; background-size:cover"></div>
-                    </li>
-                    <!-- slide2 end -->
+                        <li class="slide">
+                            <div class="flexslider-image-bg"
+                                 style="background: url(/static/images/hero-header/03.jpg) center center no-repeat; background-size:cover"></div>
+                        </li>
+                        <!-- slide2 end -->
 
-                    <li class="slide">
-                        <div class="flexslider-image-bg"
-                             style="background: url(/static/images/hero-header/04.jpg) center center no-repeat; background-size:cover"></div>
-                    </li>
-                    <!-- slide3 end -->
+                        <li class="slide">
+                            <div class="flexslider-image-bg"
+                                 style="background: url(/static/images/hero-header/04.jpg) center center no-repeat; background-size:cover"></div>
+                        </li>
+                        <!-- slide3 end -->
 
-                    <li class="slide">
-                        <div class="flexslider-image-bg"
-                             style="background: url(/static/images/hero-header/05.jpg) center center no-repeat; background-size:cover"></div>
-                    </li>
-                    <!-- slide4 end -->
-                    !-- slide5 end -->
+                        <li class="slide">
+                            <div class="flexslider-image-bg"
+                                 style="background: url(/static/images/hero-header/05.jpg) center center no-repeat; background-size:cover"></div>
+                        </li>
+                        <!-- slide4 end -->
+                        !-- slide5 end -->
 
-                </ul>
-                <!-- slides end -->
+                    </ul>
+                    <!-- slides end -->
 
-                <div class="flexslider-overlay"></div>
+                    <div class="flexslider-overlay"></div>
+
+                </div>
+                <!-- flexslider end -->
+            </div>
+
+            <div class="main-search-holder">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+
+                            <h1 class="hero-title">带上背包去旅行</h1>
+
+                            <p class="lead">走遍大江南北 锦绣山河 我的旅行包都装得下</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="main-search-wrapper full-width">
+
+                        <div class="inner">
+
+                            <div class="column-item">
+
+                                <div class="form-group">
+
+                                    <select name="destination" class="select2-multi form-control"
+                                            data-placeholder="选择一个目的地" multiple>
+                                        <option value="">选择一个目的地</option>
+                                        <option value="0">任意地点</option>
+                                        {% for end_locale in end_locales %}
+                                            <option value="{{ end_locale }}">{{ end_locale }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="column-item">
+
+                                <div class="form-group">
+
+                                    <select name="month" class="select2-multi form-control"
+                                            data-placeholder="选择你的出发月份" multiple>
+                                        <option value="">选择你的出发月份</option>
+                                        <option value="0">任意月份</option>
+                                        <option value="1">1 月</option>
+                                        <option value="2">2 月</option>
+                                        <option value="3">3 月</option>
+                                        <option value="4">4 月</option>
+                                        <option value="5">5 月</option>
+                                        <option value="6">6 月</option>
+                                        <option value="7">7 月</option>
+                                        <option value="8">8 月</option>
+                                        <option value="9">9 月</option>
+                                        <option value="10">10 月</option>
+                                        <option value="11">11 月</option>
+                                        <option value="12">12 月</option>
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="column-item">
+
+                                <div class="form-group">
+
+                                    <select name="year" class="select2-multi form-control"
+                                            data-placeholder="选择你的出发年份" multiple>
+                                        <option value="">选择你的出发年份</option>
+                                        <option value="0">任意年份</option>
+                                        {% for year in years %}
+                                            <option value="{{ year }}">{{ year }}</option>
+                                        {% endfor %}
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                            <div class="column-item for-btn">
+
+                                <div class="form-group">
+
+                                    <a href="#" class="btn btn-primary btn-block">搜一下</a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
-            <!-- flexslider end -->
+
         </div>
 
-        <div class="main-search-holder">
+        <div class="clear"></div>
+
+
+        <div class="post-hero bg-light">
 
             <div class="container">
 
                 <div class="row">
 
-                    <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-
-                        <h1 class="hero-title">带上背包去旅行</h1>
-
-                        <p class="lead">走遍大江南北 锦绣山河 我的旅行包都装得下</p>
-
+                    <div class="col-sm-4">
+                        <div class="featured-count clearfix">
+                            <div class="icon"><i class="pe-7s-map-marker"></i></div>
+                            <div class="content">
+                                <h6>300+ Destinations</h6>
+                                <span>Tastes giving in passed direct me valley supply.</span>
+                            </div>
+                        </div>
                     </div>
 
-                </div>
-
-                <div class="main-search-wrapper full-width">
-
-                    <div class="inner">
-
-                        <div class="column-item">
-
-                            <div class="form-group">
-
-                                <select name="destination" class="select2-multi form-control"
-                                        data-placeholder="选择一个目的地" multiple>
-                                    <option value="">选择一个目的地</option>
-                                    <option value="0">任意地点</option>
-                                    {% for end_locale in end_locales %}
-                                    <option value="{{ end_locale }}">{{ end_locale }}</option>
-                                    {% endfor %}
-                                </select>
-
+                    <div class="col-sm-4">
+                        <div class="featured-count clearfix">
+                            <div class="icon"><i class="pe-7s-user"></i></div>
+                            <div class="content">
+                                <h6>500+ Travel Guides</h6>
+                                <span>Prepared do an dissuade whatever steepest.</span>
                             </div>
-
                         </div>
+                    </div>
 
-                        <div class="column-item">
-
-                            <div class="form-group">
-
-                                <select name="month" class="select2-multi form-control"
-                                        data-placeholder="选择你的出发月份" multiple>
-                                    <option value="">选择你的出发月份</option>
-                                    <option value="0">任意月份</option>
-                                    <option value="1">1 月</option>
-                                    <option value="2">2 月</option>
-                                    <option value="3">3 月</option>
-                                    <option value="4">4 月</option>
-                                    <option value="5">5 月</option>
-                                    <option value="6">6 月</option>
-                                    <option value="7">7 月</option>
-                                    <option value="8">8 月</option>
-                                    <option value="9">9 月</option>
-                                    <option value="10">10 月</option>
-                                    <option value="11">11 月</option>
-                                    <option value="12">12 月</option>
-                                </select>
-
+                    <div class="col-sm-4">
+                        <div class="featured-count clearfix">
+                            <div class="icon"><i class="pe-7s-smile"></i></div>
+                            <div class="content">
+                                <h6>20000+ Happy Customers</h6>
+                                <span>Devonshire invitation discovered indulgence.</span>
                             </div>
-
                         </div>
-
-                        <div class="column-item">
-
-                            <div class="form-group">
-
-                                <select name="year" class="select2-multi form-control"
-                                        data-placeholder="选择你的出发年份" multiple>
-                                    <option value="">选择你的出发年份</option>
-                                    <option value="0">任意年份</option>
-                                    {% for year in years %}
-                                    <option value="{{ year }}">{{ year }}</option>
-                                    {% endfor %}
-                                </select>
-
-                            </div>
-
-                        </div>
-
-                        <div class="column-item for-btn">
-
-                            <div class="form-group">
-
-                                <a href="#" class="btn btn-primary btn-block">搜一下</a>
-
-                            </div>
-
-                        </div>
-
                     </div>
 
                 </div>
@@ -145,399 +192,354 @@
 
         </div>
 
-    </div>
+        <section>
 
-    <div class="clear"></div>
-
-
-    <div class="post-hero bg-light">
-
-        <div class="container">
-
-            <div class="row">
-
-                <div class="col-sm-4">
-                    <div class="featured-count clearfix">
-                        <div class="icon"><i class="pe-7s-map-marker"></i></div>
-                        <div class="content">
-                            <h6>300+ Destinations</h6>
-                            <span>Tastes giving in passed direct me valley supply.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="featured-count clearfix">
-                        <div class="icon"><i class="pe-7s-user"></i></div>
-                        <div class="content">
-                            <h6>500+ Travel Guides</h6>
-                            <span>Prepared do an dissuade whatever steepest.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-4">
-                    <div class="featured-count clearfix">
-                        <div class="icon"><i class="pe-7s-smile"></i></div>
-                        <div class="content">
-                            <h6>20000+ Happy Customers</h6>
-                            <span>Devonshire invitation discovered indulgence.</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <section>
-
-        <div class="container">
-
-            <div class="row">
-
-                <div class="col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-
-                    <div class="section-title">
-
-                        <h3>热门景点</h3>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {% verbatim %}
-            <div class="grid destination-grid-wrapper" id="recommended_schemes">
-                <template v-for="schemeInfo,index in schemesInfo">
-                    <div class="grid-item" v-if="index===0" data-colspan="10" data-rowspan="10">
-                        <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
-                           v-bind:style="{backgroundImage:'url(' + schemeInfo.background_img + ')'}">
-                            <div class="relative">
-                                <h4>{{ schemeInfo.end_locale }}</h4>
-                                <span> {{ schemeInfo.start_price }} 元起</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="grid-item" v-else-if="index===1" data-colspan="10" data-rowspan="4">
-                        <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
-                           v-bind:style="{backgroundImage:'url(' + schemeInfo.background_img + ')'}">
-                            <div class="relative">
-                                <h4>{{ schemeInfo.end_locale }}</h4>
-                                <span>￥{{ schemeInfo.start_price }} 元起</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="grid-item" v-else-if="index===2" data-colspan="5" data-rowspan="6">
-                        <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
-                           v-bind:style="{backgroundImage:'url(' + schemeInfo.background_img + ')'}">
-                            <div class="relative">
-                                <h4>{{ schemeInfo.end_locale }}</h4>
-                                <span>{{ schemeInfo.start_price }} 元起</span>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="grid-item" v-else-if="index===3" data-colspan="5" data-rowspan="6">
-                        <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
-                           v-bind:style="{backgroundImage:'url(' + schemeInfo.background_img + ')'}">
-                            <div class="relative">
-                                <h4>{{ schemeInfo.end_locale }}</h4>
-                                <span>{{ schemeInfo.start_price }} 元起</span>
-                            </div>
-                        </a>
-                    </div>
-                </template>
-            </div>
-            {% endverbatim %}
-        </div>
-
-    </section>
-
-    <section class="bg-light">
-
-        <div class="container">
-
-            <div class="row">
-
-                <div class="col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-
-                    <div class="section-title">
-
-                        <h3>Special Packages</h3>
-
-                        <p>Of distrusts immediate enjoyment curiosity do. Marianne numerous saw thoughts the
-                            humoured.</p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            {% verbatim %}
-            <div class="GridLex- gap-30-wrappper package-grid-item-wrapper">
-
-                <div class="GridLex-grid-noGutter-equalHeight" id="scheme_app">
-
-                    <template v-for="schemeInfo in schemesInfo">
-                        <div class="GridLex-col-4_sm-6_xs-12 mb-30">
-                            <div class="package-grid-item">
-                                <a href="detail-page.html">
-                                    <div class="image">
-                                        <img :src="schemeInfo.photo_url" alt="Tour Package"/>
-
-                                        <div class="absolute-in-image">
-                                            <div class="duration">
-                                                <span>{{ schemeInfo.day }} 天 {{ schemeInfo.night }} 夜</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="content clearfix">
-                                        <h5>{{ schemeInfo.name }}</h5>
-
-                                        <div class="rating-wrapper">
-                                            <div class="raty-wrapper">
-                                                <div class="star-rating-read-only"
-                                                     v-bind:data-rating-score="schemeInfo.score_avg"></div>
-                                                <span> / {{ schemeInfo.review_num }} 评论</span>
-                                            </div>
-                                        </div>
-                                        <div class="absolute-in-content">
-                                            <span class="btn"><i class="fa fa-heart-o"></i></span>
-
-                                            <div class="price" v-if="schemeInfo.unit_price === 0">售罄</div>
-                                            <div class="price" v-else>￥{{ schemeInfo.unit_price }}</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </template>
-
-                </div>
-
-            </div>
-            {% endverbatim %}
-
-        </div>
-
-    </section>
-
-    <section class="overflow-hidden why-us-half-image-wrapper">
-
-        <div class="GridLex-grid-noGutter-equalHeight">
-
-            <div class="GridLex-col-6_sm-12">
-
-                <div class="why-us-half-image-content">
-
-                    <div class="section-title text-left">
-
-                        <h3>Why Booking With Us</h3>
-
-                        <p>There are several seasons that you must travel with us</p>
-
-                    </div>
-
-                    <div class="featured-item">
-
-                        <h4>Experts On Tour</h4>
-
-                        <div class="content clearfix">
-
-                            <div class="icon">
-                                <i class="pe-7s-users"></i>
-                            </div>
-
-                            <p>Blind would equal while oh mr lain led and fact none. One preferred sportsmen resolving
-                                the happiness continued. High at of in loud rich true.</p>
-
-                        </div>
-                    </div>
-
-                    <div class="featured-item">
-
-                        <h4>Quality Accommodation</h4>
-
-                        <div class="content clearfix">
-
-                            <div class="icon">
-                                <i class="pe-7s-home"></i>
-                            </div>
-
-                            <p>Admiration stimulated cultivated reasonable be projection possession of. Real no near
-                                room ye bred sake if some. Is arranging furnished knowledge.</p>
-
-                        </div>
-                    </div>
-
-
-                    <div class="featured-item">
-
-                        <h4>Comfortable Transport</h4>
-
-                        <div class="content clearfix">
-
-                            <div class="icon">
-                                <i class="pe-7s-car"></i>
-                            </div>
-
-                            <p>Effect twenty indeed beyond for not had county. The use him without greatly can private.
-                                Increasing it unpleasant no of contrasted no continuing.</p>
-
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="GridLex-col-6_sm-12 image-bg">
-                <div class="image-bg" style="background-image:url('/static/images/image-01.jpg');"></div>
-            </div>
-
-        </div>
-
-    </section>
-
-    <section class="bg-light">
-
-        <div class="container">
-
-            <div class="row">
-
-                <div class="col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-
-                    <div class="section-title">
-
-                        <h3>Testimonial</h3>
-
-                        <p>What our customers say about us</p>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="testimonial-wrapper">
+            <div class="container">
 
                 <div class="row">
 
-                    <div class="col-xs-12 col-sm-12 col-md-6">
-                        <div class="testimonial-item clearfix">
-                            <div class="image">
-                                <img src="{% static 'images/man/01.jpg' %}" alt="Man"/>
-                            </div>
-                            <div class="content">
-                                <h4>Antony Robert</h4>
-                                <h6>From Spain</h6>
+                    <div class="col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 
-                                <p>She meant new their sex could defer child. An lose at quit to life do dull. Moreover
-                                    end horrible endeavor entrance any families. Income appear extent on of thrown in
-                                    admire.</p>
-                            </div>
+                        <div class="section-title">
+
+                            <h3>热门景点</h3>
+
                         </div>
+
                     </div>
 
-                    <div class="col-xs-12 col-sm-12 col-md-6">
-                        <div class="testimonial-item clearfix">
-                            <div class="image">
-                                <img src="{% static 'images/man/02.jpg' %}" alt="Man"/>
-                            </div>
-                            <div class="content">
-                                <h4>Mohammed Salem</h4>
-                                <h6>From Turkey</h6>
+                </div>
 
-                                <p>Consider now provided laughter boy landlord dashwood. Often voice and the spoke. No
-                                    shewing fertile village equally prepare up females sentiments increasing
-                                    particular.</p>
+                {% verbatim %}
+                <div class="grid destination-grid-wrapper" id="recommended_schemes">
+                    <template v-for="schemeInfo,index in schemesInfo">
+                        <div class="grid-item" v-if="index===0" data-colspan="10" data-rowspan="10">
+                            <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
+                               v-bind:style="{backgroundImage:'url(' + schemeInfo.first_photo + ')'}">
+                                <div class="relative">
+                                    <h4>{{ schemeInfo.end_locale }}</h4>
+                                    <span> {{ schemeInfo.min_price }} 元起</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="grid-item" v-else-if="index===1" data-colspan="10" data-rowspan="4">
+                            <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
+                               v-bind:style="{backgroundImage:'url(' + schemeInfo.first_photo + ')'}">
+                                <div class="relative">
+                                    <h4>{{ schemeInfo.end_locale }}</h4>
+                                    <span>{{ schemeInfo.min_price }} 元起</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="grid-item" v-else-if="index===2" data-colspan="5" data-rowspan="6">
+                            <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
+                               v-bind:style="{backgroundImage:'url(' + schemeInfo.first_photo + ')'}">
+                                <div class="relative">
+                                    <h4>{{ schemeInfo.end_locale }}</h4>
+                                    <span>{{ schemeInfo.min_price }} 元起</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="grid-item" v-else-if="index===3" data-colspan="5" data-rowspan="6">
+                            <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
+                               v-bind:style="{backgroundImage:'url(' + schemeInfo.first_photo + ')'}">
+                                <div class="relative">
+                                    <h4>{{ schemeInfo.end_locale }}</h4>
+                                    <span>{{ schemeInfo.min_price }} 元起</span>
+                                </div>
+                            </a>
+                        </div>
+                    </template>
+                </div>
+                {% endverbatim %}
+            </div>
+
+        </section>
+
+        <section class="bg-light">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+
+                        <div class="section-title">
+
+                            <h3>Special Packages</h3>
+
+                            <p>Of distrusts immediate enjoyment curiosity do. Marianne numerous saw thoughts the
+                                humoured.</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% verbatim %}
+                <div class="GridLex- gap-30-wrappper package-grid-item-wrapper">
+
+                    <div class="GridLex-grid-noGutter-equalHeight" id="scheme_app">
+
+                        <template v-for="schemeInfo in schemesInfo">
+                            <div class="GridLex-col-4_sm-6_xs-12 mb-30">
+                                <div class="package-grid-item">
+                                    <a href="detail-page.html">
+                                        <div class="image">
+                                            <img :src="schemeInfo.first_photo" alt="Tour Package"/>
+
+                                            <div class="absolute-in-image">
+                                                <div class="duration">
+                                                    <span>{{ schemeInfo.day }} 天 {{ schemeInfo.night }} 夜</span></div>
+                                            </div>
+                                        </div>
+                                        <div class="content clearfix">
+                                            <h5>{{ schemeInfo.name }}</h5>
+
+                                            <div class="rating-wrapper">
+                                                <div class="raty-wrapper">
+                                                    <div class="star-rating-read-only"
+                                                         v-bind:data-rating-score="schemeInfo.avg_score"></div>
+                                                    <span> / {{ schemeInfo.review_number }} 评论</span>
+                                                </div>
+                                            </div>
+                                            <div class="absolute-in-content">
+                                                <span class="btn"><i class="fa fa-heart-o"></i></span>
+                                                <div class="price">￥{{ schemeInfo.min_price }}</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+
+                </div>
+                {% endverbatim %}
+
+            </div>
+
+        </section>
+
+        <section class="overflow-hidden why-us-half-image-wrapper">
+
+            <div class="GridLex-grid-noGutter-equalHeight">
+
+                <div class="GridLex-col-6_sm-12">
+
+                    <div class="why-us-half-image-content">
+
+                        <div class="section-title text-left">
+
+                            <h3>Why Booking With Us</h3>
+
+                            <p>There are several seasons that you must travel with us</p>
+
+                        </div>
+
+                        <div class="featured-item">
+
+                            <h4>Experts On Tour</h4>
+
+                            <div class="content clearfix">
+
+                                <div class="icon">
+                                    <i class="pe-7s-users"></i>
+                                </div>
+
+                                <p>Blind would equal while oh mr lain led and fact none. One preferred sportsmen
+                                    resolving
+                                    the happiness continued. High at of in loud rich true.</p>
+
                             </div>
                         </div>
+
+                        <div class="featured-item">
+
+                            <h4>Quality Accommodation</h4>
+
+                            <div class="content clearfix">
+
+                                <div class="icon">
+                                    <i class="pe-7s-home"></i>
+                                </div>
+
+                                <p>Admiration stimulated cultivated reasonable be projection possession of. Real no near
+                                    room ye bred sake if some. Is arranging furnished knowledge.</p>
+
+                            </div>
+                        </div>
+
+
+                        <div class="featured-item">
+
+                            <h4>Comfortable Transport</h4>
+
+                            <div class="content clearfix">
+
+                                <div class="icon">
+                                    <i class="pe-7s-car"></i>
+                                </div>
+
+                                <p>Effect twenty indeed beyond for not had county. The use him without greatly can
+                                    private.
+                                    Increasing it unpleasant no of contrasted no continuing.</p>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="GridLex-col-6_sm-12 image-bg">
+                    <div class="image-bg" style="background-image:url('/static/images/image-01.jpg');"></div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="bg-light">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+
+                        <div class="section-title">
+
+                            <h3>Testimonial</h3>
+
+                            <p>What our customers say about us</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="testimonial-wrapper">
+
+                    <div class="row">
+
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="testimonial-item clearfix">
+                                <div class="image">
+                                    <img src="{% static 'images/man/01.jpg' %}" alt="Man"/>
+                                </div>
+                                <div class="content">
+                                    <h4>Antony Robert</h4>
+                                    <h6>From Spain</h6>
+
+                                    <p>She meant new their sex could defer child. An lose at quit to life do dull.
+                                        Moreover
+                                        end horrible endeavor entrance any families. Income appear extent on of thrown
+                                        in
+                                        admire.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-6">
+                            <div class="testimonial-item clearfix">
+                                <div class="image">
+                                    <img src="{% static 'images/man/02.jpg' %}" alt="Man"/>
+                                </div>
+                                <div class="content">
+                                    <h4>Mohammed Salem</h4>
+                                    <h6>From Turkey</h6>
+
+                                    <p>Consider now provided laughter boy landlord dashwood. Often voice and the spoke.
+                                        No
+                                        shewing fertile village equally prepare up females sentiments increasing
+                                        particular.</p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
 
-        </div>
+        </section>
 
-    </section>
+        <div class="newsletter-wrapper">
 
-    <div class="newsletter-wrapper">
+            <div class="container">
 
-        <div class="container">
+                <div class="flex-row flex-align-middle flex-gap-30">
 
-            <div class="flex-row flex-align-middle flex-gap-30">
+                    <div class="flex-column flex-sm-12">
+                        <div class="newsletter-text clearfix">
+                            <div class="icon">
+                                <i class="pe-7s-mail"></i>
+                            </div>
+                            <div class="content">
+                                <h3>Signup for Newsletter</h3>
 
-                <div class="flex-column flex-sm-12">
-                    <div class="newsletter-text clearfix">
-                        <div class="icon">
-                            <i class="pe-7s-mail"></i>
-                        </div>
-                        <div class="content">
-                            <h3>Signup for Newsletter</h3>
-
-                            <p>Affronting everything discretion men now own did. Still round match we to. Frankness
-                                pronounce daughters remainder extensive has but.</p>
+                                <p>Affronting everything discretion men now own did. Still round match we to. Frankness
+                                    pronounce daughters remainder extensive has but.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="flex-columns flex-sm-12">
-                    <div class="newsletter-form">
-                        <form class="">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
-                                <span class="input-group-btn">
+                    <div class="flex-columns flex-sm-12">
+                        <div class="newsletter-form">
+                            <form class="">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Search for...">
+                                    <span class="input-group-btn">
 											<button class="btn btn-primary" type="button">Signup <i
                                                     class="fa fa-long-arrow-right"></i></button>
 										</span>
-                            </div>
-                        </form>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+
                 </div>
 
             </div>
 
         </div>
 
-    </div>
+        <div class="overflow-hidden">
 
-    <div class="overflow-hidden">
+            <div class="instagram-wrapper">
+                <div id="instagram" class="instagram"></div>
+            </div>
 
-        <div class="instagram-wrapper">
-            <div id="instagram" class="instagram"></div>
         </div>
 
     </div>
-
-</div>
-<!-- end Main Wrapper -->
+    <!-- end Main Wrapper -->
 {% endblock %}
 {% block other_js %}
-<script type="text/javascript" src="{% static 'js/jquery.flexslider-min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/common.js' %}"></script>
-<script>
-    $(document).ready(function () {
-        $('#mainFlexSlider').flexslider(
-            {
-                animation: 'fade',
-                slideshow: true,
-                pauseOnHover: false,
-                controlNav: false,
-                directionNav: false,
-                slideshowSpeed: 4000,
-            }
-        );
-    getHotScheme();
-    getRecommendedSchemes();
-    });
+    <script type="text/javascript" src="{% static 'js/jquery.flexslider-min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/vue.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/axios.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/common.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#mainFlexSlider').flexslider(
+                {
+                    animation: 'fade',
+                    slideshow: true,
+                    pauseOnHover: false,
+                    controlNav: false,
+                    directionNav: false,
+                    slideshowSpeed: 4000,
+                }
+            );
+            getHotScheme();
+            getRecommendedSchemes();
+        });
 
 
-
-</script>
+    </script>
 {% endblock %}
