@@ -21,6 +21,11 @@ class Result_list(APIView):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
+        destination = request.GET.get('destination', None)
+        month = request.GET.get('month', None)
+        years = request.GET.get('year', None)
+
+
         return render(request, 'result-list.html')
 
 
@@ -68,3 +73,9 @@ class Scenic_spot(APIView):
         schemes = Scheme.objects.order_by('-favorites')[0:4]
         schemes_json = spotSchemeSerializer(schemes, many=True)
         return Response(schemes_json.data)
+
+# class IndexSearch(APIView):
+#     '''
+#         根据首页搜索条件返回result模板
+#     '''
+#     def get(self, request):
