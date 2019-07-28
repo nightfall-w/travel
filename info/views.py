@@ -17,37 +17,31 @@ class Index(APIView):
 
 
 class Result_list(APIView):
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
     def get(self, request, *args, **kwargs):
-        destination = request.GET.get('destination', None)
-        month = request.GET.get('month', None)
-        years = request.GET.get('year', None)
-
-
-        return render(request, 'result-list.html')
+        destination = request.GET.getlist('destination', None)
+        month = request.GET.getlist('month')
+        year = request.GET.getlist('year', None)
+        end_locales = Scheme.objects.distinct('end_locale')
+        years = [str(datetime.datetime.now().year), str(datetime.datetime.now().year + 1)]
+        result = {'select_destination': destination, 'select_months': month, 'select_years': year,
+                  'end_locales': end_locales, 'years': years, 'months': [str(i) for i in range(13)]}
+        return render(request, 'result-list.html', result)
 
 
 class Result_grid(APIView):
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
     def get(self, request, *args, **kwargs):
         return render(request, 'result-grid.html')
 
 
 class Detail(APIView):
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
-
     def get(self, request, *args, **kwargs):
         return render(request, 'detail-page.html')
 
 
 class Schemes(APIView):
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    '''
+    推荐热门的套餐
+    '''
 
     def get(self, request):
         schemes = Scheme.objects.filter(review_number__gt=0)
@@ -65,8 +59,9 @@ class Schemes(APIView):
 
 
 class Scenic_spot(APIView):
-    def dispatch(self, request, *args, **kwargs):
-        return super().dispatch(request, *args, **kwargs)
+    '''
+    推荐热门目的地
+    '''
 
     def get(self, request):
         # 推荐一些受关注目的地的scheme

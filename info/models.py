@@ -115,7 +115,6 @@ class Scheme(mongoengine.Document):
     avg_score = mongoengine.FloatField(verbose_name='平均评分')
     first_photo = mongoengine.StringField(verbose_name='缩略图')
 
-    # min_price = mongoengine.IntField('最低价')
     class Meta:
         db_table = 'scheme'
         verbose_name = verbose_name_plural = '旅游项目'

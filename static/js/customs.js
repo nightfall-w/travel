@@ -251,10 +251,10 @@ $(function () {
         type: "double",
         grid: true,
         min: 0,
-        max: 1000,
-        from: 200,
-        to: 800,
-        prefix: "$"
+        max: 10000,
+        from: 0,
+        to: 10000,
+        prefix: "￥"
     });
 
     // Star Range Slider
@@ -689,6 +689,7 @@ $(function () {
             }
         }
     });
+
 
     /**
      * slick
