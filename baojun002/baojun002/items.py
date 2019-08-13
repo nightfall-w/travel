@@ -20,3 +20,5 @@ class Baojun002Item(scrapy.Item):
     night = scrapy.Field()
     journeys = scrapy.Field()
     scenic_images = scrapy.Field()
+    departure = scrapy.Field()
+    tickets = scrapy.Field()

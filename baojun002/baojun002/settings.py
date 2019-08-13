@@ -14,7 +14,7 @@ BOT_NAME = 'baojun002'
 SPIDER_MODULES = ['baojun002.spiders']
 NEWSPIDER_MODULE = 'baojun002.spiders'
 LOG_LEVEL = 'WARNING'
-SPLASH_URL = 'http://127.0.0.1:8050'
+SPLASH_URL = 'http://ub2-cm-test02.sh.intel.com:8050'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'baojun002 (+http://www.yourdomain.com)'
@@ -60,6 +60,7 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy_splash.SplashCookiesMiddleware': 723,
     'scrapy_splash.SplashMiddleware': 725,
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
+    'baojun002.middlewares.ProxyMiddleware': 543,
 }
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 
@@ -73,7 +74,7 @@ HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'baojun002.pipelines.QunawangPipeline': 300,
+    'baojun002.pipelines.QunawangPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
 import re
-import scrapy
-import requests
 import json
 import random
+
+import gevent
+from gevent import monkey
+
+monkey.patch_all()
+import scrapy
+import requests
 from scrapy.http.request import Request
 from scrapy_splash import SplashRequest
 
@@ -29,8 +34,9 @@ class TestSpider(scrapy.Spider):
         r = SplashRequest(
             url=url,
             callback=self.parse_li,
-            args={"wait": 5, 'viewport': '4096x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1, },
-            splash_url='http://127.0.0.1:8050'
+            args={"wait": 5, 'viewport': '4096x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1,
+                  'proxy': 'http://child-prc.intel.com:913', },
+            splash_url='http://ub2-cm-test02.sh.intel.com:8050'
         )
         yield r
 
@@ -45,6 +51,7 @@ class TestSpider(scrapy.Spider):
             item = Baojun002Item()
             item["title"] = title
             item['destination'] = title.split(' ')[0]
+            item['departure'] = '上海'
             day_night = title.split(' ')[1]
             index_day = day_night.find('天')
             item['day'] = day_night[:index_day]
@@ -72,8 +79,8 @@ class TestSpider(scrapy.Spider):
             url=url,
             callback=self.parse_detail,
             args={"wait": 5, 'viewport': '4096x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1,
-                  "refer": refer},
-            splash_url="http://127.0.0.1:8050",
+                  "refer": refer, 'proxy': 'http://child-prc.intel.com:913'},
+            splash_url="http://ub2-cm-test02.sh.intel.com:8050",
             meta={
                 "item": item,
                 'url': url
@@ -103,7 +110,9 @@ class TestSpider(scrapy.Spider):
                 callback=self.get_journeys,
                 headers=self.headers,
                 meta={
-                    "item": item
+                    "item": item,
+                    'host': host,
+                    'pid': pid
                 }
             )
         except:
@@ -115,8 +124,8 @@ class TestSpider(scrapy.Spider):
             item = response.meta['item']
             item['scenic_images'] = []
             item['journeys'] = []
-            print(response)
             journey_response = json.loads(response.text)
+            gevent_pool = []
             print("-------------------------------------------------------------------------------------")
             for i in journey_response['data']['dailySchedules']:
                 # 循环每天的信息
@@ -137,10 +146,8 @@ class TestSpider(scrapy.Spider):
                                 for img_url in images:
                                     if img_url.startswith('//'):
                                         img_url = 'https:' + img_url
-                                    img_data = requests.get(url=img_url, headers=self.headers).content
-                                    with open('/home/baojunw/Code/travel/media/images/scenic/{}'.format(
-                                            ''.join(img_url[-38::].split('/'))), 'wb') as f:
-                                        f.write(img_data)
+                                    g = gevent.spawn(self.get_image, img_url)
+                                    gevent_pool.append(g)
                                     path = 'media/images/scenic/{}'.format(''.join(img_url[-38::].split('/')))
                                     item['scenic_images'].append(path)
                     journey = {'day': number, 'hotel': hotel, 'time': time, 'content': content,
@@ -154,6 +161,7 @@ class TestSpider(scrapy.Spider):
                         time = i['scheduleTours'][1]['time']
                     details = i['scheduleTourDetails']
                     visit_address = []
+
                     if details is not None:
                         for detail in details:
                             images = detail['tourImages']
@@ -162,10 +170,8 @@ class TestSpider(scrapy.Spider):
                             for img_url in images:
                                 if img_url.startswith('//'):
                                     img_url = 'https:' + img_url
-                                img_data = requests.get(url=img_url, headers=self.headers).content
-                                with open('/home/baojunw/Code/travel/media/images/scenic/{}'.format(
-                                        ''.join(img_url[-38::].split('/'))), 'wb') as f:
-                                    f.write(img_data)
+                                g = gevent.spawn(self.get_image, img_url)
+                                gevent_pool.append(g)
                                 path = 'media/images/scenic/{}'.format(''.join(img_url[-38::].split('/')))
                                 item['scenic_images'].append(path)
                         journey = {'day': number, 'hotel': hotel, 'time': time, 'content': content,
@@ -175,6 +181,49 @@ class TestSpider(scrapy.Spider):
                         journey = {'day': number, 'hotel': hotel, 'time': time, 'content': content,
                                    'visit_address': ''}
                         item['journeys'].append(journey)
+        except Exception as es:
+            print(es)
+            return
+        if not all([item['scenic_images'], item['journeys']]):
+            return
+        gevent.joinall(gevent_pool)
+        host = response.meta['host']
+        pid = response.meta['pid']
+        get_ticket_api = '{}/api/calPrices.json?tuId=&pId={}&month=2019-09'.format(host, pid)
+        r = Request(
+            url=get_ticket_api,
+            callback=self.get_ticket,
+            headers=self.headers,
+            meta={
+                "item": item
+            }
+        )
+        yield r
+
+    def get_image(self, url):
+        proxies = {'http': 'http://child-prc.intel.com:913',
+                   'https': 'https://child-prc.intel.com:913'}
+        img_data = requests.get(url=url, headers=self.headers,
+                                proxies=proxies).content
+        with open('C:\\Users\\sys_syscafhost\\Desktop\\ss\\git\\travel\\media\\images\\scenic\\{}'.format(
+                ''.join(url[-38::].split('/'))), 'wb') as f:
+            f.write(img_data)
+
+    def get_ticket(self, response):
+        try:
+            item = response.meta['item']
+            response = json.loads(response.text)
+            item['tickets'] = []
+            for ticket in response['data']['team']:
+                try:
+                    end_date = response['data']['team'][
+                        response['data']['team'].index(ticket) + int(item['night'])]['date']
+                    surplus = random.choice(range(500))
+                    ticket = {'start_date': ticket['date'], 'end_date': end_date, 'surplus': surplus,
+                              'unit_price': ticket['prices']['adultPrice']}
+                    item['tickets'].append(ticket)
+                except IndexError:
+                    break
         except Exception as es:
             print(es)
             return

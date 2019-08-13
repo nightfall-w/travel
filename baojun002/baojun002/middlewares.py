@@ -103,8 +103,8 @@ class Baojun002DownloaderMiddleware(object):
         spider.logger.info('Spider opened: %s' % spider.name)
 
 
-# class ProxyMiddleware(object):
-#     def process_request(self, request, spider):
-#         proxyServer =
-#         request.meta['splash']['args']['proxy'] = proxyServer
-        # request.headers["Proxy-Authorization"] = proxyAuth
+class ProxyMiddleware(object):
+    def process_request(self, request, spider):
+        proxyServer = 'http://child-prc.intel.com:913'
+        # request.meta['splash']['args']['proxy'] = proxyServer
+        request.meta['proxy'] = proxyServer
