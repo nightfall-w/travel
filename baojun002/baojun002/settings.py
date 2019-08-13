@@ -14,7 +14,7 @@ BOT_NAME = 'baojun002'
 SPIDER_MODULES = ['baojun002.spiders']
 NEWSPIDER_MODULE = 'baojun002.spiders'
 LOG_LEVEL = 'WARNING'
-SPLASH_URL = 'http://10.239.220.25:8050'
+SPLASH_URL = 'http://127.0.0.1:8050'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'baojun002 (+http://www.yourdomain.com)'
@@ -23,7 +23,7 @@ SPLASH_URL = 'http://10.239.220.25:8050'
 # ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-# CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 100
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay

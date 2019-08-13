@@ -10,8 +10,13 @@ import scrapy
 
 class Baojun002Item(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
     title = scrapy.Field()
     price = scrapy.Field()
+    destination = scrapy.Field()
     subhead = scrapy.Field()
     intro = scrapy.Field()
+    include = scrapy.Field()
+    day = scrapy.Field()
+    night = scrapy.Field()
+    journeys = scrapy.Field()
+    scenic_images = scrapy.Field()

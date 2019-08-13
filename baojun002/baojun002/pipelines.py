@@ -9,7 +9,7 @@ from pymongo import MongoClient
 
 class QunawangPipeline(object):
     def open_spider(self, spider):
-        client = MongoClient(host="10.239.56.81", port=27017)
+        client = MongoClient(host="127.0.0.1", port=27017)
         self.db = client.quna
 
     def process_item(self, item, spider):

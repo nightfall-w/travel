@@ -1,48 +1,55 @@
 # -*- coding: utf-8 -*-
 import re
-
 import scrapy
-
-from scrapy_splash import SplashRequest
+import requests
+import json
+import random
 from scrapy.http.request import Request
+from scrapy_splash import SplashRequest
 
-# from baojun002.baojun002.items import Baojun002Item
 from baojun002.items import Baojun002Item
 
 
 class TestSpider(scrapy.Spider):
     name = 'test'
+    user_agents = [
+        'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0',
+        'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2',
+        'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36',
+        'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11',
+        'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
+    ]
+    headers = {
+        'User-Agent': random.choice(user_agents),
+        'Cookie': 'QN99=7702; QN300=auto_4e0d874a; QN1=eIQjmlzBqHFhRT6bDfWjAg==; QunarGlobal=10.86.213.150_21340582_16a546e783d_24cd|1556195442035; QN205=auto_4e0d874a; QN277=auto_4e0d874a; QN601=4405cb449f5f74e47e559d919c6908a8; _i=VInJOyfIzIYwCPO3ZDpzKOXMI-Yq; QN269=F1050570675511E99D43FA163E8B6C19; QN48=4f4d85f0-da3d-4546-a4f0-7f23c94889fd; fid=739f6953-eced-475f-a342-1c80358b10bb; QN49=28253804; _jzqx=1.1556195459.1556339418.2.jzqsr=dujia%2Equnar%2Ecom|jzqct=/pi/detail_28253804.jzqsr=utzu3%2Epackage%2Equnar%2Ecom|jzqct=/search/a-a-a-a-a---a----opt-desc--; _vi=pXoyH-6P3sxy37s_Qed-O8oYYruUZKPjDkuZk4piOJ0ajU43zyZrr3swuU7Ynm769UP2WfYUXkV64bx7ctRmVWW2kK36u-mhc-GWt76HyZHqJ3sA-6hvMvHZ4eU1lw8qQh9IWJCR4jeJrZ1oec3hbYAL9oMBSid30z52gq812gk_; _jzqckmp=1; csrfToken=A73mjrtJd5G89ADz4NCIaXhlth7xBEoZ; QN271=a714299d-7b3d-48c4-9812-a050b184bb48; _qzja=1.807867989.1556195458625.1556376179521.1556449335082.1556376357272.1556449335082..0.0.56.10; _qzjc=1; _qzjto=1.1.0; _jzqa=1.2817153281033170000.1556195459.1556376179.1556449335.10; _jzqc=1; _qzjb=1.1556449335081.1.0.0.0; _jzqb=1.2.10.1556449335.1; Hm_lvt_a8a41d37454fd880cdb23d6ef05d917b=1556195459,1556199009,1556365403,1556449335; Hm_lpvt_a8a41d37454fd880cdb23d6ef05d917b=1556449335; QN243=341'
+    }
 
     def start_requests(self):
         url = "https://tuan.qunar.com/vc/index.php?category=all_i"
-        # url = "https://www.baidu.com/"
         r = SplashRequest(
             url=url,
             callback=self.parse_li,
-            args={"wait": 3, 'viewport': '1024x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1,
-                  'proxy': 'http://child-prc.intel.com:913'},
-            splash_url='http://10.239.220.25:8050'
+            args={"wait": 5, 'viewport': '4096x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1, },
+            splash_url='http://127.0.0.1:8050'
         )
-        # print(r)
         yield r
 
     def parse_li(self, response):
-        # li_list = response.xpath('//ul[@class="cf"]/li/a/@href').extract()
         li_list = response.xpath('//div[@id="list"]/ul/li')
-        # title_list = response.xpath('//div[@class="nm"]/text()').extract()
         for i in li_list:
             url = i.xpath("./a[1]/@href").extract_first()
             url = "https:" + url
             title = i.xpath(".//div[@class='nm']/text()").extract_first()
             title = title.strip()
             price = i.xpath(".//div[@class='price']/span/em/text()").extract_first()
-            # print(price)
-            # print(url)
-            # print(title)
             item = Baojun002Item()
             item["title"] = title
+            item['destination'] = title.split(' ')[0]
+            day_night = title.split(' ')[1]
+            index_day = day_night.find('天')
+            item['day'] = day_night[:index_day]
+            item['night'] = day_night[index_day + 1:-1]
             item["price"] = int(price)
-            # print(item)
             r = Request(
                 url=url,
                 callback=self.parse_url,
@@ -50,54 +57,125 @@ class TestSpider(scrapy.Spider):
                     "refer": url,
                     "item": item
                 }
-
             )
-
             yield r
-            # break
 
     def parse_url(self, response):
-        # print(response.text)
         try:
             url = "https://" + re.search(r'//(.*?)\'', response.text).group(1)
-        except Exception as e:
-            print("url not return")
+            item = response.meta['item']
+        except Exception as es:
+            print("*" * 150)
             return
         refer = response.meta["refer"]
-        item = response.meta['item']
-        # print(url)
         r = SplashRequest(
             url=url,
             callback=self.parse_detail,
-            args={"wait": 3, 'viewport': '1024x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1,
-                  'proxy': 'http://child-prc.intel.com:913', "refer": refer},
-            splash_url="http://10.239.220.25:8050",
+            args={"wait": 5, 'viewport': '4096x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1,
+                  "refer": refer},
+            splash_url="http://127.0.0.1:8050",
             meta={
-                "item": item
+                "item": item,
+                'url': url
             }
-
         )
-
         yield r
 
     def parse_detail(self, response):
-
         item = response.meta['item']
         try:
             subhead = response.xpath('//div[@class="summary"]/h1/text()').extract()[1]
             item["subhead"] = subhead.strip()
+            include = response.xpath(
+                '//*[@id="ss-costIncludeDesc"]/div/div[2]').extract_first().replace('\n', '')
+            item["include"] = include
+
+            intro = response.xpath('//*[@id="ss-line-feature"]/div/div[2]/div/div').extract_first().replace('\n', '')
+            item['intro'] = intro
+
+            url = response.meta['url']
+            re_result = re.match(r'(.*?\.com)(.*?)id=(\d+)&(.*)', url)
+            host = re_result.group(1)
+            pid = re_result.group(3)
+            get_journey_api = '{}/user/detail/getSchedule.json?pId={}'.format(host, pid)
+            r = Request(
+                url=get_journey_api,
+                callback=self.get_journeys,
+                headers=self.headers,
+                meta={
+                    "item": item
+                }
+            )
         except:
             return
+        yield r
+
+    def get_journeys(self, response):
         try:
-            intro = response.xpath(
-                '//div[@class="summary"]/h2/div/span/text()').extract()
-            intro = [str.strip() for str in intro]
-            intro = "\n".join(intro)
-
-            item["intro"] = intro
-            print(intro)
-        except:
+            item = response.meta['item']
+            item['scenic_images'] = []
+            item['journeys'] = []
+            print(response)
+            journey_response = json.loads(response.text)
+            print("-------------------------------------------------------------------------------------")
+            for i in journey_response['data']['dailySchedules']:
+                # 循环每天的信息
+                number = i['daySeq']
+                hotel = i.get('hotelDesc', '')
+                content = i['scheduleTours'][0]['data'].get('description', '')
+                if not content and len(i['scheduleTours']) == 1:
+                    visit_address = []
+                    time = ''
+                    for experience in i['scheduleTours']:
+                        if experience['type'] == 'visit':
+                            time = experience['time']
+                            content = experience['data']['description']
+                            images = experience['tourDetails']['imagesJson']
+                            tourSpot = experience['tourDetails']['tourSpot']
+                            visit_address.append(tourSpot)
+                            if images:
+                                for img_url in images:
+                                    if img_url.startswith('//'):
+                                        img_url = 'https:' + img_url
+                                    img_data = requests.get(url=img_url, headers=self.headers).content
+                                    with open('/home/baojunw/Code/travel/media/images/scenic/{}'.format(
+                                            ''.join(img_url[-38::].split('/'))), 'wb') as f:
+                                        f.write(img_data)
+                                    path = 'media/images/scenic/{}'.format(''.join(img_url[-38::].split('/')))
+                                    item['scenic_images'].append(path)
+                    journey = {'day': number, 'hotel': hotel, 'time': time, 'content': content,
+                               'visit_address': visit_address}
+                    item['journeys'].append(journey)
+                else:
+                    if not content:
+                        content = i['description']
+                    time = i['scheduleTours'][0]['time']
+                    if not time:
+                        time = i['scheduleTours'][1]['time']
+                    details = i['scheduleTourDetails']
+                    visit_address = []
+                    if details is not None:
+                        for detail in details:
+                            images = detail['tourImages']
+                            tourSpot = detail['tourSpot']
+                            visit_address.append(tourSpot)
+                            for img_url in images:
+                                if img_url.startswith('//'):
+                                    img_url = 'https:' + img_url
+                                img_data = requests.get(url=img_url, headers=self.headers).content
+                                with open('/home/baojunw/Code/travel/media/images/scenic/{}'.format(
+                                        ''.join(img_url[-38::].split('/'))), 'wb') as f:
+                                    f.write(img_data)
+                                path = 'media/images/scenic/{}'.format(''.join(img_url[-38::].split('/')))
+                                item['scenic_images'].append(path)
+                        journey = {'day': number, 'hotel': hotel, 'time': time, 'content': content,
+                                   'visit_address': visit_address}
+                        item['journeys'].append(journey)
+                    else:
+                        journey = {'day': number, 'hotel': hotel, 'time': time, 'content': content,
+                                   'visit_address': ''}
+                        item['journeys'].append(journey)
+        except Exception as es:
+            print(es)
             return
-
-        print(item)
         yield item
