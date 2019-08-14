@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
-import re
 import json
 import random
+import re
 
-import gevent
-from gevent import monkey
-
-monkey.patch_all()
-import scrapy
+from threading import Thread
 import requests
+import scrapy
+from baojun002.items import Baojun002Item
 from scrapy.http.request import Request
 from scrapy_splash import SplashRequest
-
-from baojun002.items import Baojun002Item
 
 
 class TestSpider(scrapy.Spider):
@@ -31,16 +27,17 @@ class TestSpider(scrapy.Spider):
 
     def start_requests(self):
         url = "https://tuan.qunar.com/vc/index.php?category=all_i"
+        print(url)
         r = SplashRequest(
             url=url,
             callback=self.parse_li,
-            args={"wait": 5, 'viewport': '4096x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1,
-                  'proxy': 'http://child-prc.intel.com:913', },
-            splash_url='http://ub2-cm-test02.sh.intel.com:8050'
+            args={"wait": 5, 'viewport': '4096x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1, },
+            splash_url='http://127.0.0.1:8050',
         )
         yield r
 
     def parse_li(self, response):
+        print(response)
         li_list = response.xpath('//div[@id="list"]/ul/li')
         for i in li_list:
             url = i.xpath("./a[1]/@href").extract_first()
@@ -79,8 +76,8 @@ class TestSpider(scrapy.Spider):
             url=url,
             callback=self.parse_detail,
             args={"wait": 5, 'viewport': '4096x2480', 'timeout': 90, 'images': 0, 'resource_timeout': 1,
-                  "refer": refer, 'proxy': 'http://child-prc.intel.com:913'},
-            splash_url="http://ub2-cm-test02.sh.intel.com:8050",
+                  "refer": refer},
+            splash_url="http://127.0.0.1:8050",
             meta={
                 "item": item,
                 'url': url
@@ -90,6 +87,11 @@ class TestSpider(scrapy.Spider):
 
     def parse_detail(self, response):
         item = response.meta['item']
+        item['is_delete'] = False
+        item['scores'] = []
+        item['review'] = []
+        item['favorites'] = []
+        item['avg_score'] = random.randint(4, 5)
         try:
             subhead = response.xpath('//div[@class="summary"]/h1/text()').extract()[1]
             item["subhead"] = subhead.strip()
@@ -125,7 +127,6 @@ class TestSpider(scrapy.Spider):
             item['scenic_images'] = []
             item['journeys'] = []
             journey_response = json.loads(response.text)
-            gevent_pool = []
             print("-------------------------------------------------------------------------------------")
             for i in journey_response['data']['dailySchedules']:
                 # 循环每天的信息
@@ -141,13 +142,23 @@ class TestSpider(scrapy.Spider):
                             content = experience['data']['description']
                             images = experience['tourDetails']['imagesJson']
                             tourSpot = experience['tourDetails']['tourSpot']
-                            visit_address.append(tourSpot)
+                            # 获取目的地坐标
+                            mapapi = 'http://restapi.amap.com/v3/place/text?s=rsv3&children=&key=c0bed0bfaa59c175f8295471691a76cc&page=' \
+                                     '1&offset=10&language=undefined&callback=jsonp_376925_&platform=JS&logversion=2.0&appname=http%3A%2F%' \
+                                     '2Fleaguecn.coding.me%2Famaplite%2F%23opennewwindow&csid=CF1989F4-4781-447B-8AB7-67F5C48E732C&sdkve' \
+                                     'rsion=1.4.4&keywords='
+                            try:
+                                location_response = json.loads(requests.get(mapapi + tourSpot).text[14:-1])
+                                coordinate = location_response['pois'][0]['location']
+                            except Exception:
+                                coordinate = ''
+                            visit_address.append({'name': tourSpot, 'coordinate': coordinate})
                             if images:
                                 for img_url in images:
                                     if img_url.startswith('//'):
                                         img_url = 'https:' + img_url
-                                    g = gevent.spawn(self.get_image, img_url)
-                                    gevent_pool.append(g)
+                                    t = Thread(target=self.get_image, args=(img_url,))
+                                    t.start()
                                     path = 'media/images/scenic/{}'.format(''.join(img_url[-38::].split('/')))
                                     item['scenic_images'].append(path)
                     journey = {'day': number, 'hotel': hotel, 'time': time, 'content': content,
@@ -166,12 +177,22 @@ class TestSpider(scrapy.Spider):
                         for detail in details:
                             images = detail['tourImages']
                             tourSpot = detail['tourSpot']
-                            visit_address.append(tourSpot)
+                            # 获取目的地坐标
+                            mapapi = 'http://restapi.amap.com/v3/place/text?s=rsv3&children=&key=c0bed0bfaa59c175f8295471691a76cc&page=' \
+                                     '1&offset=10&language=undefined&callback=jsonp_376925_&platform=JS&logversion=2.0&appname=http%3A%2F%' \
+                                     '2Fleaguecn.coding.me%2Famaplite%2F%23opennewwindow&csid=CF1989F4-4781-447B-8AB7-67F5C48E732C&sdkve' \
+                                     'rsion=1.4.4&keywords='
+                            try:
+                                location_response = json.loads(requests.get(mapapi + tourSpot).text[14:-1])
+                                coordinate = location_response['pois'][0]['location']
+                            except Exception:
+                                coordinate = ''
+                            visit_address.append({'name': tourSpot, 'coordinate': coordinate})
                             for img_url in images:
                                 if img_url.startswith('//'):
                                     img_url = 'https:' + img_url
-                                g = gevent.spawn(self.get_image, img_url)
-                                gevent_pool.append(g)
+                                    t = Thread(target=self.get_image, args=(img_url,))
+                                    t.start()
                                 path = 'media/images/scenic/{}'.format(''.join(img_url[-38::].split('/')))
                                 item['scenic_images'].append(path)
                         journey = {'day': number, 'hotel': hotel, 'time': time, 'content': content,
@@ -186,7 +207,6 @@ class TestSpider(scrapy.Spider):
             return
         if not all([item['scenic_images'], item['journeys']]):
             return
-        gevent.joinall(gevent_pool)
         host = response.meta['host']
         pid = response.meta['pid']
         get_ticket_api = '{}/api/calPrices.json?tuId=&pId={}&month=2019-09'.format(host, pid)
@@ -201,11 +221,8 @@ class TestSpider(scrapy.Spider):
         yield r
 
     def get_image(self, url):
-        proxies = {'http': 'http://child-prc.intel.com:913',
-                   'https': 'https://child-prc.intel.com:913'}
-        img_data = requests.get(url=url, headers=self.headers,
-                                proxies=proxies).content
-        with open('C:\\Users\\sys_syscafhost\\Desktop\\ss\\git\\travel\\media\\images\\scenic\\{}'.format(
+        img_data = requests.get(url=url, headers=self.headers, ).content
+        with open('/home/baojunw/Code/travel/media/images/scenic/{}'.format(
                 ''.join(url[-38::].split('/'))), 'wb') as f:
             f.write(img_data)
 
@@ -214,10 +231,16 @@ class TestSpider(scrapy.Spider):
             item = response.meta['item']
             response = json.loads(response.text)
             item['tickets'] = []
+            item['ticket_month'] = []
             for ticket in response['data']['team']:
                 try:
                     end_date = response['data']['team'][
                         response['data']['team'].index(ticket) + int(item['night'])]['date']
+                    year = end_date.split('-')[0]
+                    month = end_date.split('-')[1]
+                    year_month = year + '-' + month
+                    if year_month not in item['ticket_month']:
+                        item['ticket_month'].append(year_month)
                     surplus = random.choice(range(500))
                     ticket = {'start_date': ticket['date'], 'end_date': end_date, 'surplus': surplus,
                               'unit_price': ticket['prices']['adultPrice']}

@@ -14,16 +14,17 @@ BOT_NAME = 'baojun002'
 SPIDER_MODULES = ['baojun002.spiders']
 NEWSPIDER_MODULE = 'baojun002.spiders'
 LOG_LEVEL = 'WARNING'
-SPLASH_URL = 'http://ub2-cm-test02.sh.intel.com:8050'
+SPLASH_URL = 'http://127.0.0.1:8050'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'baojun002 (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-# ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 100
+CONCURRENT_REQUESTS = 96
+CONCURRENT_ITEMS = 200
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
@@ -60,7 +61,7 @@ DOWNLOADER_MIDDLEWARES = {
     'scrapy_splash.SplashCookiesMiddleware': 723,
     'scrapy_splash.SplashMiddleware': 725,
     'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware': 810,
-    'baojun002.middlewares.ProxyMiddleware': 543,
+    # 'baojun002.middlewares.ProxyMiddleware': 543,
 }
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 

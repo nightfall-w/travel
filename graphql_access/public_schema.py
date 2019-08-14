@@ -1,7 +1,4 @@
 # -*- coding:utf-8 -*-
-import datetime
-
-from django.db.models import Avg
 from rest_framework.pagination import LimitOffsetPagination, _positive_int
 from rest_framework.views import APIView
 

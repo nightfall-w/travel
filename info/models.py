@@ -5,6 +5,7 @@ import mongoengine
 class User(mongoengine.Document):
     uid = mongoengine.IntField(required=True)
     username = mongoengine.StringField(required=True)
+    favorites = mongoengine.ListField()
 
 
 class Review(mongoengine.EmbeddedDocument):
@@ -18,18 +19,6 @@ class Review(mongoengine.EmbeddedDocument):
     class Meta:
         db_table = 'review'
         verbose_name = verbose_name_plural = '用户评论'
-
-
-class Scenic(mongoengine.EmbeddedDocument):
-    """
-    相册类
-    """
-    name = mongoengine.StringField(max_length=40, verbose_name="照片名")
-    path = mongoengine.StringField(verbose_name='景点照片')
-
-    class Meta:
-        db_table = 'scenic'
-        verbose_name = verbose_name_plural = '相册'
 
 
 class Score(mongoengine.EmbeddedDocument):
@@ -59,6 +48,18 @@ class Score(mongoengine.EmbeddedDocument):
         verbose_name = verbose_name_plural = '评价'
 
 
+class VisitAddress(mongoengine.EmbeddedDocument):
+    """
+    景点坐标
+    """
+    name = mongoengine.StringField(verbose_name="景点名", max_length=60)
+    coordinate = mongoengine.StringField(verbose_name="坐标", max_length=60)
+
+    class Meta:
+        db_table = 'visit_address'
+        verbose_name = verbose_name_plural = '景点坐标'
+
+
 class Journey(mongoengine.EmbeddedDocument):
     """
     行程类
@@ -67,8 +68,7 @@ class Journey(mongoengine.EmbeddedDocument):
     time = mongoengine.StringField(verbose_name="行程时间", null=True)
     day = mongoengine.IntField(verbose_name="第几天")
     visit_address = mongoengine.StringField(max_length=300, verbose_name="游访地点")
-    content = mongoengine.StringField()
-    scenics = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Scenic))
+    content = mongoengine.StringField(verbose_name="游玩内容", max_length=600)
 
     class Meta:
         db_table = 'journey'
@@ -94,26 +94,21 @@ class Scheme(mongoengine.Document):
     套餐类
     """
     name = mongoengine.StringField(max_length=200, verbose_name="套餐名")
-    coordinate = mongoengine.StringField(max_length=50, verbose_name="坐标", null=True)
-    originating = mongoengine.StringField(max_length=20, verbose_name="始发地")
-    end_locale = mongoengine.StringField(max_length=20, verbose_name="目的地")
+    departure = mongoengine.StringField(max_length=20, verbose_name="始发地")
+    destination = mongoengine.StringField(max_length=20, verbose_name="目的地")
     day = mongoengine.IntField(verbose_name="白天数")
     night = mongoengine.IntField(verbose_name="晚上数")
-    introduce = mongoengine.StringField(verbose_name="套餐介绍")
-    feature = mongoengine.StringField(verbose_name='特色')
-    contains_content = mongoengine.StringField(verbose_name='包含内容')
-    create_date = mongoengine.DateTimeField(verbose_name="创建时间")
+    intro = mongoengine.StringField(verbose_name="套餐介绍")
+    include = mongoengine.StringField(verbose_name='包含内容')
     favorites = mongoengine.ListField(mongoengine.ReferenceField(User), verbose_name="被喜欢", blank=True)
     is_delete = mongoengine.BooleanField(choices=((True, 'delete'), (False, 'exist')), default=False,
                                          verbose_name="被删除")
     score = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Score), verbose_name='所有评分')
     review = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Review), verbose_name='用户评论')
-    review_number = mongoengine.IntField(verbose_name='评论数')
     journeys = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Journey), verbose_name='行程安排')
     tickets = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Ticket), verbose_name='票务')
-    min_price = mongoengine.IntField(verbose_name='最低价')
+    price = mongoengine.IntField(verbose_name='最低价')
     avg_score = mongoengine.FloatField(verbose_name='平均评分')
-    first_photo = mongoengine.StringField(verbose_name='缩略图')
 
     class Meta:
         db_table = 'scheme'

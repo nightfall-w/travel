@@ -150,7 +150,7 @@ class UserRegister(APIView):
             Auth_profile.objects.create(
                 phone_number=phone_number, user_obj=user)
         # 用户注册信息写入数据库，但是因为info app mongo models 需要和mysql中user建立关系，所以需要user:id & username 写入mongo
-        mongo_user = mongoUser(uid=user.id, username=user.username)
+        mongo_user = mongoUser(uid=user.id, username=user.username, favorites=[])
         mongo_user.save()
         del request.session[phone_number]
         return Response({'return_code': True, 'return_value': '注册成功！'})
