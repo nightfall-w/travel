@@ -157,6 +157,7 @@ class TestSpider(scrapy.Spider):
                                 for img_url in images:
                                     if img_url.startswith('//'):
                                         img_url = 'https:' + img_url
+                                    print(img_url)
                                     t = Thread(target=self.get_image, args=(img_url,))
                                     t.start()
                                     path = 'media/images/scenic/{}'.format(''.join(img_url[-38::].split('/')))
@@ -191,8 +192,9 @@ class TestSpider(scrapy.Spider):
                             for img_url in images:
                                 if img_url.startswith('//'):
                                     img_url = 'https:' + img_url
-                                    t = Thread(target=self.get_image, args=(img_url,))
-                                    t.start()
+                                print(img_url)
+                                t = Thread(target=self.get_image, args=(img_url,))
+                                t.start()
                                 path = 'media/images/scenic/{}'.format(''.join(img_url[-38::].split('/')))
                                 item['scenic_images'].append(path)
                         journey = {'day': number, 'hotel': hotel, 'time': time, 'content': content,

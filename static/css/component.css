@@ -7,7 +7,6 @@
 * Last change:    06/03/2016
 -------------------------------------------------------------------*/
 
-
 /*------------------------------------------------------------------
 * Table of Content
 * 1. Flex Video
@@ -27,7 +26,6 @@
 * 15. FlexSlider
 * 16. YoutubeBackground
 -------------------------------------------------------------------*/
-
 
 /**
  * flex-video
@@ -63,11 +61,9 @@
     height: 100%
 }
 
-
 /**
  * Bootstrap Override
  */
-
 
 /* .navbar-nav.navbar-nav-pure { margin: 0; }
 .navbar-nav.navbar-nav-pure > li > a { padding-top: 0; padding-bottom: 0; } */
@@ -403,7 +399,7 @@
     background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
     background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
     background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
-    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000', GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#a6000000', GradientType=0);
     line-height: 1.4;
 }
 
@@ -492,14 +488,15 @@
     background: #FFF;
 }
 
-.another-toggle .another-toggle-inner {}
-
+.another-toggle .another-toggle-inner {
+}
 
 /**
  * Bootstrap ScrollSpy
  */
 
-.scrollspy-sidebar {}
+.scrollspy-sidebar {
+}
 
 .scrollspy-sidebar.affix {
     position: static;
@@ -568,17 +565,21 @@
     .scrollspy-sidebar .nav > .active > ul {
         display: block
     }
+
     .scrollspy-sidebar.affix,
     .scrollspy-sidebar.affix-bottom {
         width: 213px
     }
+
     .scrollspy-sidebar.affix {
         position: fixed;
         top: 80px;
     }
+
     .scrollspy-sidebar.affix-bottom {
         position: absolute
     }
+
     .scrollspy-sidebar.affix-bottom .scrollspy-sidenav,
     .scrollspy-sidebar.affix .scrollspy-sidenav {
         margin-top: 30px;
@@ -592,7 +593,6 @@
         width: 263px
     }
 }
-
 
 /**
  * Custom Checkbox and Radio By CSS
@@ -667,7 +667,6 @@ input[type='radio']:checked + label:before,
 input[type='checkbox']:checked + label:before {
     color: #D65049;
 }
-
 
 /*
     Slicknav - a Mobile Menu
@@ -759,15 +758,13 @@ input[type='checkbox']:checked + label:before {
     clear: both
 }
 
-
 /* IE6/7 support */
 
 .slicknav_menu {
     *zoom: 1
 }
 
-
-/* 
+/*
     User Default Style
     Change the following styles to modify the appearance of the menu.
 */
@@ -775,7 +772,6 @@ input[type='checkbox']:checked + label:before {
 .slicknav_menu {
     font-size: 16px;
 }
-
 
 /* Button */
 
@@ -793,7 +789,6 @@ input[type='checkbox']:checked + label:before {
     -o-transition: all 0.3s ease-in-out 0s;
     transition: all 0.3s ease-in-out 0s;
 }
-
 
 /* background color for responsive button */
 
@@ -827,8 +822,8 @@ input[type='checkbox']:checked + label:before {
     line-height: 22px !important;
 }
 
-.slicknav_btn:focus {}
-
+.slicknav_btn:focus {
+}
 
 /* Button Text */
 
@@ -837,7 +832,6 @@ input[type='checkbox']:checked + label:before {
     font-weight: 400;
     font-size: 14px;
 }
-
 
 /* Button Lines */
 
@@ -960,7 +954,6 @@ input[type='checkbox']:checked + label:before {
     border-left: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-
 /* plus-minus or arrow sign */
 
 .slicknav_nav .slicknav_arrow:hover {
@@ -971,12 +964,14 @@ input[type='checkbox']:checked + label:before {
     display: none;
 }
 
-@media only screen and (max-width: 1199px) {}
+@media only screen and (max-width: 1199px) {
+}
 
 @media only screen and (max-width: 991px) {
     #responsive-menu {
         display: none;
     }
+
     .slicknav_menu {
         display: block;
     }
@@ -990,22 +985,25 @@ input[type='checkbox']:checked + label:before {
         right: 0;
         background: none;
     }
+
     .slicknav_nav {
         margin-top: 48px;
         border-top: 1px solid #423F4F;
         background: #383546;
     }
+
     .slicknav_nav ul {
         padding: 0;
         margin: 0;
     }
+
     .slicknav_nav a {
         font-size: 12px;
     }
 }
 
-@media (max-width: 479px) {}
-
+@media (max-width: 479px) {
+}
 
 /**
  * Back To Top
@@ -1041,7 +1039,6 @@ input[type='checkbox']:checked + label:before {
     border-color: #D65049;
 }
 
-
 /* Ion.RangeSlider
 // css version 2.0.3
 // © 2013-2014 Denis Ineshin | IonDen.com
@@ -1062,7 +1059,7 @@ input[type='checkbox']:checked + label:before {
     position: relative;
     display: block;
     overflow: hidden;
-    outline: none!important
+    outline: none !important
 }
 
 .irs-line-left,
@@ -1204,23 +1201,22 @@ input[type='checkbox']:checked + label:before {
 }
 
 .irs-hidden-input {
-    position: absolute!important;
-    display: block!important;
-    top: 0!important;
-    left: 0!important;
-    width: 0!important;
-    height: 0!important;
-    font-size: 0!important;
-    line-height: 0!important;
-    padding: 0!important;
-    margin: 0!important;
-    outline: none!important;
-    z-index: -9999!important;
-    background: none!important;
-    border-style: solid!important;
-    border-color: transparent!important
+    position: absolute !important;
+    display: block !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    outline: none !important;
+    z-index: -9999 !important;
+    background: none !important;
+    border-style: solid !important;
+    border-color: transparent !important
 }
-
 
 /* Customized  */
 
@@ -1346,7 +1342,6 @@ input[type='checkbox']:checked + label:before {
     color: #B7B7B7;
 }
 
-
 /**
  * Select 2 - https://select2.github.io/
  */
@@ -1411,7 +1406,7 @@ input[type='checkbox']:checked + label:before {
     box-sizing: border-box;
     border: none;
     font-size: 100%;
-    margin-top: 5px;
+    margin-top: 10px;
     padding: 0
 }
 
@@ -1505,14 +1500,14 @@ input[type='checkbox']:checked + label:before {
 }
 
 .select2-hidden-accessible {
-    border: 0!important;
-    clip: rect(0 0 0 0)!important;
-    height: 1px!important;
-    margin: -1px!important;
-    overflow: hidden!important;
-    padding: 0!important;
-    position: absolute!important;
-    width: 1px!important
+    border: 0 !important;
+    clip: rect(0 0 0 0) !important;
+    height: 1px !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    position: absolute !important;
+    width: 1px !important
 }
 
 .select2-container--default .select2-selection--single {
@@ -1756,7 +1751,7 @@ input[type='checkbox']:checked + label:before {
     background-image: -o-linear-gradient(top, white 50%, #eee 100%);
     background-image: linear-gradient(to bottom, white 50%, #eee 100%);
     background-repeat: repeat-x;
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFEEEEEE', GradientType=0)
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFEEEEEE', GradientType=0)
 }
 
 .select2-container--classic .select2-selection--single:focus {
@@ -1794,7 +1789,7 @@ input[type='checkbox']:checked + label:before {
     background-image: -o-linear-gradient(top, #eee 50%, #ccc 100%);
     background-image: linear-gradient(to bottom, #eee 50%, #ccc 100%);
     background-repeat: repeat-x;
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#FFEEEEEE', endColorstr='#FFCCCCCC', GradientType=0)
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFEEEEEE', endColorstr='#FFCCCCCC', GradientType=0)
 }
 
 .select2-container--classic .select2-selection--single .select2-selection__arrow b {
@@ -1846,7 +1841,7 @@ input[type='checkbox']:checked + label:before {
     background-image: -o-linear-gradient(top, white 0%, #eee 50%);
     background-image: linear-gradient(to bottom, white 0%, #eee 50%);
     background-repeat: repeat-x;
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFEEEEEE', GradientType=0)
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFFFFF', endColorstr='#FFEEEEEE', GradientType=0)
 }
 
 .select2-container--classic.select2-container--open.select2-container--below .select2-selection--single {
@@ -1857,7 +1852,7 @@ input[type='checkbox']:checked + label:before {
     background-image: -o-linear-gradient(top, #eee 50%, white 100%);
     background-image: linear-gradient(to bottom, #eee 50%, white 100%);
     background-repeat: repeat-x;
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#FFEEEEEE', endColorstr='#FFFFFFFF', GradientType=0)
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFEEEEEE', endColorstr='#FFFFFFFF', GradientType=0)
 }
 
 .select2-container--classic .select2-selection--multiple {
@@ -1983,7 +1978,6 @@ input[type='checkbox']:checked + label:before {
     border-color: #0a3d91;
 }
 
-
 /** extra remote loading */
 
 .select2-result-repository {
@@ -2044,7 +2038,6 @@ input[type='checkbox']:checked + label:before {
 .select2-results__option--highlighted .select2-result-repository__watchers {
     color: #c6dcef;
 }
-
 
 /** customized */
 
@@ -2146,7 +2139,6 @@ input[type='checkbox']:checked + label:before {
     display: none
 }
 
-
 /**
 * jquery.responsivegrid
 * https://github.com/yksht/jquery.responsivegrid
@@ -2157,7 +2149,6 @@ input[type='checkbox']:checked + label:before {
     overflow: hidden;
     box-sizing: border-box;
 }
-
 
 /**
 * Raty - rating stars
@@ -2211,7 +2202,6 @@ input[type='checkbox']:checked + label:before {
     background: url('../images/raty/tripadvisor.png') no-repeat left top
 }
 
-
 /**
  * Instagram
  */
@@ -2246,13 +2236,15 @@ input[type='checkbox']:checked + label:before {
     position: relative;
 }
 
-@media only screen and (max-width: 1199px) {}
+@media only screen and (max-width: 1199px) {
+}
 
 @media only screen and (max-width: 991px) {
     .instagram-wrapper {
         margin-left: -1px;
         margin-right: -1px;
     }
+
     .instagram-placeholder {
         padding: 1px;
     }
@@ -2264,8 +2256,8 @@ input[type='checkbox']:checked + label:before {
     }
 }
 
-@media (max-width: 479px) {}
-
+@media (max-width: 479px) {
+}
 
 /* Slick carousel */
 
@@ -2372,13 +2364,11 @@ input[type='checkbox']:checked + label:before {
     display: none
 }
 
-
 /* Slider */
 
 .slick-loading .slick-list {
     background: #fff url(images/slick-loader.gif) center center no-repeat
 }
-
 
 /* Arrows */
 
@@ -2466,7 +2456,6 @@ input[type='checkbox']:checked + label:before {
 [dir='rtl'] .slick-next:before {
     content: '\e64a'
 }
-
 
 /* Dots */
 
@@ -2642,13 +2631,11 @@ input[type='checkbox']:checked + label:before {
     width: 100%;
 }
 
-
 /* Slick Override */
 
 .slick-slide .image {
     padding: 0;
 }
-
 
 /* Slick Carousel */
 
@@ -3139,7 +3126,6 @@ input[type='checkbox']:checked + label:before {
     transform: translateX(0%)
 }
 
-
 /**
  * Mosne Map
  */
@@ -3160,13 +3146,15 @@ input[type='checkbox']:checked + label:before {
     float: right;
 }
 
-.maplocation {}
+.maplocation {
+}
 
 .maplocation:hover {
     cursor: pointer;
 }
 
-.active {}
+.active {
+}
 
 .infobox {
     display: none
@@ -3199,7 +3187,7 @@ input[type='checkbox']:checked + label:before {
 }
 
 .no-rgba .m_tooltip {
-    filter: progid: DXImageTransform.Microsoft.gradient(startColorStr='#313436', EndColorStr='#222526')
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#313436', EndColorStr='#222526')
 }
 
 .no-cssgradients .m_tooltip {
@@ -3251,9 +3239,7 @@ input[type='checkbox']:checked + label:before {
     margin: 0 0 7px;
 }
 
-
 /* Generated by less 2.5.1 */
-
 
 /*
  *  jQueryIntroLoader
@@ -3264,21 +3250,15 @@ input[type='checkbox']:checked + label:before {
  *  Under GNU/GPL License
  */
 
-
 /* ****************************************************************************** */
-
 
 /* PLUGIN STYLE */
 
-
 /* ****************************************************************************** */
-
 
 /* ============================================================================== */
 
-
 /* Global Style */
-
 
 /* ============================================================================== */
 
@@ -3309,21 +3289,15 @@ body.introLoader_preventScroll {
     overflow: hidden;
 }
 
-
 /* ============================================================================== */
-
 
 /* Animations */
 
-
 /* ============================================================================== */
-
 
 /* *************************************************** */
 
-
 /* CSSLoader Animation */
-
 
 /* *************************************************** */
 
@@ -3353,9 +3327,7 @@ body.introLoader_preventScroll {
     animation: infinite-spinning 1s linear infinite;
 }
 
-
 /* CSSLoader Animation Spinner Sizes */
-
 
 /* -------------------------------------------- */
 
@@ -3383,9 +3355,7 @@ body.introLoader_preventScroll {
     border-width: 8px;
 }
 
-
 /* CSSLoader Animation Keyframes */
-
 
 /* -------------------------------------------- */
 
@@ -3407,9 +3377,7 @@ body.introLoader_preventScroll {
     }
 }
 
-
 /* CSSLoader Animation Colors */
-
 
 /* -------------------------------------------- */
 
@@ -3525,12 +3493,9 @@ body.introLoader_preventScroll {
     border-color: #67de0f #67de0f transparent transparent;
 }
 
-
 /* *************************************************** */
 
-
 /* SimpleLoader Animation */
-
 
 /* *************************************************** */
 
@@ -3538,9 +3503,7 @@ body.introLoader_preventScroll {
     position: absolute;
 }
 
-
 /* SimpleLoader Animation Colors */
-
 
 /* -------------------------------------------- */
 
@@ -3572,12 +3535,9 @@ body.introLoader_preventScroll {
     background-color: #dcff1b;
 }
 
-
 /* *************************************************** */
 
-
 /* GifLoader Animation */
-
 
 /* *************************************************** */
 
@@ -3663,12 +3623,9 @@ body.introLoader_preventScroll {
     background-image: url(spinners/circle-bub_fluoMagenta.gif);
 }
 
-
 /* *************************************************** */
 
-
 /* CounterLoader Animation */
-
 
 /* *************************************************** */
 
@@ -3711,9 +3668,7 @@ body.introLoader_preventScroll {
     border-radius: 50%;
 }
 
-
 /* CounterLoader Animation Colors */
-
 
 /* -------------------------------------------- */
 
@@ -3778,17 +3733,14 @@ body.introLoader_preventScroll {
     color: #dcff1b;
 }
 
-
 /* *************************************************** */
 
-
 /* doubleLoader Animation */
-
 
 /* *************************************************** */
 
 .doubleLoader {
-    background: transparent!important;
+    background: transparent !important;
 }
 
 .doubleLoaderTop {
@@ -3826,9 +3778,7 @@ body.introLoader_preventScroll {
     background-color: #555;
 }
 
-
 /* DoubleLoader Animation Colors */
-
 
 /* -------------------------------------------- */
 
@@ -3979,12 +3929,9 @@ body.introLoader_preventScroll {
     background-color: #d5f816;
 }
 
-
 /* *************************************************** */
 
-
 /* LettersLoader Animation */
-
 
 /* *************************************************** */
 
@@ -4007,9 +3954,7 @@ body.introLoader_preventScroll {
     opacity: 0;
 }
 
-
 /* LettersLoader Animation Colors */
-
 
 /* -------------------------------------------- */
 
@@ -4048,7 +3993,6 @@ body.introLoader_preventScroll {
     color: #ffffff;
 }
 
-
 /*
  * jQuery FlexSlider v2.0
  * http://www.woothemes.com/flexslider/
@@ -4059,7 +4003,6 @@ body.introLoader_preventScroll {
  *
  * Contributing author: Tyler Smith (@mbmufffin)
  */
-
 
 /* Browser Resets */
 
@@ -4078,7 +4021,6 @@ body.introLoader_preventScroll {
     list-style: none;
 }
 
-
 /* FlexSlider Necessary Styles
 *********************************/
 
@@ -4092,7 +4034,6 @@ body.introLoader_preventScroll {
     /*-webkit-backface-visibility: hidden; */
 }
 
-
 /* Hide the slides before the JS is loaded. Avoids image jumping */
 
 .flexslider .slides img {
@@ -4104,7 +4045,6 @@ body.introLoader_preventScroll {
 .flex-pauseplay span {
     text-transform: capitalize;
 }
-
 
 /* Clearfix for the .slides element */
 
@@ -4125,9 +4065,7 @@ html[xmlns] .slides {
     height: 1%;
 }
 
-
 /* No JavaScript Fallback */
-
 
 /* If you are not using another script, such as Modernizr, make sure you
  * include js that eliminates this class on page load */
@@ -4135,7 +4073,6 @@ html[xmlns] .slides {
 .no-js .slides > li:first-child {
     display: block;
 }
-
 
 /* FlexSlider Default Theme
 *********************************/
@@ -4174,7 +4111,6 @@ html[xmlns] .slides {
 .carousel li {
     margin-right: 5px;
 }
-
 
 /* Direction Nav */
 
@@ -4227,7 +4163,7 @@ html[xmlns] .slides {
 }
 
 .flex-direction-nav .flex-disabled {
-    opacity: 0!important;
+    opacity: 0 !important;
     filter: alpha(opacity=0);
     cursor: default;
 }
@@ -4240,7 +4176,6 @@ html[xmlns] .slides {
     height: auto;
     padding: 0 20px;
 }
-
 
 /* Pause/Play */
 
@@ -4272,7 +4207,6 @@ html[xmlns] .slides {
 .flex-pauseplay a.flex-play:before {
     content: '\f04c';
 }
-
 
 /* Control Nav */
 
@@ -4347,7 +4281,6 @@ html[xmlns] .slides {
     cursor: default;
 }
 
-
 /* FlexSlider Customized */
 
 .flexslider ul {
@@ -4407,11 +4340,14 @@ html[xmlns] .slides {
     z-index: 2;
 }
 
-@media (min-width: 768px) {}
+@media (min-width: 768px) {
+}
 
-@media only screen and (max-width: 1199px) {}
+@media only screen and (max-width: 1199px) {
+}
 
-@media only screen and (max-width: 991px) {}
+@media only screen and (max-width: 991px) {
+}
 
 @media only screen and (max-width: 767px) {
     .flexslider-image-bg {
@@ -4424,7 +4360,6 @@ html[xmlns] .slides {
         height: 420px;
     }
 }
-
 
 /**
  * YoutubeBackground
@@ -4514,7 +4449,6 @@ html[xmlns] .slides {
     z-index: -9
 }
 
-
 /* navigation */
 
 .top_box .control {
@@ -4547,7 +4481,6 @@ html[xmlns] .slides {
     background-color: #FFFFFF;
     color: #000000
 }
-
 
 /* popup */
 
@@ -4584,11 +4517,14 @@ html[xmlns] .slides {
     z-index: 9
 }
 
-@media (min-width: 768px) {}
+@media (min-width: 768px) {
+}
 
-@media only screen and (max-width: 1199px) {}
+@media only screen and (max-width: 1199px) {
+}
 
-@media only screen and (max-width: 991px) {}
+@media only screen and (max-width: 991px) {
+}
 
 @media only screen and (max-width: 767px) {
     .youtube-bg-wrapper {

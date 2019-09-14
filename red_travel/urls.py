@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^order/', include('order.urls', namespace='order')),
     url(r'^blog/', include('blog.urls', namespace='blog')),
     url(r'^avow/', include('avow.urls', namespace='avow')),
+    url(r'^api/', include('api.urls', namespace='api')),
     url(r'^social/', include('social_django.urls', namespace='social')),
     url(r'^public_graphql/', PublicGraphQLView.as_view(graphiql=True, schema=PublicSchema)),
     # url(r'^private_graphql/', PrivateGraphQLView.as_view(graphiql=True, schema=PrivateSchema)),

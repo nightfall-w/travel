@@ -2,7 +2,7 @@
 import graphene
 from graphene_mongo.types import MongoengineObjectType
 
-from info.models import Scheme, Ticket, Scenic, Score, Review, Journey
+from info.models import Scheme, Ticket, Score, Review, Journey
 
 
 class SubjoinFields(graphene.AbstractType):
@@ -18,11 +18,6 @@ class SchemeType(MongoengineObjectType, SubjoinFields):
 class TicketType(MongoengineObjectType):
     class Meta:
         model = Ticket
-
-
-class ScenicType(MongoengineObjectType):
-    class Meta:
-        model = Scenic
 
 
 class ScoreType(MongoengineObjectType):

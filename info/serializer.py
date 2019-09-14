@@ -12,7 +12,7 @@ class schemeSerializer(serializers.DocumentSerializer):
 
     class Meta:
         model = Scheme
-        fields = ['name', 'day', 'night', 'review_number', 'first_photo', 'avg_score', 'min_price']
+        fields = ['_id', 'title', 'day', 'night', 'review', 'scenic_images', 'avg_score', 'price']
 
 
 class spotSchemeSerializer(serializers.DocumentSerializer):
@@ -22,4 +22,14 @@ class spotSchemeSerializer(serializers.DocumentSerializer):
 
     class Meta:
         model = Scheme
-        fields = ['end_locale', 'min_price', 'first_photo']
+        fields = ['_id', 'destination', 'price', 'scenic_images']
+
+
+# class detaliSchemeSerializer(serializers.DocumentSerializer):
+#     '''
+#     套餐详情的序列化器
+#     '''
+#
+#     class Meta:
+#         model = Scheme
+#         fields = '__all__'

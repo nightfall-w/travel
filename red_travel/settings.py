@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
-import os
 import datetime
+import os
+
 import djcelery
-from mongoengine import connect
 from kombu import Queue, Exchange
+from mongoengine import connect
 
 djcelery.setup_loader()
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -36,7 +37,8 @@ INSTALLED_APPS = (
     'info',
     'blog',
     'avow',
-    'order'
+    'order',
+    'api'
 )
 
 MIDDLEWARE = (
@@ -112,7 +114,6 @@ JWT_AUTH = {
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'utils.JWT_Response_user.jwt_response_payload_handler',
 }
 
-
 # 使用redis保存session数据
 ESSION_SAVE_EVERY_REQUEST = False  # 如果设置为True,django为每次request请求都保存session的内容，默认为False
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 3  # 设置SESSION的过期时间，单位是秒，默认是两周
@@ -132,7 +133,7 @@ CELERY_TASK_RESULT_EXPIRES = 24 * 60 * 60
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TIMEZONE = 'Asia/Shanghai'
 
-CELERY_IMPORTS = ('user.tasks', )
+CELERY_IMPORTS = ('user.tasks',)
 
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 from datetime import timedelta
@@ -158,7 +159,7 @@ CELERY_QUEUES = (
 )
 CELERY_ROUTES = {
     'test_beat': {"queue": "default",
-                "routing_key": "default"},
+                  "routing_key": "default"},
 
     'request_to_chit_platform': {"queue": "request_to_chit_platform",
                                  "routing_key": "request_to_chit_platform"},

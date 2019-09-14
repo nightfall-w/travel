@@ -93,8 +93,10 @@ class Scheme(mongoengine.Document):
     """
     套餐类
     """
-    name = mongoengine.StringField(max_length=200, verbose_name="套餐名")
+    _id = mongoengine.ObjectIdField(verbose_name='id')
+    title = mongoengine.StringField(max_length=200, verbose_name="套餐名")
     departure = mongoengine.StringField(max_length=20, verbose_name="始发地")
+    subhead = mongoengine.StringField(max_length=200, verbose_name="子标题")
     destination = mongoengine.StringField(max_length=20, verbose_name="目的地")
     day = mongoengine.IntField(verbose_name="白天数")
     night = mongoengine.IntField(verbose_name="晚上数")
@@ -103,7 +105,9 @@ class Scheme(mongoengine.Document):
     favorites = mongoengine.ListField(mongoengine.ReferenceField(User), verbose_name="被喜欢", blank=True)
     is_delete = mongoengine.BooleanField(choices=((True, 'delete'), (False, 'exist')), default=False,
                                          verbose_name="被删除")
-    score = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Score), verbose_name='所有评分')
+    ticket_month = mongoengine.ListField(mongoengine.StringField(), verbose_name="票务月份")
+    scenic_images = mongoengine.ListField(mongoengine.StringField(), verbose_name="景点照片")
+    scores = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Score), verbose_name='所有评分')
     review = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Review), verbose_name='用户评论')
     journeys = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Journey), verbose_name='行程安排')
     tickets = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Ticket), verbose_name='票务')

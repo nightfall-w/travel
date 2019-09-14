@@ -2199,10 +2199,9 @@ ul.list-info.bb-dotted li {
 
 .itinerary-item h5,
 .itinerary-item h5 a {
-    font-size: 17px;
+    font-size: 14px;
     margin: 0;
     color: #333;
-    line-height: 1;
 }
 
 .itinerary-item.intro-item {

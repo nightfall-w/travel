@@ -94,15 +94,15 @@
                                                 data-placeholder="选择你的出发月份" multiple>
                                             <option value="">选择你的出发月份</option>
                                             <option value="0">任意月份</option>
-                                            <option value="1">1 月</option>
-                                            <option value="2">2 月</option>
-                                            <option value="3">3 月</option>
-                                            <option value="4">4 月</option>
-                                            <option value="5">5 月</option>
-                                            <option value="6">6 月</option>
-                                            <option value="7">7 月</option>
-                                            <option value="8">8 月</option>
-                                            <option value="9">9 月</option>
+                                            <option value="01">01 月</option>
+                                            <option value="02">02 月</option>
+                                            <option value="03">03 月</option>
+                                            <option value="04">04 月</option>
+                                            <option value="05">05 月</option>
+                                            <option value="06">06 月</option>
+                                            <option value="07">07 月</option>
+                                            <option value="08">08 月</option>
+                                            <option value="09">09 月</option>
                                             <option value="10">10 月</option>
                                             <option value="11">11 月</option>
                                             <option value="12">12 月</option>
@@ -218,38 +218,38 @@
                 <div class="grid destination-grid-wrapper" id="recommended_schemes">
                     <template v-for="schemeInfo,index in schemesInfo">
                         <div class="grid-item" v-if="index===0" data-colspan="10" data-rowspan="10">
-                            <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
-                               v-bind:style="{backgroundImage:'url(' + schemeInfo.first_photo + ')'}">
+                            <a v-bind:href="'info/detail/'+schemeInfo._id" class="top-destination-image-bg"
+                               v-bind:style="{backgroundImage:'url(' + schemeInfo.scenic_images[3] + ')'}">
                                 <div class="relative">
-                                    <h4>{{ schemeInfo.end_locale }}</h4>
-                                    <span> {{ schemeInfo.min_price }} 元起</span>
+                                    <h4>{{ schemeInfo.destination }}</h4>
+                                    <span> {{ schemeInfo.price }} 元起</span>
                                 </div>
                             </a>
                         </div>
                         <div class="grid-item" v-else-if="index===1" data-colspan="10" data-rowspan="4">
-                            <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
-                               v-bind:style="{backgroundImage:'url(' + schemeInfo.first_photo + ')'}">
+                            <a v-bind:href="'info/detail/'+schemeInfo._id" class="top-destination-image-bg"
+                               v-bind:style="{backgroundImage:'url(' + schemeInfo.scenic_images[3] + ')'}">
                                 <div class="relative">
-                                    <h4>{{ schemeInfo.end_locale }}</h4>
-                                    <span>{{ schemeInfo.min_price }} 元起</span>
+                                    <h4>{{ schemeInfo.destination }}</h4>
+                                    <span>{{ schemeInfo.price }} 元起</span>
                                 </div>
                             </a>
                         </div>
                         <div class="grid-item" v-else-if="index===2" data-colspan="5" data-rowspan="6">
-                            <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
-                               v-bind:style="{backgroundImage:'url(' + schemeInfo.first_photo + ')'}">
+                            <a v-bind:href="'info/detail/'+schemeInfo._id" class="top-destination-image-bg"
+                               v-bind:style="{backgroundImage:'url(' + schemeInfo.scenic_images[3] + ')'}">
                                 <div class="relative">
-                                    <h4>{{ schemeInfo.end_locale }}</h4>
-                                    <span>{{ schemeInfo.min_price }} 元起</span>
+                                    <h4>{{ schemeInfo.destination }}</h4>
+                                    <span>{{ schemeInfo.price }} 元起</span>
                                 </div>
                             </a>
                         </div>
                         <div class="grid-item" v-else-if="index===3" data-colspan="5" data-rowspan="6">
-                            <a :href="schemeInfo.detail_url" class="top-destination-image-bg"
-                               v-bind:style="{backgroundImage:'url(' + schemeInfo.first_photo + ')'}">
+                            <a v-bind:href="'info/detail/'+schemeInfo._id" class="top-destination-image-bg"
+                               v-bind:style="{backgroundImage:'url(' + schemeInfo.scenic_images[3] + ')'}">
                                 <div class="relative">
-                                    <h4>{{ schemeInfo.end_locale }}</h4>
-                                    <span>{{ schemeInfo.min_price }} 元起</span>
+                                    <h4>{{ schemeInfo.destination }}</h4>
+                                    <span>{{ schemeInfo.price }} 元起</span>
                                 </div>
                             </a>
                         </div>
@@ -289,9 +289,9 @@
                         <template v-for="schemeInfo in schemesInfo">
                             <div class="GridLex-col-4_sm-6_xs-12 mb-30">
                                 <div class="package-grid-item">
-                                    <a href="detail-page.html">
+                                    <a v-bind:href="'info/detail/'+schemeInfo._id">
                                         <div class="image">
-                                            <img :src="schemeInfo.first_photo" alt="Tour Package"/>
+                                            <img :src="schemeInfo.scenic_images[3]" alt="Tour Package"/>
 
                                             <div class="absolute-in-image">
                                                 <div class="duration">
@@ -299,19 +299,18 @@
                                             </div>
                                         </div>
                                         <div class="content clearfix">
-                                            <h5>{{ schemeInfo.name }}</h5>
-
+                                            <h5>{{ schemeInfo.title }}</h5>
                                             <div class="rating-wrapper">
                                                 <div class="raty-wrapper">
                                                     <div class="star-rating-read-only"
                                                          v-bind:data-rating-score="schemeInfo.avg_score"></div>
-                                                    <span> / {{ schemeInfo.review_number }} 评论</span>
+                                                    <span> / {{ schemeInfo.review.length }} 评论</span>
                                                 </div>
                                             </div>
                                             <div class="absolute-in-content">
                                                 <span class="btn"><i class="fa fa-heart-o"></i></span>
 
-                                                <div class="price">￥{{ schemeInfo.min_price }}</div>
+                                                <div class="price">￥{{ schemeInfo.price }}</div>
                                             </div>
                                         </div>
                                     </a>

@@ -1,11 +1,14 @@
 $(function () {
+    gloabel_destinations = $('select[name="destination"]').val();
+    gloabel_months = $('select[name="month"]').val();
+    gloabel_years = $('select[name="year"]').val();
     // 页面加载,以默认的排序方式请求数据
     if (window.location.pathname === '/info/result-list/') {
         limit = 12;
-        getData();
+        getData(limit, 0, 0, gloabel_destinations, gloabel_months, gloabel_years);
     } else {
         limit = 18;
-        getData(limit, 0, 0)
+        getData(limit, 0, 0, gloabel_destinations, gloabel_months, gloabel_years)
     }
 });
 
@@ -13,7 +16,7 @@ function skipPage() {
     // go标签里 输入页码进行跳转
     let page_id = $("input[name='pageId']").val();
     let maxPage = parseInt($('.next').prev().text());
-    page_id = parseInt(page_id, 10)
+    page_id = parseInt(page_id, 10);
     if (page_id == 'NaN' || page_id <= 0 || !Number.isInteger(page_id) || page_id > maxPage) {
         console.log('错误的页码：' + page_id)
     } else {
@@ -25,7 +28,7 @@ function skipPage() {
         }
         $('.content-wrapper').hide(1);
         $('.loadbox').show(1);
-        getData(limit, offset, sort_by)
+        getData(limit, offset, sort_by, gloabel_destinations, gloabel_months, gloabel_years)
     }
 }
 
@@ -42,7 +45,7 @@ function getSpecifiedPage(page_id) {
     }
     $('.content-wrapper').hide(1);
     $('.loadbox').show(1);
-    getData(limit, offset, sort_by)
+    getData(limit, offset, sort_by, gloabel_destinations, gloabel_months, gloabel_years)
 }
 
 function getDataBySort(obj) {
@@ -53,10 +56,10 @@ function getDataBySort(obj) {
         let i = '<i class="fa fa-long-arrow-down"></i>';
         $(obj).append(i);
         let sort = $(obj).attr('sort');
-        $(obj).attr('sort', sort - (2 * sort));
+        $(obj).attr('sort', Math.abs(sort) - (2 * Math.abs(sort)));
         $('.content-wrapper').hide(1);
         $('.loadbox').show(1);
-        getData(limit, 0, sort - (2 * sort));
+        getData(limit, 0, Math.abs(sort) - (2 * Math.abs(sort)), gloabel_destinations, gloabel_months, gloabel_years);
     } else {
         let sort = parseInt($(obj).attr('sort'));
         let sortUpDown = $(obj).children('i').attr('class');
@@ -70,7 +73,7 @@ function getDataBySort(obj) {
         sort = parseInt($(obj).attr('sort'));
         $('.content-wrapper').hide(1);
         $('.loadbox').show(1);
-        getData(limit, 0, sort)
+        getData(limit, 0, sort, gloabel_destinations, gloabel_months, gloabel_years)
     }
 }
 
@@ -110,18 +113,19 @@ function foldIntroduce() {
 }
 
 function applyTemplate(scheme) {
-    let name = scheme.name;
-    let introduce = scheme.introduce;
-    let originating = scheme.originating;
+    let id = scheme.Id;
+    let title = scheme.title;
+    let subhead = scheme.subhead;
+    let departure = scheme.departure;
     let day = scheme.day;
     let night = scheme.night;
-    let endLocale = scheme.endLocale;
-    let minPrice = scheme.minPrice;
-    price = '￥' + minPrice;
-    let reviewNum = scheme.reviewNumber;
+    let destination = scheme.destination;
+    let price = scheme.price;
+    price = '￥' + price;
+    let reviewNum = scheme.review.length;
     let beLike = scheme.beLike;
     let grade = scheme.avgScore;
-    let firstPhoto = scheme.firstPhoto;
+    let firstPhoto = scheme.scenicImages[1];
     let scheme_content = '<div class="package-list-item clearfix">' +
         '<div class="image">' + '<img src="' + '../../' + firstPhoto + '" alt="Tour Package"/>' +
         '<div class="absolute-in-image">' +
@@ -129,18 +133,18 @@ function applyTemplate(scheme) {
         '</div>' +
         '</div>' +
         '<div class="content">' +
-        '<h5>' + name +
+        '<h5>' + title +
         '<button class="btn"><i class="fa fa-heart-o" be_like="' + beLike + '"></i></button>' +
         '</h5>' +
         '<div class="row gap-10">' +
         '<div class="col-sm-12 col-md-9">' +
         '<div class="introduce" style="display: none">' +
-        '<p class="line">' + introduce + '</p>' +
+        '<p class="line">' + subhead + '</p>' +
         '</div>' +
         '<br>' +
         '<ul class="list-info">' +
-        '<li><span class="icon"><i class="fa fa-map-marker"></i></span> <span class="font600">终点:</span>' + endLocale + '</li>' +
-        '<li><span class="icon"><i class="fa fa-flag"></i></span> <span class="font600">起点:</span>' + originating + '</li>' +
+        '<li><span class="icon"><i class="fa fa-map-marker"></i></span> <span class="font600">终点:</span>' + destination + '</li>' +
+        '<li><span class="icon"><i class="fa fa-flag"></i></span> <span class="font600">起点:</span>' + departure + '</li>' +
         '</ul>' +
         '</div>' +
         '<div class="col-sm-12 col-md-3 text-right text-left-sm">' +
@@ -151,7 +155,7 @@ function applyTemplate(scheme) {
         '</div>' +
         '</div>' +
         '<div class="price">' + price + '</div>' +
-        '<a href="detail-page.html" class="btn btn-primary btn-sm">详情</a>' +
+        '<a href="/info/detail/' + id + '" class="btn btn-primary btn-sm">详情</a>' +
         '</div>' +
         '</div>' +
         '</div>' +
@@ -190,33 +194,40 @@ function loadPagination(page_info) {
     loadDate(pageSchemes)
 }
 
-function getData(limit = 12, offset = 0, sort_by = 0) {
+function getData(limit, offset, sort_by, destinations, months, years) {
     // 定义graphql查询语句
     const query =
-        'query pageSchemes($limit: Int, $offset: Int, $sortBy: Int) { ' +
-        'pageSchemes(limit: $limit, offset: $offset, sortBy: $sortBy) {' +
+        'query pageSchemes($limit: Int, $offset: Int, $sortBy: Int, $destinations: String, $months: String, $years: String) { ' +
+        'pageSchemes(limit: $limit, offset: $offset, sortBy: $sortBy, destinations: $destinations, months: $months, years: $years) {' +
         'limit,' +
         'offset,' +
         'total,' +
         'pageScheme{' +
-        'id,' +
-        'name,' +
-        'introduce,' +
-        'originating,' +
-        'endLocale,' +
-        'minPrice,' +
-        'reviewNumber,' +
+        'Id,' +
+        'title,' +
+        'subhead,' +
+        'departure,' +
+        'destination,' +
+        'price,' +
         'beLike,' +
         'avgScore,' +
         'day,' +
         'night,' +
-        'firstPhoto,' +
+        'scenicImages,' +
+        'review{content}' +
         '}' +
         '}' +
         '}';
 
     // graphql语句传参
-    const variables = {limit: limit, offset: offset, sortBy: sort_by};
+    const variables = {
+        limit: limit,
+        offset: offset,
+        sortBy: sort_by,
+        destinations: destinations,
+        months: months,
+        years: years
+    };
 
     // 发送graphql请求
     fetch('/public_graphql/', {
@@ -226,7 +237,7 @@ function getData(limit = 12, offset = 0, sort_by = 0) {
             'Accept': 'application/json',
             'X-CSRFToken': $.cookie('csrftoken')    // 请求头必须携带csrf_token,不然会csrf验证失败 403
         },
-        body: JSON.stringify({query: query, variables: variables}),
+        body: JSON.stringify({query: query, variables: variables})
     }).then(function (response) {
         //打印返回的json数据
         if (response.status === 200) {

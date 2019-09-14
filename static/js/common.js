@@ -83,7 +83,6 @@ function getRecommendedSchemes(){
         data () {
             return {
                 schemesInfo: null,
-//                style_data: [{colspan:'10',rowspan:"10"},{colspan:'10',rowspan:"4"},{colspan:'5',rowspan:"6"},{colspan:'5',rowspan:"6"}]
             }
         },
         watch:{

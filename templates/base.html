@@ -390,17 +390,17 @@
                                 <div class="navbar-mini">
                                     <ul class="clearfix">
                                         {% if not user.is_authenticated %}
-                                        <li class="user-action">
-                                            <a data-toggle="modal" href="#loginModal" class="btn">登录</a>
-                                        </li>
+                                            <li class="user-action">
+                                                <a data-toggle="modal" href="#loginModal" class="btn">登录</a>
+                                            </li>
                                         {% else %}
-                                        <li class="user-info">
-                                            <img src="{{ user.auth_profile.head_photo }}" width="50px" height="50px"
-                                                 style="border-radius:50%;border:2px solid #F7F7F7;">
-                                        </li>
-                                        <li class="user-logout">
-                                            <a data-toggle="modal" class="btn">注销</a>
-                                        </li>
+                                            <li class="user-info">
+                                                <img src="{{ user.auth_profile.head_photo }}" width="50px" height="50px"
+                                                     style="border-radius:50%;border:2px solid #F7F7F7;">
+                                            </li>
+                                            <li class="user-logout">
+                                                <a data-toggle="modal" class="btn">注销</a>
+                                            </li>
                                         {% endif %}
                                     </ul>
                                 </div>
@@ -717,7 +717,7 @@
         if ($("#tailoringImg").attr("src") == null) {
             return false;
         } else {
-            var cas = $('#tailoringImg').cropper('getCroppedCanvas',{width:50,height:50});//获取被裁剪后的canvas
+            var cas = $('#tailoringImg').cropper('getCroppedCanvas', {width: 50, height: 50});//获取被裁剪后的canvas
             var base64url = cas.toDataURL('image/png'); //转换为base64地址形式
             $("#head-portrait").prop("src", base64url);//显示为图片的形式
             $("#head-portrait").prop("border-radius", "50px");//显示为图片的形式
@@ -730,8 +730,6 @@
     function closeTailor() {
         $(".tailoring-container").toggle();
     }
-
-
 
 
 </script>

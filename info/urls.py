@@ -1,11 +1,11 @@
 from django.conf.urls import url
-from .views import Result_list, Result_grid, Detail, Schemes, Scenic_spot
+from .views import ResultList, ResultGrid, Detail, Schemes, ScenicSpot
 
 urlpatterns = [
-    url('^result-list/$', Result_list.as_view(), name='result-list'),
-    url('^result-grid/$', Result_grid.as_view(), name='result-grid'),
-    url('^detail/$', Detail.as_view(), name='detail'),
+    url('^result-list/$', ResultList.as_view(), name='result-list'),
+    url('^result-grid/$', ResultGrid.as_view(), name='result-grid'),
+    url('^detail/(?P<id>[a-zA-Z0-9]{24})$', Detail.as_view(), name='detail'),
     url('^schemes/$', Schemes.as_view(), name='schemes'),
-    url('^ScenicSpot/$', Scenic_spot.as_view(), name='Scenic_spot'),
+    url('^ScenicSpot/$', ScenicSpot.as_view(), name='Scenic_spot'),
 
 ]
