@@ -99,7 +99,7 @@ urllib3==1.23
 vine==1.1.4
 virtualenv==16.0.0
 wcwidth==0.1.7
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 wrapt==1.11.1
 xadmin==0.6.1
 zipp==0.3.3
