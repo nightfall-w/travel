@@ -39,7 +39,7 @@ graphene-django==2.2.0
 graphql-core==2.1
 graphql-relay==0.4.5
 greenlet==0.4.15
-httplib2==0.9.2
+httplib2==0.19.0
 idna==2.7
 importlib-metadata==0.8
 ipython==6.2.0
