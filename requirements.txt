@@ -57,7 +57,7 @@ mock==2.0.0
 mongo==0.2.0
 mongoengine==0.17.0
 monotonic==1.5
-nameko==2.11.0
+nameko==2.14.0
 oauthlib==2.1.0
 parso==0.3.4
 path.py==11.5.0
